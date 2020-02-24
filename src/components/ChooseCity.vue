@@ -1,58 +1,49 @@
 <template>
-  <div class="city">
-    <span>出发城市</span>
-    <el-popover class="input_one_style" trigger="focus" placement="bottom">
-      <div slot="reference">
-        <el-input class="input-style" v-model="inputCity" placeholder="请选择城市"></el-input>
-      </div>
-      <div class="tag1">
-        <el-tabs v-model="activeName">
-          <el-tab-pane :label="hotTab.tabName" name="first">
-            <template v-for="(city,cityIndex) in hotTab.cities">
-              <a @click="get" class="a_style" href="#" v-bind:key="cityIndex">{{city}}</a>
-            </template>
-          </el-tab-pane>
-          <template v-for="(tab,tabIndex) in mainTabs ">
-            <el-tab-pane :label="tab.tabName" :name="tab.tabName" v-bind:key="tabIndex">
-              <template v-for="(group,groupIndex) in tab.groups">
-                <div class="top_outer" v-bind:key="groupIndex">
-                  <div class="top_left" id="left">
-                    <div>
-                      <ul>
-                        <li>{{group.start}}</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="top_right">
-                    <template v-for="(city,cityIndex) in group.cities">
-                      <a @click="get" class="a_style" href="#" v-bind:key="cityIndex">{{city}}</a>
-                    </template>
-                  </div>
+  <div class="tag1">
+    <el-tabs v-model="activeName">
+      <el-tab-pane :label="hotTab.tabName" name="hotTab">
+        <template v-for="(city,cityIndex) in hotTab.cities">
+          <a @click="get" class="a_style" href="#" v-bind:key="cityIndex">{{city}}</a>
+        </template>
+      </el-tab-pane>
+      <template v-for="(tab,tabIndex) in mainTabs ">
+        <el-tab-pane :label="tab.tabName" :name="tab.tabName" v-bind:key="tabIndex">
+          <template v-for="(group,groupIndex) in tab.groups">
+            <div class="top_outer" v-bind:key="groupIndex">
+              <div class="top_left" id="left">
+                <div>
+                  <ul>
+                    <li>{{group.start}}</li>
+                  </ul>
                 </div>
-              </template>
-            </el-tab-pane>
+              </div>
+              <div class="top_right">
+                <template v-for="(city,cityIndex) in group.cities">
+                  <a @click="get" class="a_style" href="#" v-bind:key="cityIndex">{{city}}</a>
+                </template>
+              </div>
+            </div>
           </template>
-        </el-tabs>
-      </div>
-    </el-popover>
+        </el-tab-pane>
+      </template>
+    </el-tabs>
   </div>
 </template>
+   
 
 <script>
 export default {
   name: "ChooseCity",
-  props: {
-    msg: String
-  },
+  props:['city'],
+ 
+ 
   data(){
     return {
     hotTab: {},
+    activeName:"hotTab",
     mainTabs: [],
-    hotTab1: {},
-    inputCity: "",
-    inputCity1: "",
     visible: "",
-    radio: "1",
+    
 };
   },
   methods:{
@@ -470,23 +461,32 @@ export default {
           ]
         }
       ];
-      this.hotTab1 = this.hotTab;
+      
+    },
+      get: function(event) {
+      var el = event.currentTarget;
+      var text = el.innerText;
+      this.$emit("changeCity",text);
+      
+     
+      // this.inputCity = text;
+      
+      // this.inputCity1 = text;
     },
     
+  
   },
   mounted(){
       this.loadAll();
-  }
+      
+  },
+ 
 };
 </script>
 
 <style scoped>
 
-.city {
-  width: 275px;
-  height: 100px;
-  float: left;
-}
+
 .tag1 {
   border: 1px solid rebeccapurple !important;
   width: 400px;
@@ -522,10 +522,7 @@ export default {
   height: auto;
 }
 
-.city span {
-  float: left;
-  line-height: 50px;
-}
+
 .a_style {
   font-size: 13px;
   width: 60px;
@@ -537,9 +534,7 @@ export default {
 a:hover {
   background-color: skyblue;
 }
-.input-style {
-  width: 150px !important;
-}
+
 
 
 </style>
