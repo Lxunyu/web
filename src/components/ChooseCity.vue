@@ -525,6 +525,7 @@ export default {
 
 .a_style {
   font-size: 13px;
+  text-align: center;
   width: 60px;
   height: 20px;
   float: left;

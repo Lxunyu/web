@@ -6,14 +6,16 @@
         <el-tab-pane label="国内机票" name="first1">
           <div class="choose_style">
             <span>航程类型</span>
-            <el-radio v-model="radio" label="1">单程</el-radio>
-            <el-radio v-model="radio" label="2">往返</el-radio>
-            <el-radio v-model="radio" label="3">多程</el-radio>
+            <el-radio-group v-model="radio" @change="singleWay"  >
+              <el-radio  label="1">单程</el-radio>
+              <el-radio  label="2">往返</el-radio>
+              <el-radio  label="3">多程</el-radio>
+            </el-radio-group>
           </div>
           <div class="choose">
             <div class="choose_start">
               <div class="input_one" id="city1">
-                <a  href="#" @click="exchange">换</a>
+                <a class="exchangeIcon" href="#" @click="exchange"><svg-icon name="exchange"></svg-icon></a>
                   <div class="city">
                     <span>出发城市</span>
                     <el-popover class="input_one_style" trigger="focus" placement="bottom">
@@ -46,8 +48,8 @@
                     <ChooseCity @changeCity="updateCity1" ref="myChooseCity"></ChooseCity>
                   </el-popover>
                 </div>
-                <div class="time">
-                  <span class="start_date">返回日期</span>
+                <div class="time" >
+                  <span class="start_date arrive_date" id="span" >返回日期</span>
                   <div class="block">
                     <span class="demonstration"></span>
                     <el-date-picker
@@ -55,6 +57,7 @@
                       v-model="arriveDate"
                       type="date"
                       placeholder="选择日期"
+                      @change="changeArrive"
                     ></el-date-picker>
                   </div>
                 </div>
@@ -82,7 +85,7 @@
              <div class="kid_style">
                 <div class="sum_table">
                   <table class="table_style">
-                    <caption class="caption_style"><i class=""></i>儿童票</caption>
+                    <caption class="caption_style"><svg-icon name="kid"></svg-icon>儿童票</caption>
                     <template v-for="(kid,kidIndex) in kids">
                       <div v-bind:key="kidIndex">
                         <th class="table_th_style">{{kid.title}}</th>
@@ -91,7 +94,7 @@
                     </template>
                   </table>
                   <table class="table_style2">
-                    <caption class="caption_style">婴儿票</caption>
+                    <caption class="caption_style"><svg-icon name="baby"></svg-icon>婴儿票</caption>
                     <template v-for="(baby,babyIndex) in babies">
                       <div v-bind:key="babyIndex">
                         <th class="table_th_style">{{baby.title}}</th>
@@ -100,17 +103,36 @@
                     </template>
                   </table>
                 </div>
-                <p><span class="caption_style">常见问题</span></p>
+                <p><span class="caption_style"><svg-icon name="question"></svg-icon>常见问题</span></p>
                 <div class="question">
-                  <p><span class="caption_style">不满14天的新生儿能乘机吗？</span></p>
-                  <p>新生婴儿抵抗力差，呼吸功能不完善，飞机起飞、降落时气压变化大，易对其造成伤害。因此航空公司规定出生不足14天的新生婴儿和
-                    出生不足90天的早产婴儿不能乘机出行。若仍需携带新生婴儿乘机，请联系航空公司。
-                  </p>
+                  <div class="problemIconOne">
+                    <div class="problemIconLeft"><svg-icon name="Q"></svg-icon></div>
+                    <div class="problemIconRight">
+                      不满14天的新生儿能乘机吗？
+                    </div>
+                  </div>
+                  <div class="problemIconTwo">
+                    <div class="problemIconLeft"><svg-icon name="A"></svg-icon></div>
+                    <div class="problemIconRight">
+                      新生婴儿抵抗力差，呼吸功能不完善，飞机起飞、降落时气压变化大，易对其造成伤害。因此航空公司规定出生不足14天的新生婴儿和
+                      出生不足90天的早产婴儿不能乘机出行。若仍需携带新生婴儿乘机，请联系航空公司。
+                    </div>
+                  </div>
                 </div>
                 <div class="question2">
-                  <p><span class="caption_style">如何预定更优惠？</span></p>
-                  <p>对于国内航班，儿童、婴儿也可购买部分价格的成人票。由于部分成人票的折扣比儿童票、婴儿票的折扣更低，因此为儿童、婴儿
-                  购买此类折扣成人片可能更加优惠，携程会只能为您推荐更优惠的购买方案。</p>
+                  <div class="problemIconOne">
+                    <div class="problemIconLeft"><svg-icon name="Q"></svg-icon></div>
+                    <div class="problemIconRight">
+                      如何预定更优惠？
+                    </div>
+                  </div>
+                  <div class="problemIconTwo">
+                    <div class="problemIconLeft"><svg-icon name="A"></svg-icon></div>
+                    <div class="problemIconRight">
+                      对于国内航班，儿童、婴儿也可购买部分价格的成人票。由于部分成人票的折扣比儿童票、婴儿票的折扣更低，因此为儿童、婴儿
+                  购买此类折扣成人片可能更加优惠，携程会只能为您推荐更优惠的购买方案。
+                    </div>
+                  </div>
                 </div>
              </div>
            </el-popover>
@@ -135,6 +157,7 @@
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
 import ChooseCity from "./components/ChooseCity.vue";
+// import SvgIconVue from './components/SvgIcon.vue';
 
 export default {
   name: "app",
@@ -162,6 +185,7 @@ export default {
       seat_level: "",
       kids:[],
       babies:[],
+      label:""
     };
   },
   methods: {
@@ -222,11 +246,26 @@ export default {
       this.inputCity1 = text;
     },
     exchange(){
-      let a = this.inputCity;
+      let el = this.inputCity;
       this.inputCity = this.inputCity1;
-      this.inputCity1 = a;
-    }
+      this.inputCity1 = el;
+    },
+    singleWay(label) {
+      if(label ==="1"){
+         document.getElementById("span").style.color = 'gray';
+         this.arriveDate = "";
+      }
+      else{
+         document.getElementById("span").style.color = 'black';
+         
+      }  
+    },
+    changeArrive(){
+         document.getElementById("span").style.color = 'black';
+         this.radio = "2";
+         
 
+    }
     
   },
   mounted() {
@@ -312,6 +351,9 @@ export default {
   float: left;
   line-height: 50px;
 }
+.arrive_date{
+  color: gray;
+}
 .input_one_style {
   float: left;
   margin-left: 10px !important;
@@ -353,13 +395,12 @@ export default {
 .kid_style{
   width: 870px;
   height: 450px;
-  border: 1px solid skyblue;
+  border: 1px solid black;
   font-size: 14px;
 }
 .sum_table{
   width: 870px;
   height: 250px;
-  border: 1px solid rebeccapurple;
 }
 .table_style{
   width: 400px;
@@ -380,6 +421,7 @@ export default {
   vertical-align:middle;
   padding:8px;
   margin-top: 100px;
+  text-align: center;
 }
 .table_td_style{
   width: 430px;
@@ -403,9 +445,16 @@ export default {
   width: 400px;
   height: 130px;
   float: left;
-  text-align: left;
   margin-left: 20px;
-  border: 1px solid red;
+  border: 1px solid gray;
+}
+.problemIconOne{
+  width: 400px;
+  height: 30px;
+}
+.problemIconTwo{
+  width: 400px;
+  height:100px;
 }
 .question2{
   width: 400px;
@@ -413,7 +462,18 @@ export default {
   float: right;
   text-align: left;
   margin-right: 20px;
-  border: 1px solid red;
+  border: 1px solid gray;
+}
+.problemIconLeft{
+  float: left;
+ ;
+}
+.problemIconRight{
+  float: left;
+  width: 370px;
+}
+.exchangeIcon:hover{
+ background-color:skyblue;
 }
 .el-button{
   width: 160px;
