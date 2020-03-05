@@ -1,69 +1,11 @@
 <template>
   <div id="app">
-    <HelloWorld msg />
+    <!-- 机票查询 -->
     <div class="box">
       <el-tabs v-model="navName">
+        <!-- 国内机票 -->
         <el-tab-pane label="国内机票" name="first1">
-          <div class="choose_style">
-            <span>航程类型</span>
-            <el-radio-group v-model="radio" @change="singleWay"  >
-              <el-radio  label="1">单程</el-radio>
-              <el-radio  label="2">往返</el-radio>
-              <el-radio  label="3">多程</el-radio>
-            </el-radio-group>
-          </div>
-          <div class="choose">
-            <div class="choose_start">
-              <div class="input_one" id="city1">
-                <a class="exchangeIcon" href="#" @click="exchange"><svg-icon name="exchange"></svg-icon></a>
-                  <div class="city">
-                    <span>出发城市</span>
-                    <el-popover class="input_one_style" trigger="focus" placement="bottom">
-                      <div slot="reference">
-                        <el-input class="input-style"  v-model="inputCity" placeholder="请选择城市"></el-input>
-                      </div>
-                      <ChooseCity  @changeCity="updateCity"   ref="myChooseCity"></ChooseCity>
-                    </el-popover>
-                  </div>
-                <div class="time">
-                  <span class="start_date">出发日期</span>
-                  <div class="block">
-                    <span class="demonstration"></span>
-                    <el-date-picker
-                      class="date_style"
-                      v-model="startDate"
-                      type="date"
-                      placeholder="选择日期"
-                    ></el-date-picker>
-                  </div>
-                </div>
-              </div>
-              <div class="input_one" id="city2">
-                <div class="city">
-                  <span>出发城市</span>
-                  <el-popover class="input_one_style" trigger="focus" placement="bottom">
-                    <div slot="reference">
-                      <el-input class="input-style"  v-model="inputCity1" placeholder="请选择城市"></el-input>
-                    </div>
-                    <ChooseCity @changeCity="updateCity1" ref="myChooseCity"></ChooseCity>
-                  </el-popover>
-                </div>
-                <div class="time" >
-                  <span class="start_date arrive_date" id="span" >返回日期</span>
-                  <div class="block">
-                    <span class="demonstration"></span>
-                    <el-date-picker
-                      class="date_style"
-                      v-model="arriveDate"
-                      type="date"
-                      placeholder="选择日期"
-                      @change="changeArrive"
-                    ></el-date-picker>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Choose></Choose>
           <div class="choose_kid">
             <el-checkbox >带儿童</el-checkbox>
             <el-checkbox >带婴儿</el-checkbox>
@@ -78,9 +20,9 @@
                 ></el-option>
               </el-select>
             </div>
-            <el-popover placement="bottom-end" trigger="hover" width="870px">
+            <el-popover placement="bottom-end" trigger="hover" >
              <div slot="reference">
-              <a class="precautions" href="#">儿童婴儿预定说明</a>
+              <a class="precautions" href="#">儿童婴儿预定说明<svg-icon name="caution"></svg-icon></a>
              </div>
              <div class="kid_style">
                 <div class="sum_table">
@@ -137,14 +79,64 @@
              </div>
            </el-popover>
           </div>
-           <div>
-             <el-button>搜索机票</el-button>
-             <el-checkbox class="checkbox_style">同时搜索酒店</el-checkbox>
-           </div>
-
-          
+          <div class="search">
+          <el-button class="search_button">搜索机票</el-button>
+          <el-checkbox class="checkbox_style_two">同时搜索酒店</el-checkbox>
+          <svg-icon class="icon_discount" name="discount"></svg-icon>
+          </div>
         </el-tab-pane>
-        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+        <!-- 国际.港澳台机票 -->
+        <el-tab-pane label="国际•港澳台机票" name="second">
+          <choose></choose>
+          <div class="passengerType">
+            乘客类型
+              <el-select class="passenger_style" v-model="adult"  placeholder="请选择">
+                <el-option
+                  @click="adultMethod"
+                  v-for="(adult,adultIndex) in adultArray" v-bind:key="adultIndex" 
+                  :label="adult + adultIndex"
+                  :value="adultIndex">
+                </el-option>     
+              </el-select>
+              <el-select class="passenger_style" v-model="child"  placeholder="请选择">
+                <el-option
+                  @click="childMethod"
+                  v-for="(child,childIndex) in childArray" v-bind:key="childIndex" 
+                  :label="child + childIndex"
+                  :value="childIndex">
+                </el-option>     
+              </el-select>
+              <el-select class="passenger_style" v-model="toddler"  placeholder="请选择">
+                <el-option
+                  @click="toddlerMethod"
+                  v-for="(toddler,toddlerIndex) in toddlerArray" v-bind:key="toddlerIndex" 
+                  :label="toddler + toddlerIndex"
+                  :value="toddlerIndex">
+                </el-option>     
+              </el-select>
+          </div>
+          <div class="level">
+            <div class="level_choose">
+              舱位等级
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="level in levels"
+                  :key="level.value"
+                  :label="level.label"
+                  :value="level.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="level_check">
+              <el-checkbox v-model="checked">仅查看直飞</el-checkbox>
+            </div>
+          </div>
+          <div class="search_style">
+            <el-button class="search_button">搜索机票</el-button>
+            <el-checkbox class="checkbox_style_two">同时搜索酒店</el-checkbox>
+            <svg-icon class="icon_discount" name="discount"></svg-icon>
+          </div>
+        </el-tab-pane>
         <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
         <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
       </el-tabs>
@@ -155,15 +147,12 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import ChooseCity from "./components/ChooseCity.vue";
-// import SvgIconVue from './components/SvgIcon.vue';
+import Choose from './components/Choose.vue';
 
 export default {
   name: "app",
   components: {
-    HelloWorld,
-    ChooseCity
+    Choose
   },
   watch:{
     cityMsg(newV,oldV){
@@ -174,21 +163,45 @@ export default {
   },
   data() {
     return {
-      navName: "first1",
-      visible: "",
-      inputCity: "",
-      inputCity1: "",
-      radio: "1",
-      startDate: "",
-      arriveDate: "",
+      navName: "second",
       options: [],
       seat_level: "",
       kids:[],
       babies:[],
-      label:""
+      adults:[],
+      adult:"",
+      adultArray:[],
+      child:"",
+      childArray:[],
+      toddler:"",
+      toddlerArray:[],
+      levels:[],
+      checked:""
     };
   },
   methods: {
+     adultMethod(){   
+      for(let i=0;i<=9;i++){
+        let el = this.adults.label;
+        this.adultArray.push(el);   
+       }
+      return this.adultArray;
+    },
+     childMethod(){
+       for(let i=0;i<=9;i++){
+        let el = this.childs.label;
+        this.childArray.push(el);   
+       }
+      return this.childArray;
+     },
+      toddlerMethod(){
+       for(let i=0;i<=9;i++){
+        let el = this.toddlers.label;
+        this.toddlerArray.push(el);   
+       }
+      return this.todderArray;
+     },
+    
     selectOption() {
       this.options = [
         {
@@ -200,6 +213,29 @@ export default {
           label: "公务/头等舱"
         }
       ];
+      this.adults = {
+        value:"1",
+        label:"成人"
+        },
+      this.childs = {
+        value:"1",
+        label:"儿童"
+      },
+      this.toddlers = {
+        value:"1",
+        label:"婴儿"
+      },
+      this.levels = [
+        {
+          value:"1",
+          label:"经济/超级经济舱"
+        },
+        {
+          value:"2",
+          label:"公务/头等舱"
+        }
+      ]
+      
     },
     kid_precautions(){
       this.kids = [
@@ -239,38 +275,17 @@ export default {
         },
       ]
     },
-    updateCity(text){
-      this.inputCity = text;
-    },
-    updateCity1(text){
-      this.inputCity1 = text;
-    },
-    exchange(){
-      let el = this.inputCity;
-      this.inputCity = this.inputCity1;
-      this.inputCity1 = el;
-    },
-    singleWay(label) {
-      if(label ==="1"){
-         document.getElementById("span").style.color = 'gray';
-         this.arriveDate = "";
-      }
-      else{
-         document.getElementById("span").style.color = 'black';
-         
-      }  
-    },
-    changeArrive(){
-         document.getElementById("span").style.color = 'black';
-         this.radio = "2";
-         
-
-    }
+   
+  },
+  computed:{
     
   },
   mounted() {
     this.selectOption();
     this.kid_precautions();
+    this.adultMethod();
+    this.childMethod();
+    this.toddlerMethod();
    
   },
  
@@ -304,75 +319,13 @@ export default {
   height: 350px;
   border: 1px solid pink;
 }
-.choose_style {
-  width: 350px;
-  height: 30px;
-  font-size: 15px;
-  font-family: "宋体";
-  background-color: red;
-}
-.choose {
-  width: 550px;
-  height: 100px;
-  background-color: pink;
-}
-.city {
-  width: 275px;
-  height: 100px;
-  float: left;
-}
-.input-style {
-  width: 150px !important;
-}
-.city span {
-  float: left;
-  line-height: 50px;
-}
 
-.input_one {
-  width: 550px;
-  height: 50px;
-  float: left;
-  position: relative;
-}
-.input_one a{
-  position: absolute;
-  right: 300px;
-  top: 40px;
-  text-decoration: none;
-  color: gray;
-}
-.time {
-  width: 275px;
-  height: 100px;
-  float: right;
-}
-.start_date {
-  float: left;
-  line-height: 50px;
-}
-.arrive_date{
-  color: gray;
-}
-.input_one_style {
-  float: left;
-  margin-left: 10px !important;
-  margin-right: 30px !important;
-}
-.date_style {
-  width: 170px !important;
-  line-height: 50px;
-}
-.el-icon-date:before {
-  content: none !important;
-}
-.el-input__inner {
-  padding-left: 15px !important;
-}
+
 .choose_kid {
   width: 550px;
   height: 70px;
   background-color: orange;
+  text-align: left;
 }
 .el-checkbox {
   line-height: 50px;
@@ -384,14 +337,16 @@ export default {
   height: 50px;
   float: right;
 }
-.el-input--suffix {
+/* .el-input--suffix {
   width: 170px !important;
   line-height: 50px;
-}
+} */
 .precautions{
   text-decoration: none;
   float: left;
+  padding-bottom: 5px;
 }
+
 .kid_style{
   width: 870px;
   height: 450px;
@@ -483,8 +438,63 @@ export default {
   margin: 22px 20px !important;
   background-color: rgb(168, 228, 252) !important;
 }
-.checkbox_style{
+.search{
+  width: 330px;
+  height: auto;
+  line-height: 100px;
+  margin-top: 20px;
   float: right;
-  margin-top: 22px !important;
+}
+.el-icon-date:before {
+    content: none !important;
+}
+.passengerType{
+  width: 550px;
+  height: 50px;
+  line-height: 50px;
+  background-color: orange;
+  text-align: left;
+}
+.passenger_style input{
+  width: 150px !important;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.level{
+  height: 50px;
+  background-color: pink;
+  line-height: 50px;
+  text-align: left;
+}
+.level_choose{
+  width: 300px;
+  height: 50px;
+  background-color: red;
+  float: left;
+}
+.level_check{
+  width: 220px;
+  height: 50px;
+  float: right;
+}
+.search_style{
+  width: 330px;
+  height: 50px;
+  float: right;
+}
+.search_button{
+  margin: 8px !important;
+  width: 150px !important;
+  height: 40px !important;
+}
+.checkbox_style_two{
+  line-height: 50px;
+  position: relative;
+}
+.icon_discount{
+  width: 50px !important;
+  height: 50px !important;
+  position: absolute;
+  right: 177px;
 }
 </style>
