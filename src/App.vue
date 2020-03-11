@@ -2,7 +2,7 @@
   <div id="app">
     <!-- 机票查询 -->
     <div class="box">
-      <el-tabs v-model="navName">
+      <el-tabs class="asd" v-model="navName">
         <!-- 国内机票 -->
         <el-tab-pane label="国内机票" name="first1">
           <Choose></Choose>
@@ -87,7 +87,7 @@
         </el-tab-pane>
         <!-- 国际.港澳台机票 -->
         <el-tab-pane label="国际•港澳台机票" name="second">
-          <choose></choose>
+          <choose ref="scenesDisplay"></choose>
           <div class="passengerType">
             乘客类型
               <el-select class="passenger_style" v-model="adult"  placeholder="请选择">
@@ -118,7 +118,7 @@
           <div class="level">
             <div class="level_choose">
               舱位等级
-              <el-select v-model="value" placeholder="请选择">
+              <el-select v-model="level" placeholder="请选择">
                 <el-option
                   v-for="level in levels"
                   :key="level.value"
@@ -137,11 +137,46 @@
             <svg-icon class="icon_discount" name="discount"></svg-icon>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+        <!-- 发现低价 -->
+        <el-tab-pane label="发现低价" name="third" >
+          <!-- <svg-icon class="icon_new" name="new"></svg-icon> -->
+          <div class="lowPrice_top"> 
+            <div>
+              <span class="low_price_span">大家都在搜：</span>
+              <div class="lowPrice_top_div"><a class="a_style" v-for="(label,labelIndex) in aChoose"  v-bind:key="labelIndex" href="#">{{label}}</a></div>
+           </div>
+          </div>
+          <div class="lowPrice_content">
+            <span>出发地</span>
+            <el-input class="input_style" v-model="input" placeholder="上海"></el-input>
+          </div>
+           <div class="lowPrice_content">
+            <span>目的地</span>
+            <el-popover >
+               <div class="internationalChoose">
+                <p class="internationalP"><span class=" low_price_span internationalSpan">热门主题</span><a class="a_style a_weight" v-for="(label,labelIndex) in aChoose"  v-bind:key="labelIndex" href="#">{{label}}</a></p>
+                <hr class="hr">
+                <p class="internationalP"><span class=" low_price_span internationalSpan">国际地区</span><a class="a_style" v-for="(label,labelIndex) in internationaArea"  v-bind:key="labelIndex" href="#">{{label}}</a></p>
+                <hr class="hr">
+                <p class="internationalP"><span class="low_price_span internationalSpan">国内地区</span><a class="a_style" v-for="(label,labelIndex) in domesticArea"  v-bind:key="labelIndex" href="#">{{label}}</a></p>
+                <hr class="hr">
+                <p class="internationalP"><span class="low_price_span internationalSpan">热门城市</span><a class="a_style" v-for="(label,labelIndex) in hotCity"  v-bind:key="labelIndex" href="#">{{label}}</a></p>
+                <hr class="hr">
+              </div>
+              <el-input slot="reference" class="input_style" v-model="input" placeholder="全世界"></el-input>
+            </el-popover>
+          </div>
+           <div class="lowPrice_content">
+            <span>出发时间</span>
+            <el-input class="input_style" v-model="input" placeholder="任何时间"></el-input>
+          </div>
+          <div class="lowPrice_bottom">
+          <el-button class="search_button">搜索</el-button>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
-    
+   
       
   </div>
 </template>
@@ -158,12 +193,13 @@ export default {
     cityMsg(newV,oldV){
       this.inputCity = oldV;
       console.log(oldV);
-    }
+    },
+    
 
   },
   data() {
     return {
-      navName: "second",
+      navName: "third",
       options: [],
       seat_level: "",
       kids:[],
@@ -176,7 +212,16 @@ export default {
       toddler:"",
       toddlerArray:[],
       levels:[],
-      checked:""
+      checked:"",
+      level:"",
+      aChoose:[],
+      internationaArea:[],
+      domesticArea:[],
+      hotCity:[],
+      input:""
+
+      
+     
     };
   },
   methods: {
@@ -235,6 +280,50 @@ export default {
           label:"公务/头等舱"
         }
       ]
+      this.aChoose = [
+        "免签/落地签",
+        "海岛沙滩",
+        "第一次出境",
+        "学生党",
+        "疯狂血拼",
+        "饕客盛宴",
+        "历史文化",
+        "名山草原",
+        "家庭亲子" 
+      ],
+      this.internationaArea= [
+        "日韩",
+        "东南亚",
+        "澳新南太",
+        "中东非",
+        "欧洲",
+        "美洲"
+      ],
+      this.domesticArea = [
+        "港澳台",
+        "华东",
+        "华北",
+        "华南",
+        "西北",
+        "西南",
+        "东北",
+        "华中"
+      ]
+      this.hotCity = [
+        "曼谷",
+        "首尔",
+        "新加坡",
+        "香港",
+        "大阪",
+        "东京",
+        "北京",
+        "上海",
+        "成都",
+        "广州",
+        "青岛",
+        "西安"
+      ]
+
       
     },
     kid_precautions(){
@@ -275,6 +364,9 @@ export default {
         },
       ]
     },
+    scenescontrol(){
+      this.$refs.scenesDisplay.scenesVisible = true;
+    }
    
   },
   computed:{
@@ -286,6 +378,9 @@ export default {
     this.adultMethod();
     this.childMethod();
     this.toddlerMethod();
+    this.scenescontrol();
+   
+  
    
   },
  
@@ -319,7 +414,16 @@ export default {
   height: 350px;
   border: 1px solid pink;
 }
+/* .el-tabs__nav-scroll{
+  position: relative !important;
 
+}
+.icon_new{
+  width: 100px !important;
+  height: 30px !important;
+  position: absolute;
+
+} */
 
 .choose_kid {
   width: 550px;
@@ -497,4 +601,74 @@ export default {
   position: absolute;
   right: 177px;
 }
+.lowPrice_top{
+  width: 550px;
+  height: 50px;
+  background-color:pink;
+}
+.lowPrice_top p{
+  margin-top: 0px;
+}
+.lowPrice_top_div{
+  width: 450px;
+  float: right;
+  text-align: left;
+}
+.low_price_span{
+  width: 100px;
+  height: 30px;
+  display: block;
+  float: left;
+}
+.a_style{
+  width: 100px;
+  margin-right: 10px;
+  text-decoration: none;
+  color: rgb(16, 52, 119) 
+}
+
+.lowPrice_content{
+  width: 550px;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  margin-bottom: 10px;
+  background-color: skyblue;
+}
+.input_style{
+  width: 400px !important;
+  height: 40px;
+  margin-left: 10px
+}
+.lowPrice_content span{
+  width: 65px;
+  height: 40px;
+  display: inline-block;
+}
+.internationalChoose{
+  width: 650px;
+  height: 220px;
+}
+.internationalP{
+  width: 640px;
+  height: 30px;
+  padding-top: 10px;
+  text-align: left;
+  font-size: 13px;
+  margin: 0px;
+}
+.internationalSpan{
+ margin-left: 20px;
+}
+.a_weight{
+  font-weight: bold;
+}
+.hr{
+  border: 1px dashed gainsboro;
+}
+.lowPrice_bottom{
+  width: 550px;
+  height: 50px;
+}
+
 </style>

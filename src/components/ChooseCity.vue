@@ -6,7 +6,7 @@
           <a @click="get" class="a_style" href="#" v-bind:key="cityIndex">{{city}}</a>
         </template>
       </el-tab-pane>
-      <template v-for="(tab,tabIndex) in mainTabs ">
+      <template v-for="(tab,tabIndex) in mainTabs">
         <el-tab-pane :label="tab.tabName" :name="tab.tabName" v-bind:key="tabIndex">
           <template v-for="(group,groupIndex) in tab.groups">
             <div class="top_outer" v-bind:key="groupIndex">
@@ -26,6 +26,17 @@
           </template>
         </el-tab-pane>
       </template>
+      <template v-for="(tt,ttIndex) in InternationalTabs">
+        <el-tab-pane :label="tt.tabName" :name="tt.tabName" :key="ttIndex">
+          <div>
+          <template v-for="(internate,internateIndex) in tt.cities">
+
+            <a @click="get" class="a_style" href="#" v-bind:key="internateIndex">{{internate}}</a>
+          
+          </template>
+          </div>
+        </el-tab-pane>
+      </template>
     </el-tabs>
   </div>
 </template>
@@ -42,7 +53,7 @@ export default {
     hotTab: {},
     activeName:"hotTab",
     mainTabs: [],
-    visible: "",
+    InternationalTabs:[]
     
 };
   },
@@ -461,18 +472,190 @@ export default {
           ]
         }
       ];
+      this.InternationalTabs =[
+        {
+          tabName:"国际/地区",
+          cities:[
+            "香港",
+            "首尔",
+            "台北",
+            "东京",
+            "新加坡",
+            "澳门",
+            "曼谷",
+            "大阪",
+            "胡志明市",
+            "马尼拉",
+            "名古屋",
+            "伦敦(英国)",
+            "吉隆坡",
+            "釜山",
+            "悉尼(澳大利亚)",
+            "法兰克福",
+            "温哥华",
+            "巴黎",
+            "纽约",
+            "洛杉矶",
+            "夏威夷",
+          ]
+        },
+        {
+          tabName:"亚洲",
+          cities:[
+            "香港",
+            "东京",
+            "台北",
+            "首尔",
+            "新加坡",
+            "曼谷",
+            "吉隆坡",
+            "大阪",
+            "澳门",
+            "雅加达",
+            "胡志明市",
+            "马尼拉",
+            "巴厘岛",
+            "名古屋",
+            "普吉岛",
+            "河内",
+            "马累",
+            "迪拜",
+            "釜山",
+            "加德满都",
+            "高雄",
+            "福冈",
+            "金边",
+            "德里",
+            "济州岛",
+            "札幌",
+            "伊斯坦布尔",
+            "乌兰巴托",
+            "孟买",
+            "茨城"
+          ]
+        },
+        {
+          tabName:"欧洲",
+          cities:[
+            "伦敦(英国)",
+            "巴黎",
+            "法兰克福",
+            "莫斯科",
+            "罗马",
+            "阿姆斯特丹",
+            "米兰",
+            "慕尼黑",
+            "斯德哥尔摩",
+            "柏林",
+            "曼彻斯特(英国)",
+            "马德里",
+            "苏黎世",
+            "布鲁塞尔",
+            "哥本哈根",
+            "赫尔辛基",
+            "维也纳",
+            "巴塞罗那",
+            "雅典",
+            "爱丁堡",
+            "伯明翰(英国)",
+            "纽卡斯尔(英国)",
+            "日内瓦",
+            "圣彼得堡",
+            "格拉斯哥",
+            "基辅",
+            "布达佩斯",
+            "汉堡",
+            "布拉格",
+            "杜塞尔多夫"
+          ]
+        },
+        {
+          tabName:"美洲",
+          cities:[
+            "纽约",
+            "洛杉矶",
+            "旧金山",
+            "温哥华",
+            "芝加哥",
+            "多伦多",
+            "西雅图",
+            "华盛顿",
+            "波士顿",
+            "底特律",
+            "亚特兰大",
+            "休斯敦",
+            "蒙特利尔",
+            "夏威夷",
+            "塞班",
+            "达拉斯",
+            "明尼阿波利斯",
+            "费城",
+            "圣保罗(巴西)",
+            "渥太华",
+            "墨西哥城",
+            "拉斯维加斯",
+            "卡尔加里",
+            "迈阿密",
+            "丹佛",
+            "奥兰多",
+            "波特兰(美国)",
+            "曼彻斯特(美国)",
+            "埃德蒙顿",
+            "布宜诺斯艾利斯",
+            "圣何塞(美国)"
+          ]
+        },
+         {
+          tabName:"非洲",
+          cities:[
+            "开罗",
+            "约翰内斯堡",
+            "开普敦",
+            "内罗毕",
+            "拉各斯",
+            "罗安达",
+            "毛里求斯",
+            "达累斯萨拉姆",
+            "亚的斯亚贝巴",
+            "喀土穆",
+            "阿克拉",  
+            "休斯敦",
+            "蒙特利尔",
+            "夏威夷",
+            "塞班",
+            "达拉斯",
+            "明尼阿波利斯",
+            "费城",
+            "圣保罗(巴西)",
+            "渥太华",
+            "墨西哥城",
+            "拉斯维加斯",
+            "卡尔加里",
+            "迈阿密",
+            "丹佛",
+            "奥兰多",
+            "波特兰(美国)",
+            "曼彻斯特(美国)",
+            "埃德蒙顿",
+            "布宜诺斯艾利斯",
+            "圣何塞(美国)"
+          ]
+        },
+        
+
+        ]
+
+        
+        
+      
       
     },
       get: function(event) {
       var el = event.currentTarget;
       var text = el.innerText;
       this.$emit("changeCity",text);
-      
-     
-      // this.inputCity = text;
-      
-      // this.inputCity1 = text;
     },
+
     
   
   },
