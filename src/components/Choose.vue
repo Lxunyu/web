@@ -49,15 +49,14 @@
                     <span>出发城市</span>
                     <el-popover class="input_one_style" trigger="focus" placement="bottom">
                       <div slot="reference">
-                        <el-input @click="tt" class="input-style"  v-model="inputCity" placeholder="请选择城市"></el-input>
+                        <el-input @click="cityDisplay" class="input-style"  v-model="inputCity" placeholder="请选择城市"></el-input>
                       </div>
-                      <ChooseCity  @changeCity="updateCity" ref="ref"></ChooseCity>
+                      <ChooseCity  @changeCity="updateCity" ref="goDisplay" class="tag_width"></ChooseCity>
                     </el-popover>
                   </div>
                 <div class="time">
                   <span class="start_date">出发日期</span>
                   <div class="block">
-                    <span class="demonstration"></span>
                     <el-date-picker
                       class="date_style"
                       v-model="startDate"
@@ -69,12 +68,12 @@
               </div>
               <div class="input_one" id="city2">
                 <div class="city">
-                  <span>出发城市</span>
+                  <span>到达城市</span>
                   <el-popover class="input_one_style" trigger="focus" placement="bottom">
                     <div slot="reference">
-                      <el-input class="input-style"  v-model="inputCity1" placeholder="请选择城市"></el-input>
+                      <el-input class="input-style"  @click="cityDisplay"  v-model="inputCity1" placeholder="请选择城市"></el-input>
                     </div>
-                    <ChooseCity @changeCity="updateCity1" ></ChooseCity>
+                    <ChooseCity @changeCity="updateCity1"  ref="arriveDisplay" class="tag_width"></ChooseCity>
                   </el-popover>
                 </div>
                 <div class="time" >
@@ -151,24 +150,28 @@ export default {
             document.getElementById("span").style.color = 'black';
             this.radio = "2";
         },
-        tt(){
-          this.$refs.ref.mainTabs.length=2
+        cityDisplay(){
+          this.$refs.goDisplay.InternationalTabs.length = 0;
+          this.$refs.arriveDisplay.InternationalTabs.length = 0;
+
         }
       
     },
-    mounted(){
-      this.tt()
-    }
+   mounted(){
+     this.cityDisplay();
+   }
 }
 </script>
 
 <style scoped>
+.tag_width{
+  width: 400px;
+}
 .choose_style {
   width: 410px;
   height: 40px;
   font-size: 16px;
   line-height: 40px;
-  background-color: skyblue;
 }
 .scenes{
   width: 250px;
@@ -222,7 +225,6 @@ export default {
 .choose {
   width: 550px;
   height: 100px;
-  background-color: pink;
 }
 .city {
   width: 275px;
@@ -272,7 +274,6 @@ export default {
   line-height: 50px;
 }
 
-.el-input__inner {
-  padding-left: 15px !important;
-}
+
+
 </style>

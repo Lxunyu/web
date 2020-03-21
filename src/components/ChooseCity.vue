@@ -10,7 +10,7 @@
         <el-tab-pane :label="tab.tabName" :name="tab.tabName" v-bind:key="tabIndex">
           <template v-for="(group,groupIndex) in tab.groups">
             <div class="top_outer" v-bind:key="groupIndex">
-              <div class="top_left" id="left">
+              <div class="top_left">
                 <div>
                   <ul>
                     <li>{{group.start}}</li>
@@ -26,18 +26,16 @@
           </template>
         </el-tab-pane>
       </template>
-      <template v-for="(tt,ttIndex) in InternationalTabs">
-        <el-tab-pane :label="tt.tabName" :name="tt.tabName" :key="ttIndex">
-          <div>
-          <template v-for="(internate,internateIndex) in tt.cities">
-
-            <a @click="get" class="a_style" href="#" v-bind:key="internateIndex">{{internate}}</a>
-          
-          </template>
-          </div>
-        </el-tab-pane>
+      <template v-for="(tt,ttIndex) in InternationalTabs" >
+      <el-tab-pane :label="tt.tabName" :name="tt.tabName" :key="ttIndex">
+        <template v-for="(internate,internateIndex) in tt.cities">
+          <a @click="get" class="a_style" href="#" v-bind:key="internateIndex">{{internate}}</a>
+        </template>
+      </el-tab-pane>
       </template>
     </el-tabs>
+  
+    
   </div>
 </template>
    
@@ -53,7 +51,7 @@ export default {
     hotTab: {},
     activeName:"hotTab",
     mainTabs: [],
-    InternationalTabs:[]
+    InternationalTabs:[],
     
 };
   },
@@ -605,7 +603,7 @@ export default {
             "圣何塞(美国)"
           ]
         },
-         {
+        {
           tabName:"非洲",
           cities:[
             "开罗",
@@ -619,26 +617,40 @@ export default {
             "亚的斯亚贝巴",
             "喀土穆",
             "阿克拉",  
-            "休斯敦",
-            "蒙特利尔",
-            "夏威夷",
-            "塞班",
-            "达拉斯",
-            "明尼阿波利斯",
-            "费城",
-            "圣保罗(巴西)",
-            "渥太华",
-            "墨西哥城",
-            "拉斯维加斯",
-            "卡尔加里",
-            "迈阿密",
-            "丹佛",
-            "奥兰多",
-            "波特兰(美国)",
-            "曼彻斯特(美国)",
-            "埃德蒙顿",
-            "布宜诺斯艾利斯",
-            "圣何塞(美国)"
+            "阿尔及尔",
+            "卡萨布兰卡",
+            "德班",
+            "突尼斯",
+            "卢萨卡",
+            "哈拉雷",
+            "雅温得",
+            "哈博罗内",
+            "金沙萨",
+            "马普托",
+            "杜阿拉",
+            "费里敦",
+            "阿比让",
+            "卢克索"
+          ]
+        },
+        {
+          tabName:"大洋洲",
+          cities:[
+            "悉尼(澳大利亚)",
+            "墨尔本(澳大利亚)",
+            "奥克兰(新西兰)",
+            "布里斯班",
+            "阿德莱德",
+            "珀斯",
+            "惠林顿",
+            "堪培拉",
+            "凯恩斯",
+            "楠迪",
+            "黄金海岸",  
+            "帕皮堤",
+            "霍巴特",
+            "达尔文",
+            "达尼丁"
           ]
         },
         
@@ -672,7 +684,7 @@ export default {
 
 .tag1 {
   border: 1px solid rebeccapurple !important;
-  width: 400px;
+  width: auto;
   margin: 10, 0;
 }
 .top_outer {
