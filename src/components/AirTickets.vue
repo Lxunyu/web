@@ -3,13 +3,13 @@
     <div class="box">
       <el-tabs class="asd" v-model="navName">
         <!-- 国内机票 -->
-        <el-tab-pane label="国内机票" name="first1">
+        <el-tab-pane label="国内机票" name="first">
           <Choose></Choose>
           <div class="choose_kid">
             <el-checkbox>带儿童</el-checkbox>
             <el-checkbox>带婴儿</el-checkbox>
             <div class="seat_style">
-              <span class="start_date">舱位等级</span>
+              <span>舱位等级</span>
               <el-select class="level_style" v-model="seat_level" >
                 <el-option
                   v-for="item in options"
@@ -107,7 +107,7 @@
         <el-tab-pane label="国际•港澳台机票" name="second">
           <choose ref="scenesDisplay"></choose>
           <div class="passengerType">
-            乘客类型
+            <span>乘客类型</span>
             <el-select class="passenger_style" v-model="adult" placeholder="请选择">
               <el-option
                 @click="adultMethod"
@@ -138,7 +138,7 @@
           </div>
           <div class="level">
             <div class="level_choose">
-              舱位等级
+              <span>舱位等级</span>
               <el-select v-model="level" placeholder="请选择">
                 <el-option
                   v-for="level in levels"
@@ -160,7 +160,6 @@
         </el-tab-pane>
         <!-- 发现低价 -->
         <el-tab-pane label="发现低价" name="third">
-          <svg-icon class="icon_new" name="new"></svg-icon>
           <div class="lowPrice_top">
             <div>
               <span class="low_price_span">大家都在搜：</span>
@@ -175,7 +174,7 @@
             </div>
           </div>
           <div class="lowPrice_content">
-            <span>出发地</span>
+            <span class="lowPrice_content_span">出发地</span>
             <el-popover trigger="focus">
               <chooseCity @changeCity="updateCity"></chooseCity>
               <div slot="reference">
@@ -184,7 +183,7 @@
             </el-popover>
           </div>
           <div class="lowPrice_content">
-            <span>目的地</span>
+            <span class="lowPrice_content_span">目的地</span>
             <el-popover>
               <div class="internationalChoose">
                 <p class="internationalP">
@@ -241,7 +240,7 @@
             </el-popover>
           </div>
           <div class="lowPrice_content">
-            <span>出发时间</span>
+            <span class="lowPrice_content_span">出发时间</span>
             <el-date-picker class="input_style" v-model="inputDate" type="date" placeholder="选择日期"></el-date-picker>
           </div>
           <div class="lowPrice_bottom">
@@ -273,7 +272,7 @@ export default {
   // },
   data() {
     return {
-      navName: "third",
+      navName: "first",
       options: [],
       seat_level: "经济舱",
       kids: [],
@@ -464,11 +463,13 @@ export default {
 <style scoped>
 
 .box {
-  width: 550px;
+  width: 570px;
   height: 350px;
   border: 1px solid pink;
   background-color: white;
   position: absolute;
+  left: 38px;
+  top: 239px;
   z-index: 3;
 }
 /* .el-tabs__nav-scroll{
@@ -483,6 +484,7 @@ export default {
 } */
 
 .choose_kid {
+  padding-left: 20px;
   position: relative;
   width: 550px;
   height: 70px;
@@ -498,11 +500,15 @@ export default {
   height: 50px;
   float: right;
 }
+.seat_style span{
+  padding-left: 20px;
+}
 /* .el-input--suffix {
   width: 170px !important;
   line-height: 50px;
 } */
 .precautions {
+  padding-left: 20px;
   text-decoration: none;
   position: absolute;
   left: 0px;
@@ -622,8 +628,11 @@ export default {
   line-height: 50px;
   text-align: left;
 }
+.passengerType span{
+  padding-left: 20px;
+}
 .passenger_style  {
-  width: 150px !important;
+  width: 140px !important;
   height: 50px;
   margin-left: 5px;
   margin-right: 5px;
@@ -635,9 +644,13 @@ export default {
   text-align: left;
 }
 .level_choose {
-  width: 300px;
+  padding-left: 20px;
+  width: 320px;
   height: 50px;
   float: left;
+}
+.level_choose{
+  /* padding-left: 20px; */
 }
 .level_check {
   width: 220px;
@@ -672,12 +685,13 @@ export default {
   margin-top: 0px;
 }
 .lowPrice_top_div {
-  width: 450px;
+  width: 430px;
   float: right;
   text-align: left;
 }
 .low_price_span {
-  width: 100px;
+  padding-left: 20px;
+  width: 120px;
   height: 30px;
   display: block;
   float: left;
@@ -702,9 +716,13 @@ export default {
   margin-left: 10px;
 }
 .lowPrice_content span {
-  width: 65px;
+  width: 85px;
   height: 40px;
   display: inline-block;
+}
+.lowPrice_content_span{
+  padding-left: 20px;
+
 }
 .internationalChoose {
   width: 650px;

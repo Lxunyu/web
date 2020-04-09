@@ -44,7 +44,7 @@
           <div class="choose">
             <div class="choose_start">
               <div class="input_one" id="city1">
-                <a class="exchangeIcon" href="#" @click="exchange"><svg-icon name="exchange"></svg-icon></a>
+                <a class="exchangeIcon" href="javascript:void(0);" @click="exchange"><svg-icon name="exchange"></svg-icon></a>
                   <div class="city">
                     <span>出发城市</span>
                     <el-popover class="input_one_style" trigger="focus" placement="bottom">
@@ -209,6 +209,9 @@ export default {
 .choose_style_left{
   float: left;
 }
+.choose_style_left span{
+  padding-left: 20px;
+}
 .choose_style_right{
   float: left;
 }
@@ -225,6 +228,7 @@ export default {
 .choose {
   width: 550px;
   height: 100px;
+  padding-left: 20px;
 }
 .city {
   width: 275px;

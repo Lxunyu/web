@@ -26,12 +26,12 @@
           </template>
         </el-tab-pane>
       </template>
-      <template v-for="(tt,ttIndex) in InternationalTabs" >
-      <el-tab-pane :label="tt.tabName" :name="tt.tabName" :key="ttIndex">
-        <template v-for="(internate,internateIndex) in tt.cities">
-          <a @click="get" class="a_style" href="#" v-bind:key="internateIndex">{{internate}}</a>
-        </template>
-      </el-tab-pane>
+      <template v-for="(internation,internationIndex) in InternationalTabs" >
+        <el-tab-pane :label="internation.tabName" :name="internation.tabName" v-bind:key="internationIndex+mainTabs.length">
+          <template v-for="(internate,internateIndex) in internation.cities">
+            <a @click="get" class="a_style" href="#" v-bind:key="internateIndex">{{internate}}</a>
+          </template>
+        </el-tab-pane>
       </template>
     </el-tabs>
   
@@ -726,6 +726,7 @@ export default {
   float: left;
   text-decoration: none;
   overflow: hidden;
+  color: black;
 }
 a:hover {
   background-color: skyblue;
