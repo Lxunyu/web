@@ -5,5 +5,8 @@ module.exports = {
       .use('svgo-loader')
       .loader('svgo-loader')
   },
+  configureWebpack: {
+    devtool: 'source-map'
+  }
  
 }

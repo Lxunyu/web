@@ -10,6 +10,285 @@
         <air-tickets class="air"></air-tickets>
       </div>
          <!-- 轮播图+查询机票结束 -->
+
+      <div  class="block">
+        <el-tabs v-model="activeName1" >
+            <!-- 热门开始 -->
+            <el-tab-pane label="热门" name="first1">
+                <el-container>
+                    <el-main>
+                      <div >
+                        <ul class="main_ul hot_ul">
+                            <li class="main_li"  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
+                                <el-button round size="mini" :class="{active:(hotImageIndex==num1)}" @click="hotImageTab(hotImageIndex)" class="main_button" >{{hotImage.title}}</el-button>
+                            </li>
+                            <a class="main_a" href="javascript:void(0);">更多海外酒店></a>
+                        </ul>
+                          <div class="hot_pic">
+                            <div  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
+                              <div class="hot_pic_box" :title='pic.alt' v-for="(pic,picIndex) in hotImage.contents" :key="picIndex" v-show="hotImage.index==num1" @mouseover="mouserover(picIndex)" @mouseleave="mouseleave(picIndex)">
+                                <a href="javascript:void(0);">
+                                  <div :class="{'blur':isblur&&picIndex==current}">
+                                    <el-image  class="hot_pic_item" :src="pic.src" :alt="hotImage.alt"></el-image>
+                                    <div class="hot_pic_icon">
+                                      <p class="hot_pic_p">月销{{pic.number}}笔</p>
+                                    </div>
+                                    <div class="circle">
+                                      <p class="circle_alt">{{pic.alt}}</p>
+                                      <hr class="cicle_hr">
+                                      <p class="circle_num"><svg-icon class="hot_icon_money" name="money"></svg-icon><span class="circle_money">{{pic.money}}</span>/人起</p>
+                                    </div>
+                                    <div class="blur"></div>
+                                  </div>
+                                    <div class="background" v-show="bg&&picIndex==current">
+                                      <p class="background_title">{{pic.alt}}</p>
+                                      <p class="background_content"><svg-icon class="bg_icon" name="scene"></svg-icon>{{pic.scene}}</p>
+                                      <p class="background_content"><svg-icon class="bg_icon" name="food"></svg-icon>{{pic.food}}</p>
+                                      <p class="background_content background_product">{{pic.product}}</p>
+                                    </div>
+                                </a>
+                              </div>
+                            </div>
+                           </div>
+                          <a href="#">
+                            <div class="main_right">
+                              <el-image class="main_right_image" src="https://dimg04.c-ctrip.com/images/zg0i1d000001e7tc3205C.jpg"></el-image>
+                            </div>
+                           </a>  
+                        
+                      </div>
+                       
+                    </el-main>
+                </el-container>
+            </el-tab-pane>
+            <!-- 热门结束 -->
+            <!-- 周边游开始 -->
+            <el-tab-pane label="周边游" name="secend1" @click="spanIcon">
+              <el-container>
+                 <el-aside class="content_aside">
+                  <div>
+                    <pre><dt class="sale_dt">游山玩水</dt>
+                    <dd class="scene_dd"  v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a><span :class="{'aside_icon':isAside_icon}">|</span></dd>
+                  </pre>
+                  </div>
+                  <div class="homestay">
+                    <dt  class="sale_dt">民俗艺术</dt>
+                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a><span class="aside_icon">|</span></dd> 
+                  </div>
+                </el-aside>
+                <el-main>
+                  <ul class="main_ul">
+                    <li class="main_li" v-for="(periphery,peripheryIndex) in peripherys" :key="peripheryIndex">
+                        <el-button  round size="mini" class="main_button" :class="{active:(peripheryIndex==num)}" @click="imageTab(peripheryIndex)">{{periphery.title}}</el-button>
+                    </li>
+                    <a class="main_a" href="javascript:void(0);">更多客栈></a>
+                  </ul>
+                  <div class="periphery_pic">
+                    <div v-for="(periphery,peripheryIndex) in peripherys" :key="peripheryIndex">
+                      <div class="hot_pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in periphery.contents" :key="picIndex" v-show="periphery.index==num">
+                          <a href="javascript:void(0);"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
+                          <p class="domestic_p">{{pic.alt}}</p>
+                          <p class="domestic_p"></p>
+                          <p class="domestic_p">
+                            <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
+                            <svg-icon class="black_money" name="blackMoney"></svg-icon>
+                         </p>
+                      </div>
+                    </div>
+                  </div>
+                </el-main>
+              </el-container>
+            </el-tab-pane>
+            <!-- 周边游结束 -->
+            <!-- 门票开始 -->
+            <!-- <el-tab-pane label="门票" name="third1">
+              <el-container>
+                <el-aside class="content_aside">
+                  <div>
+                    <dt class="sale_dt">热门地标周边酒店</dt>
+                    <dd class="find_dd"><a href="#" class="find_a">还没想好周末去哪玩？</a></dd>
+                  </div>
+                  <div class="find">
+                    <dt  class="sale_dt">促销</dt>
+                    <dd class="find_dd" v-for="(sale,saleIndex) in domesticSales" :key="saleIndex"><a class="find_a" href="#">{{sale}}</a></dd> 
+                  </div>
+                </el-aside>
+                <el-main>
+                  <ul class="main_ul">
+                    <li class="main_li"  v-for="(button,buttonIndex) in buttonImages" :key="buttonIndex">
+                        <el-button round="false" size="mini" class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(buttonIndex)">{{button.title}}</el-button>
+                    </li>
+                    <a class="main_a" href="javascript:void(0);">更多国内酒店></a>
+                  </ul>
+                  <div class="overseas_pic">
+                    <div v-for="(button,buttonIndex) in buttonImages" :key="buttonIndex">
+                      <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in button.contents" :key="picIndex" v-show="button.index==num">
+                          <a href="#"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
+                          <p class="domestic_p">{{pic.alt}}</p>
+                          <p class="domestic_p"></p>
+                          <p class="domestic_p">
+                            <span class="domestic_pic_span">{{pic.name}}</span>
+                            <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
+                            <svg-icon class="black_money" name="blackMoney"></svg-icon>
+                            </p>
+
+                      </div>
+                    </div>
+                  </div>
+                  <a href="#" title="南靖静心山居客栈">
+                    <div class="main_right">
+                      <el-image class="demostic_right_image" src="https://dimg11.c-ctrip.com/images/26091b000001bkl7lF333.jpg"></el-image>
+                      <div class="rectangle">
+                        <p class="rectangle_text">南靖静心山居客栈</p>
+                      </div>
+                    </div>
+                  </a>  
+                </el-main>
+              </el-container>
+            </el-tab-pane> -->
+            <!-- 门票结束 -->
+            <!-- 出境游开始 -->
+            <!-- <el-tab-pane label="出境游" name="fourth1">
+              <el-container>
+                 <el-aside class="content_aside">
+                  <div>
+                    <dt class="sale_dt">热门主题</dt>
+                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="find_a">{{hotTheme.name}}</a><span class="aside_icon">|</span></dd>
+                  </div>
+                  <div class="scene">
+                    <dt  class="sale_dt">促销</dt>
+                    <dd class="find_dd"><a class="find_a" href="#">春季赏花</a></dd> 
+                    <dd class="find_dd"><a class="find_a" href="#">万人自驾</a></dd> 
+                  </div>
+                </el-aside>
+                <el-main>
+                  <ul class="main_ul">
+                    <li class="main_li"  v-for="(scene,sceneIndex) in sceneImages" :key="sceneIndex">
+                        <el-button round="false" size="mini" class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(sceneIndex)">{{scene.title}}</el-button>
+                    </li>
+                    <a class="main_a" href="javascript:void(0);">更多套餐></a>
+                  </ul>
+                  <div class="overseas_pic">
+                    <div v-for="(scene,sceneIndex) in sceneImages" :key="sceneIndex">
+                      <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in scene.contents" :key="picIndex" v-show="scene.index==num">
+                          <a href="#"><el-image  class="scene_pic_item" :src="pic.src"></el-image></a>
+                          <p class="domestic_p scene_P">{{pic.alt}}</p>
+                          <p class="domestic_p">
+                            <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
+                            <svg-icon class="black_money" name="blackMoney"></svg-icon>
+                            </p>
+
+                      </div>
+                    </div>
+                  </div>
+                  <a href="#" title="银行卡立减">
+                    <div class="main_right">
+                      <el-image class="main_right_image" src="https://images3.c-ctrip.com/dj/201806/yhkhj_220x300.jpg"></el-image>
+                      <div class="rectangle">
+                        <p class="rectangle_text">银行卡立减</p>
+                      </div>
+                    </div>
+                  </a>  
+                </el-main>
+              </el-container>
+            </el-tab-pane> -->
+            <!-- 出境游结束 -->
+            <!-- 境内游开始 -->
+            <!-- <el-tab-pane label="境内游" name="fifth1">
+              <el-container>
+                 <el-aside class="content_aside">
+                  <div>
+                    <dt class="sale_dt">游山玩水</dt>
+                    <dd class="scene_dd" v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a><span class="aside_icon">|</span></dd>
+                  </div>
+                  <div class="homestay">
+                    <dt  class="sale_dt">民俗艺术</dt>
+                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a><span class="aside_icon">|</span></dd> 
+                  </div>
+                </el-aside>
+                <el-main>
+                  <ul class="main_ul">
+                    <li class="main_li"  v-for="(homestay,homestayIndex) in homestaies" :key="homestayIndex">
+                        <el-button  round="false" size="mini" class="main_button" :class="{active:(homestayIndex==num)}" @click="imageTab(homestayIndex)">{{homestay.title}}</el-button>
+                    </li>
+                    <a class="main_a" href="javascript:void(0);">更多客栈></a>
+                  </ul>
+                  <div class="overseas_pic">
+                    <div v-for="(homestay,homestayIndex) in homestaies" :key="homestayIndex">
+                      <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in homestay.contents" :key="picIndex" v-show="homestay.index==num">
+                          <a href="#"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
+                          <p class="domestic_p">{{pic.alt}}</p>
+                          <p class="domestic_p"></p>
+                          <p class="domestic_p">
+                            <span class="domestic_pic_span">{{pic.name}}</span>
+                            <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
+                            <svg-icon class="black_money" name="blackMoney"></svg-icon>
+                            </p>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="#" title="南靖静心山居客栈">
+                    <div class="main_right">
+                      <el-image class="demostic_right_image" src="https://dimg11.c-ctrip.com/images/26091b000001bkl7lF333.jpg"></el-image>
+                      <div class="rectangle">
+                        <p class="rectangle_text">南靖静心山居客栈</p>
+                      </div>
+                    </div>
+                  </a>  
+                </el-main>
+              </el-container>
+            </el-tab-pane> -->
+            <!-- 境内游结束 -->
+            <!-- 邮轮开始 -->
+            <!-- <el-tab-pane label="邮轮" name="six1">
+              <el-container>
+                 <el-aside class="content_aside">
+                  <div>
+                    <dt class="sale_dt">热门团购</dt>
+                    <dd class="scene_dd" v-for="(hotGroup,hotGroupIndex) in hotGroups" :key="hotGroupIndex"><a href="#" class="find_a">{{hotGroup.name}}</a><span class="aside_icon">|</span></dd>
+                  </div>
+                  <div class="group_select">
+                    <dt  class="sale_dt">团购精选</dt>
+                    <dd class="sale_dd" v-for="(groupSelected,groupSelectedIndex) in groupSelecteds" :key="groupSelectedIndex"><a class="find_a" href="#">{{groupSelected.name}}</a></dd> 
+                  </div>
+                </el-aside>
+                <el-main>
+                  <ul class="main_ul">
+                    <li class="main_li" v-for="(group,groupIndex) in groups" :key="groupIndex">
+                        <el-button round="false" size="mini" class="main_button" :class="{active:(groupIndex==num)}" @click="imageTab(groupIndex)">{{group.title}}</el-button>
+                    </li>
+                    <a class="main_a" href="javascript:void(0);">更多团购产品></a>
+                  </ul>
+                  <div class="overseas_pic">
+                    <div v-for="(group,groupIndex) in groups" :key="groupIndex">
+                      <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in group.contents" :key="picIndex" v-show="group.index==num">
+                          <a href="#"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
+                          <p class="domestic_p">{{pic.alt}}</p>
+                          <p class="domestic_p"></p>
+                          <p class="domestic_p">
+                            <span class="domestic_pic_span">{{pic.name}}</span>
+                            <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
+                            <svg-icon class="black_money" name="blackMoney"></svg-icon>
+                          </p>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="#" title="好吃的在这里，吃货们看过来!">
+                    <div class="main_right">
+                      <el-image class="main_right_image" src="https://pages.ctrip.com/commerce/promote/20170720/yydzx/img/msbkf_220_330.jpg"></el-image>
+                      <div class="rectangle">
+                        <p class="rectangle_text">好吃的在这里，吃货们看过来!</p>
+                      </div>
+                    </div>
+                  </a>  
+                </el-main>
+              </el-container>
+            </el-tab-pane> -->
+            <!-- 邮轮结束 -->
+
+        </el-tabs>
+      </div>
+
          <!-- 酒店开始 -->
       <div  class="block">
         <el-tabs v-model="activeName" >
@@ -30,7 +309,7 @@
                       <div >
                         <ul class="main_ul">
                             <li class="main_li"  v-for="(image,imageIndex) in images" :key="imageIndex">
-                                <el-button :class="{active:(imageIndex==num)}" @click="imageTab(imageIndex)" class="main_button" >{{image.title}}</el-button>
+                                <el-button round size="mini" :class="{active:(imageIndex==num)}" @click="imageTab(imageIndex)" class="main_button" >{{image.title}}</el-button>
                             </li>
                             <a class="main_a" href="javascript:void(0);">更多海外酒店></a>
                         </ul>
@@ -119,7 +398,7 @@
                 <el-main>
                   <ul class="main_ul">
                     <li class="main_li"  v-for="(button,buttonIndex) in buttonImages" :key="buttonIndex">
-                        <el-button  class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(buttonIndex)">{{button.title}}</el-button>
+                        <el-button round size="mini" class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(buttonIndex)">{{button.title}}</el-button>
                     </li>
                     <a class="main_a" href="javascript:void(0);">更多国内酒店></a>
                   </ul>
@@ -155,7 +434,7 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">热门主题</dt>
-                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="find_a">{{hotTheme.name}}</a>  |</dd>
+                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="find_a">{{hotTheme.name}}</a><span class="aside_icon">|</span></dd>
                   </div>
                   <div class="scene">
                     <dt  class="sale_dt">促销</dt>
@@ -166,7 +445,7 @@
                 <el-main>
                   <ul class="main_ul">
                     <li class="main_li"  v-for="(scene,sceneIndex) in sceneImages" :key="sceneIndex">
-                        <el-button  class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(sceneIndex)">{{scene.title}}</el-button>
+                        <el-button round size="mini" class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(sceneIndex)">{{scene.title}}</el-button>
                     </li>
                     <a class="main_a" href="javascript:void(0);">更多套餐></a>
                   </ul>
@@ -201,17 +480,17 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">游山玩水</dt>
-                    <dd class="scene_dd" v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a>  |</dd>
+                    <dd class="scene_dd" v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a><span class="aside_icon">|</span></dd>
                   </div>
                   <div class="homestay">
                     <dt  class="sale_dt">民俗艺术</dt>
-                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a>   |</dd> 
+                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a><span class="aside_icon">|</span></dd> 
                   </div>
                 </el-aside>
                 <el-main>
                   <ul class="main_ul">
                     <li class="main_li"  v-for="(homestay,homestayIndex) in homestaies" :key="homestayIndex">
-                        <el-button  class="main_button" :class="{active:(homestayIndex==num)}" @click="imageTab(homestayIndex)">{{homestay.title}}</el-button>
+                        <el-button  round size="mini" class="main_button" :class="{active:(homestayIndex==num)}" @click="imageTab(homestayIndex)">{{homestay.title}}</el-button>
                     </li>
                     <a class="main_a" href="javascript:void(0);">更多客栈></a>
                   </ul>
@@ -240,14 +519,14 @@
                 </el-main>
               </el-container>
             </el-tab-pane>
-            <!-- 客栈民宿开始 -->
+            <!-- 客栈民宿结束 -->
             <!-- 团购开始 -->
             <el-tab-pane label="团购" name="six">
               <el-container>
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">热门团购</dt>
-                    <dd class="scene_dd" v-for="(hotGroup,hotGroupIndex) in hotGroups" :key="hotGroupIndex"><a href="#" class="find_a">{{hotGroup.name}}</a>  |</dd>
+                    <dd class="scene_dd" v-for="(hotGroup,hotGroupIndex) in hotGroups" :key="hotGroupIndex"><a href="#" class="find_a">{{hotGroup.name}}</a><span class="aside_icon">|</span></dd>
                   </div>
                   <div class="group_select">
                     <dt  class="sale_dt">团购精选</dt>
@@ -257,7 +536,7 @@
                 <el-main>
                   <ul class="main_ul">
                     <li class="main_li" v-for="(group,groupIndex) in groups" :key="groupIndex">
-                        <el-button  class="main_button" :class="{active:(groupIndex==num)}" @click="imageTab(groupIndex)">{{group.title}}</el-button>
+                        <el-button round size="mini" class="main_button" :class="{active:(groupIndex==num)}" @click="imageTab(groupIndex)">{{group.title}}</el-button>
                     </li>
                     <a class="main_a" href="javascript:void(0);">更多团购产品></a>
                   </ul>
@@ -302,9 +581,20 @@ export default {
   },
   data() { 
     return {
+      activeName1:"first1",
+      hotImages:[],
+      num1:0, 
+      bg:false,
+      current:0,
+      isblur:false,
+      round:false,
+      peripherys:[],
+      isAside_icon:true,
+      // text:"",
+
       pics: [],
-      activeName: 'six',
-      active:"first1",
+      activeName: 'first',
+      active:"",
       sales:[],
       finds:[],
       titles:[],
@@ -324,10 +614,932 @@ export default {
       hotGroups:[],
       groupSelecteds:[],
       groups:[],
+         
     };
   },
   methods: {
     loadAll() {
+      this.hotImages = [
+         {
+          title:"精选",
+          contents:[
+            {
+              src:"https://dimg07.c-ctrip.com/images/100e0h0000008rp39A12F_C_221_166.jpg",
+              alt:"上海",
+              money:"1086",
+              number:"1700",
+              scene:"景点:顾村公园、世纪公园、上海迪士尼度假区、滴水湖、上海辰山植物园、上海野生动物园、上海海昌海洋公园、外滩、佘山国家森林公园、东方明珠",
+              food:"美食:锅贴、蟹宴、酱鸭、腌笃鲜、上海熏鱼、草头圈子、八宝辣酱、炸猪排、咸浆、清蒸白丝鱼、鲜肉月饼、清水大闸蟹、红烧扎肉、葱油饼、油墩子、本帮红烧肉、油爆河虾、熏拉丝、葱油拌面、糖醋小排、香糯糖藕、小馄饨、椒盐排条、螺丝菜、排骨年糕、上海小笼包、白斩鸡、酱爆猪肝、菜肉馄饨、蟹壳黄、上海汤面、大闸蟹、四喜烤麸、毛蟹炒年糕、白切羊肉、上海生煎包、炒鳝糊、酒酿圆子、青团、盐水虾",
+              product:"立即查看3000条产品>"
+          },
+            {
+              src:"https://dimg08.c-ctrip.com/images/100k10000000p4vo315BD_C_221_166.jpg",
+              alt:"成都",
+              money:"500",
+              number:"1200",
+              scene:"景点:成都大熊猫繁育研究基地、漫花庄园、成都欢乐谷、石象湖、天府花溪谷、花舞人间、都江堰景区、成都天台山、青城后山、春熙路",
+              food:"美食:豆花、汤圆、怪味面、钵钵鸡、冒菜、鸡丝凉面、藤椒鱼、口水鸡、川北凉粉、蛋烘糕、麻婆豆腐、回锅肉、水煮牛肉、火锅、抄手、干锅、青城泡菜、麻辣兔丁、都江堰夜啤酒、毛血旺、钟水饺、兔头、锅盔、锅巴肉片、鱼香肉丝、甜水面、冷锅鱼、宫保鸡丁、担担面、烧白、肥肠粉、夫妻肺片、蒜泥白肉、三合泥、青城老腊肉、三大炮、叶儿耙、串串香、樟茶鸭、蹄花汤",
+              product:"立即查看3000条产品>"
+            },
+            {
+              src:"https://dimg06.c-ctrip.com/images/100c180000014rkpq4C68_C_221_166.jpg",
+              alt:"广州",
+              money:"1000",
+              number:"2700",
+              scene:"景点:长隆旅游度假区、长隆野生动物世界、石门国家森林公园、从化温泉、增城金叶子温泉、长隆欢乐世界、百万葵园、从化碧泉空中温泉、从化碧水湾温泉、广州塔",
+              food:"美食:白切鸡、猪肚煲鸡、濑粉、煲仔饭、粤式肠粉、粤式打边炉、粤式早茶、糯米鸡、糖水、叉烧包、牛三星、白云猪手、萝卜牛杂、艇仔粥、凤爪、云吞面、双皮奶、状元及第粥、烧味、冬瓜盅、干炒牛河、啫啫煲、广州靓汤、叉烧",
+              product:"立即查看2413条产品>"
+            },
+            {
+              src:"https://dimg01.c-ctrip.com/images/fd/tg/g3/M01/06/7D/CggYG1aONeKAPC1IAB6njDjLgiA931_C_221_166.jpg",
+              alt:"东京",
+              money:"2056",
+              number:"1",
+              scene:"景点:秋叶原、东京迪士尼乐园、银座、涩谷、原宿、东京晴空塔、新宿、三鹰之森吉卜力美术馆、隅田川花火大会、东京迪士尼海洋",
+              food:"美食:日式甜点、寿司、天妇罗、生鱼片、鳗鱼饭、拉面、烤串",
+              product:"立即查看2189条产品>"
+            },
+            {
+              src:"https://dimg01.c-ctrip.com/images/100810000000perhu90FB_C_221_166.jpg",
+              alt:"普吉岛",
+              money:"1404",
+              number:"5",
+              scene:"景点:皇帝岛、珊瑚岛、芭东海滩、西蒙人妖秀、芭东夜市、苏林群岛、普吉射击场、邦古拉街、卡伦海滩、拉崴海滩",
+              food:"美食:泰式椰汁鸡汤、椒盐濑尿虾、泰式菠萝炒饭、泰式炒河粉、绿咖喱鸡、冬阴功汤、咖喱蟹、泰式汤米粉、青木瓜沙拉、泰式空心菜",
+              product:"立即查看1086条产品>"
+            },
+            {
+              src:"https://dimg05.c-ctrip.com/images/10050a0000004xyzo1CB3_C_221_166.jpg",
+              alt:"俄罗斯",
+              money:"3999",
+              number:"0",
+              scene:"景点:贝加尔湖火车环线、红场、克里姆林宫、莫斯科大学、莫斯科市、玻璃海滩、海参崴俄罗斯岛跨海大桥、叶卡捷琳堡滴血大教堂、旋转木马滑雪场、阿洪山",
+              food:"美食:莫斯科卡瓦斯、索契鱼子酱、索契红菜汤、莫斯科烤鱼、冷酸鱼、索契黑面包、莫斯科列巴、格瓦斯、莫斯科鱼子酱、基辅式黄油鸡卷、索契鲱鱼",
+              product:"立即查看421条产品>"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g4/M02/ED/32/CggYHlXaie2AVx7gABz7Ffe6gtM354_C_221_166.jpg",
+              alt:"美国",
+              money:"7699",
+              number:"1",
+              scene:"景点:夏威夷岛、华特迪士尼世界、好莱坞环球影城、加州迪士尼乐园、斯台普斯中心、大学城、奥兰多环球影城、中央公园、环球影城冒险岛、彩虹瀑布",
+              food:"美食:Poke、蛤蜊奶油浓汤、牛排、早午餐、生蚝、奶油蛤蜊浓汤、无国界料理、热烤饼、汉堡、华夫饼、捞捞菜、纽约芝士蛋糕、三明治、冰淇淋、芝士蛋糕、美式咖啡、美式披萨、布法罗辣鸡翅、波士顿鳕鱼、加利福尼亚汉堡、查莫洛餐、椰子蟹、爱尔兰咖啡、Plate Lunch、海鲜烧烤、邓杰内斯蟹、夏威夷细面、鸡尾酒虾、墨西哥玉米饼、甜甜圈、波士顿龙虾、披萨、热狗、旧金山老面包、咖啡、加州卷饼、日本料理、菲力牛排、Haupia、贝果（百吉饼）、珍宝蟹、巴西野莓水果杯、冻奥查塔、Shave Ice、pancake、波士顿奶油卷、新英格兰蛤肉浓汤、龙虾、墨西哥卷饼、海鲜奶油饭",
+              product:"立即查看3000条产品>"
+            },
+            {
+              src:"https://dimg05.c-ctrip.com/images/100u0n000000e0fpmBF3A_C_221_166.jpg",
+              alt:"迪拜",
+              money:"3099",
+              number:"2",
+              scene:"景点:帆船酒店、哈利法塔（迪拜塔）、迪拜河、迪拜高空跳伞体验、迪拜深海钓鱼、迪拜失落的空间水族馆、迪拜棕榈岛亚特兰蒂斯酒店、迪拜世界贸易中心、迪拜乐园之乐高乐园、迪拜游艇观光",
+              food:"美食:阿拉伯沙律、小拼盘、阿拉伯披萨、阿拉伯大饼、阿拉伯甜点、阿拉伯烧烤",
+              product:"立即查看1302条产品>"
+            },
+          ],  
+          index:0
+         },
+         {
+           title:"境内",
+           contents:[
+            {
+              src:"https://dimg07.c-ctrip.com/images/100e0h0000008rp39A12F_C_221_166.jpg",
+              alt:"上海",
+              money:"1086",
+              number:"1700",
+              scene:"景点:顾村公园、世纪公园、上海迪士尼度假区、滴水湖、上海辰山植物园、上海野生动物园、上海海昌海洋公园、外滩、佘山国家森林公园、东方明珠",
+              food:"美食:锅贴、蟹宴、酱鸭、腌笃鲜、上海熏鱼、草头圈子、八宝辣酱、炸猪排、咸浆、清蒸白丝鱼、鲜肉月饼、清水大闸蟹、红烧扎肉、葱油饼、油墩子、本帮红烧肉、油爆河虾、熏拉丝、葱油拌面、糖醋小排、香糯糖藕、小馄饨、椒盐排条、螺丝菜、排骨年糕、上海小笼包、白斩鸡、酱爆猪肝、菜肉馄饨、蟹壳黄、上海汤面、大闸蟹、四喜烤麸、毛蟹炒年糕、白切羊肉、上海生煎包、炒鳝糊、酒酿圆子、青团、盐水虾",
+              product:"立即查看3000条产品>"
+            },
+            {
+              src:"https://dimg08.c-ctrip.com/images/100k10000000p4vo315BD_C_221_166.jpg",
+              alt:"成都",
+              money:"500",
+              number:"1600",
+              scene:"景点:成都大熊猫繁育研究基地、漫花庄园、成都欢乐谷、石象湖、天府花溪谷、花舞人间、都江堰景区、成都天台山、青城后山、春熙路",
+              food:"美食:豆花、汤圆、怪味面、钵钵鸡、冒菜、鸡丝凉面、藤椒鱼、口水鸡、川北凉粉、蛋烘糕、麻婆豆腐、回锅肉、水煮牛肉、火锅、抄手、干锅、青城泡菜、麻辣兔丁、都江堰夜啤酒、毛血旺、钟水饺、兔头、锅盔、锅巴肉片、鱼香肉丝、甜水面、冷锅鱼、宫保鸡丁、担担面、烧白、肥肠粉、夫妻肺片、蒜泥白肉、三合泥、青城老腊肉、三大炮、叶儿耙、串串香、樟茶鸭、蹄花汤",
+              product:"立即查看3000条产品>"
+            },
+            {
+              src:"https://dimg06.c-ctrip.com/images/100c180000014rkpq4C68_C_221_166.jpg",
+              alt:"广州",
+              money:"107",
+              number:"3400",
+              scene:"景点:长隆旅游度假区、长隆野生动物世界、石门国家森林公园、从化温泉、增城金叶子温泉、长隆欢乐世界、百万葵园、从化碧泉空中温泉、从化碧水湾温泉、广州塔",
+              food:"美食:白切鸡、猪肚煲鸡、濑粉、煲仔饭、粤式肠粉、粤式打边炉、粤式早茶、糯米鸡、糖水、叉烧包、牛三星、白云猪手、萝卜牛杂、艇仔粥、凤爪、云吞面、双皮奶、状元及第粥、烧味、冬瓜盅、干炒牛河、啫啫煲、广州靓汤、叉烧",
+              product:"立即查看2413条产品>"
+            },
+            {
+              src:"https://dimg07.c-ctrip.com/images/100h180000013qm0m8FCA_C_221_166.jpg",
+              alt:"杭州",
+              money:"1084",
+              number:"1900",
+              scene:"景点:西湖、湘湖、西溪国家湿地公园、灵隐寺、宋城千古情演出、杭州野生动物世界、杭州动物园、千岛湖景区、杭州开元森泊度假乐园、浙西大峡谷",
+              food:"美食:笋干老鸭煲、西湖莼菜汤、五花肉炒鲜笋、农家豆腐煲、猫耳朵、石斑鱼、农家土鸡煲、油焖春笋、西湖醋鱼、杭三鲜、山笋、杭州熏鱼、鱼头汤、杭州小笼包、糖醋里脊、宋嫂鱼羹、龙井虾仁、昌西豆腐干、千岛湖鱼圆、叫化童子鸡、东坡肉、葱包桧、银鱼羹、乾隆鱼头、片儿川面、吴山烤鸡、干炸响铃、千岛湖鱼头、河虾、野笋干炖鱼、杭州酱鸭、虾爆鳝面、定胜糕、清蒸石蛙、腌黄瓜、青顶茶香熏野兔、千岛玉鳖",
+              product:"立即查看3000条产品>"
+            },
+            {
+              src:"https://dimg07.c-ctrip.com/images/100711000000r9tfbEF7C_C_221_166.jpg",
+              alt:"三亚",
+              money:"197",
+              number:"900",
+              scene:"景点:三亚亚特兰蒂斯水世界、亚龙湾、三亚亚特兰蒂斯度假区、蜈支洲岛、三亚湾、南山寺、海棠湾、亚龙湾热带天堂森林公园、天涯海角、大东海",
+              food:"美食:冬瓜海螺汤、和乐蟹、清补凉、椰子饭、抱罗粉、海鲜、文昌鸡、革命菜、四角豆、水果炒冰、竹筒饭、加积鸭、东山羊、椰子鸡、地瓜叶",
+              product:"立即查看2262条产品>"
+            },
+            {
+              src:"https://dimg01.c-ctrip.com/images/100l0g000000884py6BDE_C_221_166.jpg",
+              alt:"黄山",
+              money:"636",
+              number:"1500",
+              scene:"景点:太平湖、黄山温泉、宏村景区、屯溪老街、塔川、徽州古城、西海大峡谷、呈坎、齐云山、新安江山水画廊",
+              food:"美食:黄山烧饼、屯溪醉蟹、一品锅、黄山双石、两香问政山笋、臭鳜鱼",
+              product:"立即查看831条产品>"
+            },
+            {
+              src:"https://dimg05.c-ctrip.com/images/100f180000013p2c086E4_C_221_166.jpg",
+              alt:"重庆",
+              money:"2205",
+              number:"1200",
+              scene:"景点:金佛山、仙女山国家森林公园、酉阳桃花源、武隆天坑地缝国家地质公园、丰都鬼城、云阳龙缸国家地质公园、梦幻奥陶纪景区、四面山、乐和乐都主题乐园、大足石刻",
+              food:"美食:辣子鸡、毛血旺、豆花、豌豆炸酱面、烤鱼、辣子肥肠、尖椒鸡、重庆酸辣粉、小面、鸡杂、口水鸡、重庆火锅、山城小汤圆、蒜泥白肉、回锅肉、棒棒鸡、水煮鱼、芋儿鸡、磁器口麻花、抄手、串串香、泉水鸡",
+              product:"立即查看2819条产品>"
+            },
+            {
+              src:"https://dimg02.c-ctrip.com/images/100a0g0000007t2nt097B_C_221_166.jpg",
+              alt:"苏州",
+              money:"1086",
+              number:"1000",
+              scene:"景点:西山、同里古镇、金鸡湖、华谊兄弟电影世界、苏州太湖国家湿地公园、拙政园、天平山、沙家浜风景区、苏州上方山国家森林公园、大阳山国家森林公园",
+              food:"美食:万三家宴、臭豆腐、甫里鸭、枫镇大面、白汤卤鸭面、响油鳝糊、阿婆菜、蜜汁火方、糖粥、焖肉面、青团子、蟹粉豆腐（阳澄湖）、枣泥拉糕、莼菜银鱼羹、王四桂花酒、酱爆螺蛳、清蒸白鱼、阳澄湖白水鱼、樱桃肉、幢锅油鸡、海棠糕、松树蕈油面、蟹壳黄、桂花栗子羹、甫里蹄、出骨刀鱼球、红汤面、赤豆圆子、苏式蜜饯、万三蹄、南瓜糕、河豚鱼、鲃肺汤、藏书羊肉、清蒸白丝鱼、鸭血糯、蟹粉豆腐、阳澄湖大闸蟹、爆鱼面、三味汤圆、虾糟、桂花鸡头米、苏式鲜肉月饼、小馄饨、鸡爪、太湖三白、奥灶面、松鼠桂鱼、鲃鱼、生煎、清炒虾仁、酒酿饼、银鱼炒蛋、蚬江三珍、莼菜汤、碧螺虾仁、常熟叫花鸡、盘香饼、青团",
+              product:"立即查看3000条产品>"
+            },
+           ],
+           index:1
+         },
+         {
+           title:"日本",
+           contents:[
+             {
+               src:"https://dimg01.c-ctrip.com/images/fd/tg/g3/M01/06/7D/CggYG1aONeKAPC1IAB6njDjLgiA931_C_221_166.jpg",
+               alt:"东京",
+               money:"2064",
+               number:"1",
+               scene:"景点:秋叶原、东京迪士尼乐园、银座、涩谷、原宿、新宿歌舞伎町、东京晴空塔、东京塔、东京迪士尼海洋、新宿",
+               food:"美食:日式甜点、寿司、天妇罗、生鱼片、鳗鱼饭、拉面、烤串",
+               product:"立即查看2164条产品>"
+             },
+             {
+               src:"https://dimg06.c-ctrip.com/images/100k0p000000g44t4BECD_C_221_166.jpg",
+               alt:"大阪",
+               money:"3219",
+               number:"0",
+               scene:"景点:日本环球影城、哈利波特魔法世界、心斋桥、新世界、大阪城、大阪海游馆、大阪温泉大世界、梅田、圣玛利亚号帆船巡游、奈良富士和服（奈良公园店）",
+               food:"美食:炸串、大阪烧、寿司、和牛、日式拉面、鳗鱼饭、油炸豆腐乌冬面、 蟹料理、河豚料理、章鱼烧",
+               product:"立即查看2148条产品>"
+             },
+             {
+               src:"https://dimg05.c-ctrip.com/images/100t11000000r5onuA36D_C_221_166.jpg",
+               alt:"北海道",
+               money:"4353",
+               number:"0",
+               scene:"景点:札幌国际滑雪场、登别温泉镇、水之教堂、二见公园、美瑛、二世古冰雪乐园-粉雪天堂、知床五湖、比罗夫滑雪场、四姐妹居酒屋、和之里 丰平峡温泉",
+               food:"美食:味噌拉面、油炸半鸡、盐味拉面、北海道甜点、成吉思汗烤肉、汤咖喱、海鲜盖饭、北海道寿司、 蟹料理、石狩锅、烩炒面",
+               product:"立即查看856条产品>"
+             },
+             {
+               src:"https://dimg01.c-ctrip.com/images/100b08000000360497DB3_C_221_166.jpg",
+               alt:"冲绳",
+               money:"828",
+               number:"0",
+               scene:"景点:冲绳儿童王国、东南植物乐园、チャペル希望、冲绳市政厅观景台、Chanpuru生鲜市场",
+               food:"美食:冲绳荞麦面、石垣牛肉、海葡萄、苦瓜、海鲜、冲绳红烧肉",
+               product:"立即查看384条产品>"
+             },
+             {
+               src:"https://dimg08.c-ctrip.com/images/100c0z000000nt6ja25B8_C_221_166.jpg",
+               alt:"名古屋",
+               money:"2195",
+               number:"0",
+               scene:"景点:日本乐高乐园、东山动植物园、名古屋港水族馆、鹤舞公园、热田神宫、丰田博物馆、绿洲21、建中寺、名古屋巨蛋、名古屋电视塔",
+               food:"美食:碁子面、味噌炸猪排、味噌乌冬面、鳗鱼饭、干炸鸡翅膀、名古屋宽面",
+               product:"立即查看554条产品>"
+             },
+             {
+               src:"https://dimg02.c-ctrip.com/images/100h060000001ylh77134_C_221_166.jpg",
+               alt:"京都",
+               money:"3537",
+               number:"0",
+               scene:"景点:岚山、清水寺、伏见稻荷大社、金阁寺、花见和服体验店、安井金比罗宫、梦京都和服体验、冈本织物店和服体验、银阁寺、三千院",
+               food:"美食: 日式点心、川床料理、荞麦面、 怀石料理、豆腐料理",
+               product:"立即查看2004条产品>"
+             },
+             {
+               src:"https://dimg05.c-ctrip.com/images/fd/tg/g1/M01/C7/DF/CghzflWwtjCAIc_oAEaea8YcAfE733_C_221_166.jpg",
+               alt:"奈良",
+               money:"4076",
+               number:"0",
+               scene:"景点:奈良町、春日大社、奈良公园、东大寺、吉水神社、兴福寺、药师寺、新药师寺、朱雀门、入江泰吉纪念奈良市写真美术馆",
+               food:"美食:柿叶寿司、三轮素面、奈良釜饭、葛粉料理、茶粥、 怀石料理",
+               product:"立即查看1655条产品>"
+             },
+             {
+               src:"https://dimg07.c-ctrip.com/images/10040x000000ld3wx40AB_C_221_166.jpg",
+               alt:"福冈",
+               money:"1217",
+               number:"0",
+               scene:"景点:相岛、福冈面包超人儿童博物馆、福冈塔、博多车站、大濠公园、朝日啤酒厂、博多港塔、水镜天满宫、福冈市市民防灾中心、西日本大濠花火大会",
+               food:"美食:寿司、牛杂火锅、日式拉面、鸡肉水炊锅、博多饺子",
+               product:"立即查看235条产品>"
+             }
+           ],
+           index:2
+         },
+         {
+           title:"东南亚",
+           contents:[
+             {
+               src:"https://dimg01.c-ctrip.com/images/100810000000perhu90FB_C_221_166.jpg",
+               alt:"普吉岛",
+               money:"1406",
+               number:"1",
+               scene:"景点:珊瑚岛、芭东海滩、皇帝岛、西蒙人妖秀、蜜月岛、芭东夜市、卡伦海滩、拉崴海滩、苏林群岛、普吉射击场",
+               food:"美食:泰式椰汁鸡汤、椒盐濑尿虾、泰式菠萝炒饭、泰式炒河粉、绿咖喱鸡、冬阴功汤、咖喱蟹、泰式汤米粉、青木瓜沙拉、泰式空心菜",
+               product:"立即查看1055条产品>"
+             },
+             {
+               src:"https://dimg08.c-ctrip.com/images/fd/tg/g1/M06/CA/CE/CghzflWw392Aeqq0ABjXMP41wIk420_C_221_166.jpg",
+               alt:"泰国",
+               money:"1620",
+               number:"4",
+               scene:"景点:草莓园、斯米兰群岛、大峡谷、芭提雅海滩、红岛、金三角、翡翠湾、珊瑚岛、大佛寺、甲米天堂岛",
+               food:"美食:泰式炒面、泰式椰汁鸡汤、椒盐濑尿虾、泰北烤鱼、咖喱蟹、绿咖喱椰汁鸡、马散麻咖喱鸡、泰南咖喱鱼、烤椰塔、泰式咖喱炒蟹、柠檬蒸鲈鱼、咖喱鸡面、泰式炒饭、青木瓜色拉、泰式炒河粉、椰汁鸡汤、海鲜烧烤、菠萝炒饭、青木瓜沙拉、咖喱螃蟹、泰式菠萝炒饭、水果飞饼、椰子冰淇淋、泰式炒稞条、炸椰子丸和枣椰丸、绿咖喱鸡、泰式咖喱蟹、泰式汤米粉、泰式酸辣汤、海鲜、芒果糯米饭、咖啡、泰式青木瓜沙拉、炸猪皮、甲米烤鸡腿、冬阴功汤、青木瓜沙律、龙虾、泰式空心菜",
+               product:"立即查看3000条产品>"
+             },
+             {
+               src:"https://dimg03.c-ctrip.com/images/fd/tg/g1/M02/79/29/CghzfVWwp1SAD5gHACTpIEDO0sk435_C_221_166.jpg",
+               alt:"巴厘岛",
+               money:"3499",
+               number:"0",
+               scene:"景点:恶魔的眼泪、金巴兰海滩、天空之门、巴厘岛大秋千、海龟岛、南湾、巴厘岛宝格丽度假村、乌布村庙、佩妮达岛、阿雅娜水疗温泉中心",
+               food:"美食:脏鸭餐、烤猪饭、什锦饭、海鲜、印尼炒饭、沙爹、芭蕉叶熏鸭",
+               product:"立即查看1607条产品>"
+             },
+             {
+               src:"https://dimg02.c-ctrip.com/images/10010s000000hwbcj4F64_C_221_166.jpg",
+               alt:"曼谷",
+               money:"1620",
+               number:"4",
+               scene:"景点:大皇宫、唐人街、四面佛、火车夜市、曼谷大学、曼谷塔、曼谷暹罗海洋世界、鬼屋宅邸、泰拳现场-传奇生活、拉差达火车夜市",
+               food:"美食:柠檬蒸鲈鱼、椰子冰淇淋、泰式炒河粉、冬阴功汤、绿咖喱鸡、咖喱蟹、芒果糯米饭、青木瓜沙拉",
+               product:"立即查看1536条产品>"
+             },
+             {
+               src:"https://dimg02.c-ctrip.com/images/fd/tg/g4/M05/B2/24/CggYHFZ4wWiAKCnuADUUoCnU8w4935_C_221_166.jpg",
+               alt:"新加坡",
+               money:"2599",
+               number:"0",
+               scene:"景点:新加坡环球影城、滨海湾金沙酒店无边泳池、火焰山、圣淘沙名胜世界、新加坡滨海湾花园、水上探险乐园、圣淘沙天际线斜坡滑车、夜间野生动物园、芽笼士乃、新加坡动物园",
+               food:"美食:叻沙、海南鸡饭、咖喱鱼头、炒粿条、辣椒螃蟹、肉骨茶、沙爹、咖椰吐司",
+               product:"立即查看1472条产品>"
+             },
+             {
+               src:"https://dimg03.c-ctrip.com/images/100s0y000000mc3qf0838_C_221_166.jpg",
+               alt:"芽庄",
+               money:"404",
+               number:"0",
+               scene:"景点:珍珠岛、芽庄珍珠岛游乐园、猴岛、芽庄海滩、芽庄四岛游、黑岛潜水体验、耶尔辛博物馆、叠山岛、I-Resort热矿泥浴、芽庄木偶戏剧院",
+               food:"美食:滴漏咖啡、越式春卷、烤龙虾、越南河粉、海鲜",
+               product:"立即查看572条产品>"
+             },
+             {
+               src:"https://dimg05.c-ctrip.com/images/fd/tg/g2/M04/AD/8B/CghzgFWaRo2ALZqhAAkbJZ7URq8920_C_221_166.jpg",
+               alt:"越南",
+               money:"1900",
+               number:"0",
+               scene:"景点:珍珠岛、芽庄珍珠岛游乐园、涂山风景区、猴岛、芽庄海滩、芽庄四岛游、西贡夜市、天后宫、情人谷、海防市",
+               food:"美食:滴漏咖啡、古法烤鱼、越式春卷、甘蔗虾、越式螃蟹、水果奶昔、烤龙虾、越南河粉、海鲜",
+               product:"立即查看1010条产品>"
+             },
+             {
+               src:"https://dimg05.c-ctrip.com/images/100j0n000000e3g497155_C_221_166.jpg",
+               alt:"苏梅岛",
+               money:"3268",
+               number:"0",
+               scene:"景点:涛岛、苏梅岛悦榕庄水疗中心、南园岛、苏梅沙发里乐园、拉迈夜市、拉迈观景点、安通国家海洋公园、湄南海滩、苏梅岛六善水疗、查汶海滩",
+               food:"美食:泰式炒面、泰式炒稞条、冬阴功汤、炸椰子丸和枣椰丸、泰式咖喱蟹、椰汁鸡汤、海鲜烧烤、马散麻咖喱鸡、烤椰塔、泰式青木瓜沙拉",
+               product:"立即查看445条产品>"
+             },
+           ],
+           index:3
+         },
+         {
+           title:"欧洲",
+           contents:[
+            { 
+              src:"https://dimg05.c-ctrip.com/images/10050a0000004xyzo1CB3_C_221_166.jpg",
+              alt:"俄罗斯",
+              money:"3999",
+              number:"0",
+              scene:"景点:贝加尔湖火车环线、红场、莫斯科大学、玻璃海滩、莫斯科市、海参崴俄罗斯岛跨海大桥、叶卡捷琳堡滴血大教堂、旋转木马滑雪场、阿洪山、海参崴火车站",
+              food:"美食:莫斯科卡瓦斯、索契鱼子酱、索契红菜汤、莫斯科烤鱼、冷酸鱼、索契黑面包、莫斯科列巴、格瓦斯、莫斯科鱼子酱、基辅式黄油鸡卷、索契鲱鱼",
+              product:"立即查看416条产品>"
+            },
+            { 
+              src:"https://dimg04.c-ctrip.com/images/fd/tg/g3/M08/43/A0/CggYG1avBWWAD9NgACmoNjb0dU4446_C_221_166.jpg",
+              alt:"英国",
+              money:"10499",
+              number:"1",
+              scene:"景点:哈利波特摄影棚、大英博物馆、汽车博物馆、贝克街、福尔摩斯博物馆、白金汉宫、诺丁山、海克利尔城堡、曼城足球俱乐部、剑桥大学",
+              food:"美食:鳗鱼冻、烤牛排、Trifle蛋糕、英式下午茶、思康饼、炸鱼薯条、haggis、Fuller's、英式早餐、牛肉腰子派",
+              product:"立即查看1086条产品>"
+            },
+            { 
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g1/M0A/C9/86/CghzflWwy-2AE01WAIOrwbjIeAM363_C_221_166.jpg",
+              alt:"意大利",
+              money:"7699",
+              number:"0",
+              scene:"景点:阿尔卑斯山、大运河、庞贝古城、罗马斗兽场、多洛米蒂山脈、安康圣母教堂、比萨斜塔、贝拉岛、西班牙广场、白露里治奥古城",
+              food:"美食:牛肚包、玛格丽塔披萨、什锦海鲜沙拉、海鲜烩饭、甜点、卡布奇诺、意式三明治、面包色拉、披萨、墨鱼汁意大利面、白松露、T骨牛排、冰淇淋、提拉米苏、意式咖啡、红酒炖牛尾、意大利面、意式烩饭、意式早餐、葡萄酒",
+              product:"立即查看1369条产品>"
+            },
+            { 
+              src:"https://dimg03.c-ctrip.com/images/100f050000000kxs16470_C_221_166.jpg",
+              alt:"瑞士",
+              money:"7699",
+              number:"0",
+              scene:"景点:玫瑰园、采尔马特滑雪场、皮拉图斯山、铁力士山、冰川快车、伯尔尼兹阿尔卑斯山脉、奥古斯丁巷、米伦瀑布、米伦小镇、施陶河瀑布",
+              food:"美食:风干牛肉、伯尔尼拼盘、楚格樱桃白兰地蛋糕、烤土豆丝饼、烤香肠、啤梨面包、Maluns、河鲈鱼片、苏黎世小牛肉、瑞士奶酪火锅、奶油蘑菇小牛肉酥皮盒、烤奶酪、冰川葡萄酒、瑞士巧克力、奶酪加土豆、瑞士葡萄酒",
+              product:"立即查看1215条产品>"
+            },
+            { 
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g5/M04/6A/DB/CggYsFbvn9KAWj8UAB0kjlDVhe8670_C_221_166.jpg",
+              alt:"法国",
+              money:"7699",
+              number:"0",
+              scene:"景点:科尔马、埃菲尔铁塔、巴黎迪士尼乐园、卢浮宫博物馆、巴黎圣母院、巴黎丽都、凡尔赛宫、勃朗峰、新桥、凯旋门",
+              food:"美食:镶牛肚、法式奶酪、法式甜点、马卡龙、海鲜、咖啡、鹅肝、里昂风味沙拉、法式蜗牛、法式鹅肝、尼斯索卡、里昂乳酪、牡蛎、Pan Bagnat、里昂干红肠、玫瑰腊肠、Quenelles、红酒炖牛肉、尼斯沙拉、葡萄酒、猪肉灌肠",
+              product:"立即查看1369条产品>"
+            },
+            { 
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g1/M01/7D/14/CghzfFWwzhWARE8eAD3ntqtD8Aw472_C_221_166.jpg",
+              alt:"西班牙",
+              money:"8499",
+              number:"0",
+              scene:"景点:诺坎普球场、伯纳乌球场、西班牙村、阿尔罕布拉宫、红墙、圣地亚哥·伯纳乌体育场、玛丽亚·路易莎公园、蓝精灵小镇、波盖利亚市场、菲斯特拉",
+              food:"美食:烤乳猪、热巧克力油条、Tapas、先锋美食、香肠煮豆子、西班牙海鲜饭、马德里烩菜、墨鱼饭",
+              product:"立即查看609条产品>"
+            },
+            { 
+              src:"https://dimg05.c-ctrip.com/images/fd/tg/g6/M02/00/73/CggYs1cfF7qAU_kuAArgoZBEnXw227_C_221_166.jpg",
+              alt:"希腊",
+              money:"10599",
+              number:"0",
+              scene:"景点:圣托里尼岛、沉船湾、伊亚小镇、雅典卫城、帕特农神庙、米科诺斯岛、迈锡尼、德尔菲遗址、奥林匹亚宙斯神殿、圣托里尼海上日落环线",
+              food:"美食:卷饼、穆萨嘎、烤羊肉、乡村沙拉、穆萨卡、皮塔饼、茴香酒、海鲜、油炸小鱿鱼、莓兹、葡萄酒、希腊烤羊肉、海鲜蔬菜沙拉",
+              product:"立即查看409条产品>"
+            },
+            { 
+              src:"https://dimg07.c-ctrip.com/images/100110000000owmud4DD1_C_221_166.jpg",
+              alt:"莫斯科",
+              money:"7399",
+              number:"0",
+              scene:"景点:红场、莫斯科大学、莫斯科市、库宾卡坦克博物馆、国家历史博物馆、克里姆林宫、圣瓦西里升天大教堂、麻雀山、中央武装力量博物馆、卫国战争中央博物馆",
+              food:"美食:莫斯科卡瓦斯、莫斯科烤鱼、冷酸鱼、莫斯科列巴、莫斯科鱼子酱、基辅式黄油鸡卷",
+              product:"立即查看301条产品>"
+            },
+             
+           ],
+           index:4
+         },
+         {
+           title:"美洲",
+           contents:[
+             { 
+              src:"https://dimg01.c-ctrip.com/images/100a10000000pfidn47CE_C_221_166.jpg",
+              alt:"纽约",
+              money:"9462",
+              number:"2",
+              scene:"景点:中央公园、时代广场、自由女神像、帝国大厦、华尔街、自由女神上岛游船、世贸一号观景台、麦迪逊广场花园、熨斗大厦、9/11纪念馆和博物馆",
+              food:"美食:牛排、美式咖啡、早午餐、贝果（百吉饼）、无国界料理、汉堡、pancake、纽约芝士蛋糕、热狗、披萨",
+              product:"立即查看853条产品>"
+            },
+            { 
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g4/M02/ED/32/CggYHlXaie2AVx7gABz7Ffe6gtM354_C_221_166.jpg",
+              alt:"美国",
+              money:"7699",
+              number:"1",
+              scene:"景点:夏威夷岛、大学城、华特迪士尼世界、好莱坞环球影城、中央公园、彩虹瀑布、哈佛大学、斯台普斯中心、珍珠港、翠湖",
+              food:"美食:Poke、蛤蜊奶油浓汤、牛排、早午餐、生蚝、奶油蛤蜊浓汤、无国界料理、热烤饼、汉堡、华夫饼、捞捞菜、纽约芝士蛋糕、三明治、冰淇淋、芝士蛋糕、美式咖啡、美式披萨、布法罗辣鸡翅、波士顿鳕鱼、加利福尼亚汉堡、查莫洛餐、椰子蟹、爱尔兰咖啡、Plate Lunch、海鲜烧烤、邓杰内斯蟹、夏威夷细面、鸡尾酒虾、墨西哥玉米饼、甜甜圈、波士顿龙虾、披萨、热狗、旧金山老面包、咖啡、加州卷饼、日本料理、菲力牛排、Haupia、贝果（百吉饼）、珍宝蟹、巴西野莓水果杯、冻奥查塔、Shave Ice、pancake、波士顿奶油卷、新英格兰蛤肉浓汤、龙虾、墨西哥卷饼、海鲜奶油饭",
+              product:"立即查看3000条产品>"
+            },
+            { 
+              src:"https://dimg02.c-ctrip.com/images/1003180000014qpts1ADF_C_221_166.jpg",
+              alt:"夏威夷",
+              money:"3144",
+              number:"0",
+              scene:"景点:夏威夷岛、彩虹瀑布、珍珠港、科基州立公园、密苏里号战舰纪念馆、亚特兰蒂斯号潜水艇、波洛卢山谷观景点和小径、恐龙湾、怀阿纳帕纳帕州立公园、夏威夷火山国家公园",
+              food:"美食:Poke、Haupia、热烤饼、Shave Ice、捞捞菜、Plate Lunch、夏威夷细面",
+              product:"立即查看734条产品>"
+            },
+            { 
+              src:"https://dimg08.c-ctrip.com/images/fd/tg/g6/M06/6F/CA/CggYs1bvknuAIlBOABiZDwdWFVk644_C_221_166.jpg",
+              alt:"加拿大",
+              money:"9462",
+              number:"1",
+              scene:"景点:魁北克、黄刀市、尼亚加拉大瀑布、黄刀镇老城区、极光村、班夫镇、邓肯镇、丘吉尔港、爱德华王子岛国家公园、白求恩纪念馆国家历史遗址",
+              food:"美食:牛排、生蚝、枫糖煎三文鱼、阿拉斯加帝王蟹、加拿大大西洋龙虾、熏肉三明治、三文鱼、象拔蚌刺身、冰淇淋、烤鲑鱼",
+              product:"立即查看1008条产品>"
+            },
+            { 
+              src:"https://dimg03.c-ctrip.com/images/100q0p000000fh5w1FE3C_C_221_166.jpg",
+              alt:"洛杉矶",
+              money:"11764",
+              number:"0",
+              scene:"景点:好莱坞环球影城、斯台普斯中心、洛杉矶艺术博物馆、加州1号公路、格里菲斯天文台、爱荷华战舰博物馆、圣莫尼卡海滩、洛杉矶古城、好莱坞星光大道、诺氏百乐坊乐园",
+              food:"美食:牛排、汉堡、三明治、龙虾、冰淇淋、墨西哥卷饼",
+              product:"立即查看1011条产品>"
+            },
+            { 
+              src:"https://dimg07.c-ctrip.com/images/100o1c000001cmmorBFEC_C_221_166.jpg",
+              alt:"多伦多",
+              money:"975",
+              number:"1",
+              scene:"景点:多伦多大学、加拿大国家电视塔、瑞普利水族馆、多伦多音乐花园、爱伦温室花园、加拿大奇幻乐园、新市政厅、同性恋村、印度教寺庙、联合车站",
+              food:"美食:牛排、生蚝、枫糖煎三文鱼、熏肉三明治、象拔蚌刺身、烤鲑鱼",
+              product:"立即查看318条产品>"
+            },
+            { 
+              src:"https://dimg08.c-ctrip.com/images/100r0h0000008ui066E62_C_221_166.jpg",
+              alt:"秘鲁",
+              money:"4433",
+              number:"0",
+              scene:"景点:热水镇、主庙、印加古道、纳斯卡线条、库斯科城、圣谷、贝伦水上棚屋区、坦波庙、玛努国家公园、铁房子",
+              food:"美食:Tamales、Juane、Rocoto relleno、Cus Asado、Ceviche、Tacacho con Cecina",
+              product:"立即查看105条产品>"
+            },
+            { 
+              src:"https://dimg06.c-ctrip.com/images/fd/tg/g3/M04/BB/BB/CggYGVaMcXuAHn8cACGBzc2mJR0522_C_221_166.jpg",
+              alt:"西雅图",
+              money:"993",
+              number:"0",
+              scene:"景点:翠湖、口香糖墙、华盛顿大学、派克市场、太平洋科学中心、林地公园动物园、玻璃博物馆、弗里蒙特、凯瑞公园、西雅图艺术博物馆",
+              food:"美食:生蚝、珍宝蟹、奶油蛤蜊浓汤、咖啡",
+              product:"立即查看164条产品>"
+            }, 
+           ],
+           index:5 
+         },
+         {
+           title:"澳中东非",
+           contents:[
+             { 
+              src:"https://dimg05.c-ctrip.com/images/100u0n000000e0fpmBF3A_C_221_166.jpg",
+              alt:"迪拜",
+              money:"3099",
+              number:"1",
+              scene:"景点:帆船酒店、哈利法塔（迪拜塔）、迪拜河、迪拜深海钓鱼、迪拜高空跳伞体验、迪拜失落的空间水族馆、迪拜棕榈岛亚特兰蒂斯酒店、地球村、迪拜乐园之乐高乐园、疯狂维迪水上乐园",
+              food:"美食:阿拉伯沙律、小拼盘、阿拉伯披萨、阿拉伯大饼、阿拉伯甜点、阿拉伯烧烤",
+              product:"立即查看1242条产品>"
+            },
+            { 
+              src:"https://dimg02.c-ctrip.com/images/fd/tg/g1/M02/02/A5/CghzfFVIPASANskxABmaqEV-DFA267_C_221_166.jpg",
+              alt:"土耳其",
+              money:"7099",
+              number:"0",
+              scene:"景点:爱琴海海岸、钟楼、卡帕多奇亚热气球、地中海沿岸、特洛伊考古遗址、玫瑰谷、费特希耶滑翔伞、大巴扎、蓝色清真寺、爱情谷",
+              food:"美食:土耳其茶、土耳其烤肉、土耳其软糖、土耳其烤鱼、土耳其冰淇淋、瓦罐炖肉、Raki酒、土耳其咖啡、诺亚方舟布丁、土耳其果仁点心",
+              product:"立即查看349条产品>"
+            },
+            { 
+              src:"https://dimg05.c-ctrip.com/images/fd/tg/g1/M01/C8/1B/CghzflWwuKaAATqVAA4K_l8xcIk441_C_221_166.jpg",
+              alt:"澳大利亚",
+              money:"9899",
+              number:"2",
+              scene:"景点:风之谷、十二门徒岩、赫特泻湖、大堡礁潜水、悉尼港、邦迪海滩、普芬比利蒸汽火车、澳洲游艇俱乐部、白天堂海滩、蓝山跳伞",
+              food:"美食:袋鼠肉、正宗意大利菜、澳洲牛排、鳄鱼肉、牡蛎、皇帝蟹、澳洲龙虾（澳龙）、澳洲泥蟹、咖啡",
+              product:"立即查看1706条产品>"
+            },
+            { 
+              src:"https://dimg01.c-ctrip.com/images/100n0z000000nldvr384C_C_221_166.jpg",
+              alt:"毛里求斯",
+              money:"5052",
+              number:"0",
+              scene:"景点:海豚湾、蓝湾、鹿岛、圣水湖、红顶教堂、夏玛尔瀑布、大浪湾、唐人街、帕里斯民俗村、双体船畅游海豚湾",
+              food:"美食:咖喱鸡肉大虾、百万富翁沙拉",
+              product:"立即查看178条产品>"
+            },
+            { 
+              src:"https://dimg04.c-ctrip.com/images/fd/tg/g2/M02/8B/33/Cghzf1Ww3rCAKMvTABUl9T2-0U8651_C_221_166.jpg",
+              alt:"新西兰",
+              money:"12800",
+              number:"0",
+              scene:"景点:皇后镇高空跳伞、皇后镇高空跳台秋千、霍比特村、怀希基岛、月球环形山、格林诺奇、瓦卡蒂普湖、镜湖、彩虹山、南阿尔卑斯山",
+              food:"美食:Fergburger汉堡、鱼薯条、新西兰龙虾Crayfish、黑边鲍鱼Pāua、新西兰葡萄酒、布拉夫牡蛎、魔鬼披萨、鹿肉、奶油水果蛋白饼pavlova、绿贝Greenshell Mussel",
+              product:"立即查看676条产品>"
+            },
+            { 
+              src:"https://dimg01.c-ctrip.com/images/fd/tg/g2/M09/8D/E4/Cghzf1WxBtqAYJ9UABKmlgb_TmY531_C_221_166.jpg",
+              alt:"埃及",
+              money:"7299",
+              number:"1",
+              scene:"景点:胡夫金字塔、狮身人面像、阶梯金字塔、红色金字塔、吉萨金字塔、埃及博物馆、阿斯旺大坝、菲莱神庙、哈利利市场、塞加拉金字塔群",
+              food:"美食:沙拉三明治、法拉费、库莎丽、咖啡和红茶、烤肉、水烟、烤乳鸽、面包布丁、鲜榨果汁、大饼",
+              product:"立即查看259条产品>"
+            },
+            { 
+              src:"https://dimg06.c-ctrip.com/images/100m0y000000lstuaC129_C_221_166.jpg",
+              alt:"布里斯班",
+              money:"9899",
+              number:"2",
+              scene:"景点:摩顿岛、布里斯班河、昆士兰大学、布里斯班摩天轮、布里斯班南岸游客中心、城市之猫渡船、布里斯班海关大楼、维多利亚军营博物馆、南岸公园集市、科学中心",
+              food:"美食:澳洲牛排、牡蛎、澳洲龙虾（澳龙）、澳洲泥蟹",
+              product:"立即查看313条产品>"
+            },
+            { 
+              src:"https://dimg06.c-ctrip.com/images/tg/715/819/016/499d89017ce44f52947675713a6cc54c_C_221_166.jpg",
+              alt:"阿联酋",
+              money:"7588",
+              number:"1",
+              scene:"景点:帆船酒店、哈利法塔（迪拜塔）、迪拜河、迪拜深海钓鱼、阿布扎比卢浮宫、迪拜高空跳伞体验、法拉利主题公园、地球村、迪拜失落的空间水族馆、迪拜棕榈岛亚特兰蒂斯酒店",
+              food:"美食:阿拉伯沙律、小拼盘、阿拉伯披萨、阿拉伯大饼、阿拉伯甜点、阿拉伯烧烤",
+              product:"立即查看1261条产品>"
+            },
+           ],
+           index:6
+         },
+      ],
+      this.peripherys = [
+        {
+          title:"精选",
+          contents:[
+            {
+              src:"https://dimg03.c-ctrip.com/images/100s0r000000h753vAE4D_C_228_132.jpg ",
+              alt:"Q加·南澳黄金海岸希维尔假日公寓1-2晚，浪漫海景房型，面朝大海，心旷神怡！•【离青澳湾步行距离近】",
+              money:"158"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/20030x000000lebrj4314_C_228_132.jpg",
+              alt:"厦门灵玲大酒店1-3晚+部分房型含马戏城/动物园套餐 房型礼包为准•【可选灵玲马戏城】",
+              money:"451"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/20030t000000iimlnA49B_C_228_132.jpg",
+              alt:"南澳柠檬墅LemonyVillage1晚【背山面海 山林环抱】",
+              money:"326"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2004190000015iczpE442_C_228_132.jpg",
+              alt:"云水谣1949老四合院1号民宿1晚+可选云水谣古镇•【每间客房都是自己设计的，每一间都有不一样原色和元素】 ",
+              money:"105"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100j0s000000hf4bc2AC4_C_228_132.jpg",
+              alt:"惠州双月湾檀悦豪生温泉度假酒店·打卡网红无边际泳池+300米私属沙滩+瑜伽健身房【五一热卖，打卡“水滴酒店”！】",
+              money:"449"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200d0s000000hq1ktD4D6_C_228_132.jpg",
+              alt:"潮州书香客栈1晚，周边景点云集，客栈毗邻开元寺、牌坊街、广济桥！•【以书香气息为主题的艺术装修风格为特色】 ",
+              money:"156"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200e0700000021h041F77_C_228_132.jpg",
+              alt:"普宁盘龙湾温泉度假村1晚+可选盘龙湾温泉",
+              money:"386"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/1007060000001egngD8A8_C_228_132.jpg",
+              alt:"广州长隆4日自由行(4钻)·【高铁往返】|3晚广州长隆主题酒店|·亲子优选·动漫般亲子欢畅·童话次元大冒险·陪他/她看世界",
+              money:"1631"
+            },
+          ],
+            index:0
+        },
+        {
+          title:"汕头",
+          contents:[
+            {
+              src:"https://dimg03.c-ctrip.com/images/100s0r000000h753vAE4D_C_228_132.jpg",
+              alt:"Q加·南澳黄金海岸希维尔假日公寓1-2晚，浪漫海景房型，面朝大海，心旷神怡！•【离青澳湾步行距离近】",
+              money:"128"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/20030t000000iimlnA49B_C_228_132.jpg",
+              alt:"南澳柠檬墅LemonyVillage1晚【背山面海 山林环抱】",
+              money:"326"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100t0k000000cbsef42FC_C_228_132.jpg",
+              alt:"南澳碧海真是美客栈1-2晚•【环境安全，优美，干净，面对大海】 ",
+              money:"115"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200j11000000re8yp28F2_C_228_132.jpg",
+              alt:"汕头小米智能公寓1晚+可选方特欢乐世界蓝水星",
+              money:"334"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100r0q000000g2ute9B05_C_228_132.jpg",
+              alt:"南澳琴舍轻奢海边度假酒店1-2晚，琴诗山水乐，顿与世情疏！",
+              money:"277"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/20050r000000gz5w0B2E2_C_228_132.jpg",
+              alt:"南澳格兰云天大酒店1-2晚，邻海而建，高端精品度假酒店！•【毗邻南澳市政公园“海上文化丝绸广场】",
+              money:"283"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200b0c0000006ojnl1E05_C_228_132.jpg",
+              alt:"汕头长之江主题酒店1晚+可选方特欢乐世界蓝水星",
+              money:"179"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2001160000010el4p1A73_C_228_132.jpg",
+              alt:"南澳香湖湾希维尔度假公寓1晚+可选青澳湾",
+              money:"116"
+            },
+          ],
+          index:1
+        },
+        {
+          title:"厦门",
+          contents:[
+            {
+              src:"https://dimg03.c-ctrip.com/images/20030x000000lebrj4314_C_228_132.jpg",
+              alt:"厦门灵玲大酒店1-3晚+部分房型含马戏城/动物园套餐 房型礼包为准•【可选灵玲马戏城】",
+              money:"451"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200j15000000y8qo34517_C_228_132.jpg",
+              alt:"厦门云也酒店1晚+可选观音山梦幻海岸",
+              money:"463"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200c0r000000h0eit197E_C_228_132.jpg",
+              alt:"亲子度假一站式！厦门灵玲大酒店1-2晚",
+              money:"1298"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200710000000pmi0t6E46_C_228_132.jpg",
+              alt:"厦门鼓浪屿柏文熊酒店1晚+可选厦门海底世界/鼓浪屿联票•【领略不一样美景】",
+              money:"222"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200815000000xgdqyC7CB_C_228_132.jpg",
+              alt:"厦门梧境山海间行馆1晚+可选厦门园林植物园",
+              money:"395"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200q070000002ku5kCDD1_C_228_132.jpg",
+              alt:"厦门君怡酒店1-3晚·可选鼓浪屿五大景点联票",
+              money:"182"
+            },
+            {
+              src:"https://dimg04.c-ctrip.com/images/300814000000wjye1D2A7_C_228_132.jpg",
+              alt:"厦门豪威莱斯汀溪房车公园+豪威莱斯房车露营公园·萌虫学园+三角梅基地参观 家庭亲子周边自驾好去处",
+              money:"299"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200n0z000000nhgn87ACC_C_228_132.jpg",
+              alt:"厦门北海湾惠龙万达嘉华酒店1晚+可选厦门园林博览苑/红点博物馆•【坐落于集美学村内，毗邻嘉庚公】",
+              money:"470"
+            },
+          ],
+          index:2
+        },
+        {
+          title:"南澳",
+          contents:[
+            {
+              src:"https://dimg03.c-ctrip.com/images/100s0r000000h753vAE4D_C_228_132.jpg",
+              alt:"Q加·南澳黄金海岸希维尔假日公寓1-2晚，浪漫海景房型，面朝大海，心旷神怡！•【离青澳湾步行距离近】",
+              money:"128"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/20030t000000iimlnA49B_C_228_132.jpg",
+              alt:"南澳柠檬墅LemonyVillage1晚【背山面海 山林环抱】",
+              money:"326"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100r0q000000g2ute9B05_C_228_132.jpg",
+              alt:"南澳琴舍轻奢海边度假酒店1-2晚，琴诗山水乐，顿与世情疏！",
+              money:"277"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/20050r000000gz5w0B2E2_C_228_132.jpg",
+              alt:"南澳格兰云天大酒店1-2晚，邻海而建，高端精品度假酒店！•【毗邻南澳市政公园“海上文化丝绸广场】",
+              money:"283"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100t0k000000cbsef42FC_C_228_132.jpg",
+              alt:"南澳碧海真是美客栈1-2晚•【环境安全，优美，干净，面对大海】",
+              money:"115"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100i0q000000g995mE107_C_228_132.jpg",
+              alt:"南澳米娅皇室酒店1-2晚•【距离海边100米，环境优美，设施齐全】",
+              money:"127"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200l0q000000glhbmF532_C_228_132.jpg",
+              alt:"南澳县万绿苑沙滩海景公寓1晚+可选南澳岛",
+              money:"278"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2001160000010el4p1A73_C_228_132.jpg",
+              alt:"南澳香湖湾希维尔度假公寓1晚+可选青澳湾",
+              money:"116"
+            },
+          ],
+          index:3
+        },
+        {
+          title:"漳州",
+          contents:[
+            {
+              src:"https://images4.c-ctrip.com/target/2004190000015iczpE442_C_228_132.jpg",
+              alt:"云水谣1949老四合院1号民宿1晚+可选云水谣古镇•【每间客房都是自己设计的，每一间都有不一样原色和元素】",
+              money:"105"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200g19000001814dcD1A8_C_228_132.jpg",
+              alt:"漳浦火山岛度假村1晚+可选火山岛旅游休闲度假区•【重拾返璞归真的那份悸动】",
+              money:"551"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/20080r000000h2hnj2438_C_228_132.jpg",
+              alt:"云霄云顶温泉大酒店1晚+双人温泉+双早（早餐、温泉和晚餐身高1.2米以下免费）•【土楼风格酒店 品质温泉体验】",
+              money:"538"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200g14000000worcy73D0_C_228_132.jpg",
+              alt:"花筑·云水谣云水婵舍民宿1晚+可选云水谣古镇",
+              money:"375"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/2009070000002dt70963D_C_228_132.jpg",
+              alt:"漳州佰翔圆山酒店+可自选圆山花泉门票或含温泉房型，酒店近漳州动车高铁站·【市区花园式 圆山花泉】",
+              money:"440"
+            },
+            {
+              src:"https://dimg04.c-ctrip.com/images/300k12000000rmtdk21E6_C_228_132.jpg",
+              alt:"龙海龙佳睿途酒店+龙佳生态温泉山庄·每间客房均带超大阳台与【室内】独立温泉泡池！多项自由行产品选择体验~",
+              money:"528"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200w160000010nssl7FE9_C_228_132.jpg",
+              alt:"漳浦翡翠湾海景度假酒店1晚+可选翡翠湾旅游度假中心",
+              money:"443"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200r0800000038cdo92C3_C_228_132.jpg",
+              alt:"云霄云顶温泉大酒店+双人温泉SPA+双早，可选一价全包/动车站接送套餐+双人温泉SPA+双早•【下单减50！温泉专享】",
+              money:"539"
+            },
+          ],
+          index:4
+        },
+        {
+          title:"惠州",
+          contents:[
+            {
+              src:"https://dimg03.c-ctrip.com/images/100j0s000000hf4bc2AC4_C_228_132.jpg",
+              alt:"惠州双月湾檀悦豪生温泉度假酒店·打卡网红无边际泳池+300米私属沙滩+瑜伽健身房【五一热卖，打卡“水滴酒店”！】",
+              money:"449"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200u0z000000mx9s5994F_C_228_132.jpg",
+              alt:"惠州双月湾檀悦都喜天丽度假酒店·无边际泳池嬉戏+私享沙滩漫步+健身房——天境之城，打卡网红酒店【五一热卖】",
+              money:"458"
+            },
+            {
+              src:"https://dimg04.c-ctrip.com/images/3004170000010zpsh287D_C_228_132.jpg",
+              alt:"惠东双月湾享海温泉度假酒店·含早+双人自助晚餐+网红秋千+私家沙滩+双人卡丁车+双人观光小火车+双人蹦床+双人淘气堡【开业特惠】",
+              money:"679"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200v0u000000jakh36B90_C_228_132.jpg",
+              alt:"顺逸东方白盆湖温泉（惠州惠东白盆珠店）1-2晚+双人免费22个温泉池无限次浸泡+自助早餐•【白盆珠库区内】",
+              money:"198"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100p0a0000004zg4l8C1A_C_228_132.jpg",
+              alt:"『网红泳池』惠东屿海云天假日酒店1-2晚+环球美食节&海鲜自助晚餐+自助早餐+无限次UFO室外泳池，步行至沙滩仅需5-7分钟！",
+              money:"481"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200711000000rwbpsF459_C_228_132.jpg",
+              alt:"下单立减30元！惠州候鸟水榕庄度假酒店1-3晚，坐拥2700亩高尔夫球场、6大自然湖泊！【私家泳池别墅】",
+              money:"746"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/280e0y000000m1aoaAD4B_C_228_132.jpg",
+              alt:"惠东富力希尔顿逸林度假酒店1-3晚，饱览整个海湾和惠州海湾大桥，度假优选！",
+              money:"447"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/20020w000000kp2se4930_C_228_132.jpg",
+              alt:"【全独立泡池】龙门南昆山温德姆温泉酒店+早餐+无限次露台温泉，可选双人晚餐套票『立减20/单』",
+              money:"577"
+            },
+          ],
+          index:5
+        },
+        {
+          title:"潮州",
+          contents:[
+            {
+              src:"https://dimg03.c-ctrip.com/images/200d0s000000hq1ktD4D6_C_228_132.jpg",
+              alt:"潮州书香客栈1晚，周边景点云集，客栈毗邻开元寺、牌坊街、广济桥！•【以书香气息为主题的艺术装修风格为特色】",
+              money:"156"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200a0y000000m6r481664_C_228_132.jpg",
+              alt:"潮州紫莲森林度假村，住房免紫莲森林度假村门票•【凤凰龙脉，紫莲福地】",
+              money:"288"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200h0l000000d7q841CB1_C_228_132.jpg",
+              alt:"都是梦想家酒店(潮州广济桥牌坊街汽车总站店)1晚+可选淡浮院/青岚国家地质公园门票",
+              money:"141"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200811000000qvd5h1DE0_C_228_132.jpg",
+              alt:"潮州沐阳客栈1晚+可选潮州古城",
+              money:"228"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/hotel/347000/346516/88a8b98525fd4eb4b3340d92d28212df_C_228_132.jpg",
+              alt:"饶平绿岛山庄绿泉酒店1晚+可选潮州绿岛旅游山庄",
+              money:"184"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/fd/hotel/g6/M02/BD/B1/CggYslcXJDeAdaHXAAEatnJ9lI4661_C_228_132.jpg",
+              alt:"维也纳酒店(潮州广场店)1晚+可选潮州古城",
+              money:"228"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200m0p000000fux8r1013_C_228_132.jpg",
+              alt:"潮州凤水驿客栈1晚，延续了宋代官驿的简约精实之风格，房型规整！•【牌坊街、广济桥近在咫尺】",
+              money:"236"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200g15000000xrnlsB361_C_228_132.jpg",
+              alt:"潮州潮韵书香客栈1晚+可选潮州古城",
+              money:"238"
+            },
+          ],
+          index:6
+        },
+        {
+          title:"梅州",
+          contents:[
+            {
+              src:"https://dimg03.c-ctrip.com/images/200q0q000000gosg95499_C_228_132.jpg",
+              alt:"【携程自营】梅州客天下国际大酒店1-2晚+双人客家小镇门票【品客家风情，享南国情调】•【情侣|亲子游】",
+              money:"319"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/hotel/g4/M08/92/80/CggYHlXqBViAZ9fWAA_XAZDmmpQ650_C_228_132.jpg",
+              alt:"丰顺金德宝凯悦国际温泉酒店1-2晚，可选双人温泉，可选早餐房型•【梅州温泉度假】",
+              money:"238"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200513000000tymlq992E_C_228_132.jpg",
+              alt:"熙和湾凤栖湖酒店(原兴宁凤栖湖酒店)1晚+可选熙和湾客乡文化旅游产业园",
+              money:"358"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200b0t000000iqekiCAD6_C_228_132.jpg",
+              alt:"维纳斯皇家酒店(梅州皇家名典店) 1-2晚，给您带来美食、娱乐、住宿的多重享受！【地标酒店！】",
+              money:"188"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/20011b000001bo4mk9B08_C_228_132.jpg",
+              alt:"梅州丰顺千江温泉酒店1-2晚，可加购温泉门票",
+              money:"205"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200j0q000000gn96j28D1_C_228_132.jpg",
+              alt:"科谷度假公寓(梅州客天下店)两房/三房套房1晚，可加购梅州客天下景区门票！•【步行可达景区，家庭出游】",
+              money:"246"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/fd/hotel/g3/M02/EA/88/CggYGVX-MB-AZFOEAAMiRHD5Hdo739_C_228_132.jpg",
+              alt:"梅州丰顺广东鹿湖温泉假日酒店1晚【粤东客家文化主题氡温泉】",
+              money:"597"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200g0e00000076gfyBA6F_C_228_132.jpg",
+              alt:"梅州又见民宿1晚，网红文艺民宿，可以泡茶聊天，还有很多书可以看【网红民宿精选】",
+              money:"121"
+            },
+          ],
+          index:7
+        }
+
+      ],
+
       this.pics = [
         {
           url: require("./../assets/imgs/pic1.jpg")
@@ -1533,28 +2745,150 @@ export default {
         {
           title:"上海",
           contents:[
-
+            {
+              src:"https://images4.c-ctrip.com/target/2A011e000001ftsqa4EC1_300_200.jpg",
+              alt:"[浦东新区]上海卓美亚喜玛拉雅酒店",
+              name:"已售 6696",
+              money:"999"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/fd/tuangou/g4/M02/57/E9/CggYHlZ66XSAYKZlAAGnrNYUsZU571_300_200.jpg",
+              alt:"[闵行区]麦豪德精品酒店（上海虹桥枢纽店）",
+              name:"已售 629",
+              money:"358"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A0f15000000xx6fr5DAE_300_200.jpg",
+              alt:"[多店通用]碧桂园酒店亲子节40店通用",
+              name:"已售 368",
+              money:"499"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A02040000000c7575006_300_200.jpg",
+              alt:"[静安区]吉泰精品连锁酒店(上海火车站梅园路店)",
+              name:"已售 315",
+              money:"268"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A091e000001fsaat0282_300_200.jpg",
+              alt:"[静安区]上海静安昆仑大酒店",
+              name:"已售 250",
+              money:"999"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A0o10000000pdhoj63CC_300_200.jpg",
+              alt:"[静安区]上海衡山马勒别墅饭店",
+              name:"已售 220",
+              money:"1598"
+            },
           ],
           index:3
         },
         {
           title:"成都",
           contents:[
-
+            {
+              src:"https://images4.c-ctrip.com/target/t1/tuangou/767/144/417/37e89e5613524228aca927c6f63df831_300_200.jpg",
+              alt:"[青羊区]成都浣花锦城酒店",
+              name:"已售 1916",
+              money:"278"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/tuangou/758/963/216/80e18b7b54a84feba11b729a28425b25_300_200.jpg",
+              alt:"[青羊区]成都老兵国际公寓",
+              name:"已售 1342",
+              money:"193"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/tuangou/076/625/928/db6fe1430daf467391923a6bc607d09e_300_200.jpg",
+              alt:"[温江区]莱美假日酒店（成都温江店）",
+              name:"已售 1183",
+              money:"128"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/fd/tuangou/g1/M0B/78/E7/CghzfVUniPKAUjTVAAJYtQp07_Q673_300_200.jpg",
+              alt:"[新都区]成都银巢酒店",
+              name:"已售 905",
+              money:"248"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200i0j000000awufuF3C6_300_200.jpg",
+              alt:"[青羊区]成都城市名人酒店",
+              name:"已售 1011",
+              money:"599"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/tuangou/520/523/637/cb16404628f64c9eb0020eb9a4b295a7_300_200.jpg",
+              alt:"[锦江区]德士顿酒店(琉璃场分店)",
+              name:"已售 761",
+              money:"96"
+            },
           ],
           index:4
         },
         {
           title:"武汉",
           contents:[
-
+            {
+              src:"https://images4.c-ctrip.com/target/2A01170000011ucdq4266_300_200.jpg",
+              alt:"[武昌区]武汉保利大酒店",
+              name:"已售 754",
+              money:"275"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A0f13000000tjq2128E7_300_200.jpg",
+              alt:"[武昌区]武汉华侨城玛雅嘉途酒店（原华侨城玛雅海滩酒店）",
+              name:"已售 365",
+              money:"828"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A0q11000000qy0qv2DCB_300_200.jpg",
+              alt:"[洪山区]武汉光谷希尔顿酒店",
+              name:"已售 361",
+              money:"1048"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/fd/tuangou/g3/M0A/1A/43/CggYGlX2nN-AWU1PAACe2ig9v8w761_300_200.jpg",
+              alt:"[汉阳区]武汉明德酒店",
+              name:"已售 289",
+              money:"418"
+            },
           ],
           index:5
         },
         {
           title:"三亚",
           contents:[
-
+            {
+              src:"https://images4.c-ctrip.com/target/2A0r0800000033ja8549A_300_200.jpg",
+              alt:"三亚亚龙湾红树林度假酒店",
+              name:"已售 1013",
+              money:"588"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A021e000001fvxrvD4D5_300_200.jpg",
+              alt:"[海滨]三亚太阳湾柏悦酒店",
+              name:"已售 1239",
+              money:"2399"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A071e000001faow1EFEC_300_200.jpg",
+              alt:"三亚亚龙湾万豪度假酒店",
+              name:"已售 739",
+              money:"838"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A0f1e000001ftm8pE169_300_200.jpg",
+              alt:"[海棠区]三亚保利瑰丽酒店",
+              name:"已售 1054",
+              money:"2399"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/2A0p1e000001fhvhu80C0_300_200.jpg",
+              alt:"[吉阳区]三亚华宇亚龙湾迎宾馆",
+              name:"已售 762",
+              money:"999"
+            },
           ],
           index:6
         },
@@ -1567,15 +2901,48 @@ export default {
     imageTab(imageIndex){
       this.num = imageIndex;
     },
+    hotImageTab(hotImageIndex){
+      this.num1 = hotImageIndex;
+    },
     overseaTitle :function(imageIndex){
       return "overseaTitle"+imageIndex
     },
+    mouserover(picIndex){
+      this.bg = true;
+      this.current = picIndex; 
+      this.isblur = true;
+
+    },
+    mouseleave(picIndex){
+      this.bg = false;
+      this.current = picIndex;
+      this.isblur = false;
+    },
+    spanIcon :function(text){
+        // let a = this.name.text.replace(/\n/g,'" "');
+        let a= /[/n]/;
+        if(text == a){
+          text = text.replace(a,"</ br>")
+          this.isAside_icon = false;
+        console.log(this.isAside_icon);
+
+
+        }
+        console.log(this.isAside_icon);
+        
+       
+
+
+      }
+
+    
    
     
   
   },
   mounted() {
     this.loadAll();
+    this.spanIcon();
   }
 };
 </script>
@@ -1608,6 +2975,95 @@ export default {
     height: 500px;
     background-color:pink;
 }
+.hot_ul{
+  width: 1130px !important;
+}
+.hot_pic{
+  width: 900px;
+  height: 360px;
+  float: left;
+  background-color:red;
+}
+.hot_pic_box{
+  position: relative;
+  width: 225px;
+  height: 180px;
+  float: left;
+}
+.hot_pic_item{
+  width: 225px;
+  height: 180px;
+  padding:0 10px 10px 0;
+  float: left;
+}
+.hot_pic_icon{
+  width: 80px;
+  height: 20px;
+  position: absolute;
+  background-color: hsl(14, 95%, 60%);
+  opacity: 0.9;/*透明度0为完全透明，1是不透明，*/
+}
+.hot_pic_p{
+  height: 20px;
+  margin-bottom: 0;
+  color: white;
+  font-size: 13px;
+  line-height: 20px;
+}
+.hot_icon_money{
+  width: 12px !important;
+  height: 12px !important;
+  margin-bottom: 16px;
+}
+.background{
+  width: 220px;
+  height: 180px;
+  opacity: 0.9  ;
+  border: 1px solid #999999;/*颜色为灰色的1px宽度的实线边框（显示盒子）*/
+  background: rgba(0,0,0,0.40);
+  position: absolute;
+   
+}
+.background_title{
+  color: white;
+  font-size: 23px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.background_content{
+  color: white;
+  font-size: 12px;
+  width: 200px;
+  height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block; 
+  white-space: nowrap;
+  margin: 0 10px;
+}
+.blur{
+  -webkit-filter: blur(15px);
+  -moz-filter: blur(15px);
+  -o-filter: blur(15px);
+  -ms-filter: blur(15px);
+  filter: blur(15px);
+  background-size: cover;
+}
+.background_product{
+  margin-top: 20px;
+}
+.bg_icon{
+  margin: 0 5px 0 0;
+}
+.periphery_pic{
+  width: 920px;
+  height: 360px;
+  background-color:red;
+}
+
+
+
+
 .content_aside{
     width: 220px !important;
     height: 408px;
@@ -1655,12 +3111,12 @@ export default {
     line-height: 30px;
 }
 .main_button{
-    width: 80px;
-    height: 20px;
-    line-height: 10px;
+    /* width: 50px;
+    height: 15px; */
     padding: 0px;
     margin-right: 20px;
     border: 0;
+    font-size: 12px;
     border-radius: 0;
     margin-top: 10px;
     color: black;
@@ -1694,10 +3150,10 @@ export default {
   float: left;
 }
 .pic_item{
-    width: 230px;
-    height: 180px;
-    padding:0 10px 10px 0;
-    float: left;
+  width: 230px;
+  height: 180px;
+  padding:0 10px 10px 0;
+  float: left;
 }
 .circle{
   position: absolute;
@@ -1725,18 +3181,21 @@ export default {
   white-space: nowrap; */
 }
 .cicle_hr{
-  color: white;
-  font-weight: bold;
-  margin: 3px 0;
+  width: 80px;
+  height: 0.3px;
+  background-color:white;
+  text-align: center;
+  margin: 3px 0 0 14px;
 }
 .circle_num{
   font-size: 13px;
   color: white;
   margin-bottom: 0;
+
 }
 .circle_money{
   font-size: 25px;
-  color: orange;
+  color:  hsl(14, 95%, 60%);
 }
 .icon_money{
   margin-bottom: 20px;
@@ -1896,7 +3355,7 @@ export default {
 }
 
 .scene{
-  margin-top:167px;
+  margin-top:195px;
 }
 .scene_dd{
   display: block;
@@ -1918,7 +3377,11 @@ export default {
 .group_select{
   margin-top: 134px;
 }
-
+.aside_icon{
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+}
 
 </style>
 
