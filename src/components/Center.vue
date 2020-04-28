@@ -1,6 +1,6 @@
 <template>
      <div class="content">
-         <!-- 轮播图+查询机票开始 -->
+      <!-- 轮播图+查询机票开始 -->
       <div>
         <el-carousel trigger="click">
           <el-carousel-item v-for="(item,itemIndex) in pics" :key="itemIndex">
@@ -9,7 +9,7 @@
         </el-carousel>
         <air-tickets class="air"></air-tickets>
       </div>
-         <!-- 轮播图+查询机票结束 -->
+      <!-- 轮播图+查询机票结束 -->
 
       <div  class="block">
         <el-tabs v-model="activeName1" >
@@ -22,7 +22,6 @@
                             <li class="main_li"  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
                                 <el-button round size="mini" :class="{active:(hotImageIndex==num1)}" @click="hotImageTab(hotImageIndex)" class="main_button" >{{hotImage.title}}</el-button>
                             </li>
-                            <a class="main_a" href="javascript:void(0);">更多海外酒店></a>
                         </ul>
                           <div class="hot_pic">
                             <div  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
@@ -63,29 +62,34 @@
             </el-tab-pane>
             <!-- 热门结束 -->
             <!-- 周边游开始 -->
-            <el-tab-pane label="周边游" name="secend1" @click="spanIcon">
+            <el-tab-pane label="周边游" name="secend1">
               <el-container>
                  <el-aside class="content_aside">
                   <div>
-                    <pre><dt class="sale_dt">游山玩水</dt>
-                    <dd class="scene_dd"  v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a><span :class="{'aside_icon':isAside_icon}">|</span></dd>
-                  </pre>
+                    <dt class="sale_dt">热门主题游</dt>
+                    <dd class="scene_dd"  v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
                   </div>
                   <div class="homestay">
-                    <dt  class="sale_dt">民俗艺术</dt>
-                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a><span class="aside_icon">|</span></dd> 
+                    <dt  class="sale_dt">热门目的地</dt>
+                    <dd class="scene_dd" v-for="(hotDestination,hotDestinationIndex) in perCityTitles.slice(1)" :key="hotDestinationIndex"><a class="find_a" href="#" >{{hotDestination.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
                   <ul class="main_ul">
-                    <li class="main_li" v-for="(periphery,peripheryIndex) in peripherys" :key="peripheryIndex">
-                        <el-button  round size="mini" class="main_button" :class="{active:(peripheryIndex==num)}" @click="imageTab(peripheryIndex)">{{periphery.title}}</el-button>
+                    <li class="main_li" v-for="(perCityTitle,perCityTitleIndex) in perCityTitles.slice(0,8)" :key="perCityTitleIndex">
+                        <button class="city_button" :class="isColor==perCityTitleIndex?'btnColor':'' "  @click="perImageTab(perCityTitle.py,perCityTitleIndex,testIndex)">{{perCityTitle.name}}</button>
                     </li>
-                    <a class="main_a" href="javascript:void(0);">更多客栈></a>
-                  </ul>
+                    <el-select v-model="selectValue" round size="mini" class="main_button select_city" @change="cityChange">
+                        <el-option 
+                         v-for="(selectTitle,selectTitleIndex) in perCityTitles.slice(8)" :key="selectTitleIndex"
+                          :value="selectTitle.name">
+                        </el-option>
+                      </el-select> 
+                    <span class="main_a"><a href="javascript:void(0);" v-for="(perSign,perSigntIndex) in perSigns" :key="perSigntIndex">{{perSign}}</a></span>
+                  </ul> 
                   <div class="periphery_pic">
-                    <div v-for="(periphery,peripheryIndex) in peripherys" :key="peripheryIndex">
-                      <div class="hot_pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in periphery.contents" :key="picIndex" v-show="periphery.index==num">
+                    <div v-for="(pic,peripheryIndex) in peripheryPic" :key="peripheryIndex" >
+                      <div class="hot_pic_box domestic_box"  :title="pic.alt" >
                           <a href="javascript:void(0);"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
                           <p class="domestic_p">{{pic.alt}}</p>
                           <p class="domestic_p"></p>
@@ -101,28 +105,34 @@
             </el-tab-pane>
             <!-- 周边游结束 -->
             <!-- 门票开始 -->
-            <!-- <el-tab-pane label="门票" name="third1">
+            <el-tab-pane label="门票" name="third1">
               <el-container>
                 <el-aside class="content_aside">
-                  <div>
-                    <dt class="sale_dt">热门地标周边酒店</dt>
-                    <dd class="find_dd"><a href="#" class="find_a">还没想好周末去哪玩？</a></dd>
+                  <div id="aa">
+                    <dt class="sale_dt">热门主题游</dt>
+                    <dd class="scene_dd" @click="ticketHot" ref="ticketHot" v-for="(ticketThemePlay,ticketThemePlayIndex) in ticketThemePlays" :key="ticketThemePlayIndex"><a href="#" class="find_a">{{ticketThemePlay.name}}</a></dd>
                   </div>
                   <div class="find">
-                    <dt  class="sale_dt">促销</dt>
-                    <dd class="find_dd" v-for="(sale,saleIndex) in domesticSales" :key="saleIndex"><a class="find_a" href="#">{{sale}}</a></dd> 
+                    <dt  class="sale_dt">热门目的地</dt>
+                    <dd class="scene_dd" v-for="(ticketDestination,ticketDestinationIndex) in ticketDestinations" :key="ticketDestinationIndex"><a class="find_a" href="#">{{ticketDestination.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
                   <ul class="main_ul">
-                    <li class="main_li"  v-for="(button,buttonIndex) in buttonImages" :key="buttonIndex">
-                        <el-button round="false" size="mini" class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(buttonIndex)">{{button.title}}</el-button>
+                    <li class="main_li"  v-for="(ticketTitle,ticketTitleIndex) in ticketTitles.slice(0,8)" :key="ticketTitleIndex">
+                        <button size="mini" class="city_button" :class="isColor===ticketTitleIndex ? 'btnColor':''" @click="ticketImageTab(ticketTitle.py,ticketTitleIndex)">{{ticketTitle.name}}</button>
                     </li>
-                    <a class="main_a" href="javascript:void(0);">更多国内酒店></a>
+                    <el-select v-model="ticketSelect" @change="ticketCityChange" round size="mini" class="main_button select_city">
+                      <el-option
+                        v-for="(ticketSelectTitle,ticketSelectTitleIndex) in ticketTitles.slice(8)" :key="ticketSelectTitleIndex"
+                        :value="ticketSelectTitle.name">
+                      </el-option>
+                    </el-select>
+                    <a class="main_a" href="javascript:void(0);">更多门票></a>
                   </ul>
                   <div class="overseas_pic">
-                    <div v-for="(button,buttonIndex) in buttonImages" :key="buttonIndex">
-                      <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in button.contents" :key="picIndex" v-show="button.index==num">
+                    <div v-for="(pic,ticketPicIndex) in ticketPic" :key="ticketPicIndex">
+                      <div class="pic_box domestic_box" :title="pic.alt">
                           <a href="#"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
                           <p class="domestic_p">{{pic.alt}}</p>
                           <p class="domestic_p"></p>
@@ -135,66 +145,63 @@
                       </div>
                     </div>
                   </div>
-                  <a href="#" title="南靖静心山居客栈">
+                  <a href="#" title="暑期大放送">
                     <div class="main_right">
-                      <el-image class="demostic_right_image" src="https://dimg11.c-ctrip.com/images/26091b000001bkl7lF333.jpg"></el-image>
+                      <el-image class="ticket_right_image" src="https://pages.c-ctrip.com/dm/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190117154417.jpg"></el-image>
                       <div class="rectangle">
-                        <p class="rectangle_text">南靖静心山居客栈</p>
+                        <p class="rectangle_text">暑期大放送</p>
                       </div>
                     </div>
                   </a>  
                 </el-main>
               </el-container>
-            </el-tab-pane> -->
+            </el-tab-pane>
             <!-- 门票结束 -->
             <!-- 出境游开始 -->
-            <!-- <el-tab-pane label="出境游" name="fourth1">
+            <el-tab-pane label="出境游" name="fourth1">
               <el-container>
-                 <el-aside class="content_aside">
-                  <div>
-                    <dt class="sale_dt">热门主题</dt>
-                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="find_a">{{hotTheme.name}}</a><span class="aside_icon">|</span></dd>
+                 <el-aside class="content_aside"  >
+                  <div id="aside-width"  >
+                    <dt class="sale_dt">热门主题游</dt>
+                    <dd class="scene_dd"  @click="autoBorder"  ref="exitHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
                   </div>
-                  <div class="scene">
-                    <dt  class="sale_dt">促销</dt>
-                    <dd class="find_dd"><a class="find_a" href="#">春季赏花</a></dd> 
-                    <dd class="find_dd"><a class="find_a" href="#">万人自驾</a></dd> 
+                  <div class="homestay">
+                    <dt  class="sale_dt">热门目的地</dt>
+                    <dd class="scene_dd" @click="exitDestination" ref="exitDestination" v-for="(exitDestination,exitDestinationIndex) in exitCityTitles.slice(1)" :key="exitDestinationIndex"><a class="find_a" href="#">{{exitDestination.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
                   <ul class="main_ul">
-                    <li class="main_li"  v-for="(scene,sceneIndex) in sceneImages" :key="sceneIndex">
-                        <el-button round="false" size="mini" class="main_button" :class="{active:(buttonIndex==num)}" @click="imageTab(sceneIndex)">{{scene.title}}</el-button>
+                    <li class="main_li" v-for="(exitCityTitle,exitCityTitleIndex) in exitCityTitles.slice(0,8)" :key="exitCityTitleIndex">
+                        <button class="city_button" :class="isColor==exitCityTitleIndex?'btnColor':'' " @click="exitImageTab(exitCityTitle.py,exitCityTitleIndex)">{{exitCityTitle.name}}</button>
                     </li>
-                    <a class="main_a" href="javascript:void(0);">更多套餐></a>
-                  </ul>
-                  <div class="overseas_pic">
-                    <div v-for="(scene,sceneIndex) in sceneImages" :key="sceneIndex">
-                      <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in scene.contents" :key="picIndex" v-show="scene.index==num">
-                          <a href="#"><el-image  class="scene_pic_item" :src="pic.src"></el-image></a>
-                          <p class="domestic_p scene_P">{{pic.alt}}</p>
+                    <el-select v-model="exitSelect" round size="mini" class="main_button select_city" @change="exitCityChage">
+                      <el-option 
+                        v-for="(exitSelectTitle,exitSelectTitleIndex) in exitCityTitles.slice(8)" 
+                        :key="exitSelectTitleIndex"
+                        :value="exitSelectTitle.name">
+                      </el-option>
+                    </el-select> 
+                    <span class="main_a"><a href="javascript:void(0);" v-for="(exitSign,exitSignIndex) in exitSigns" :key="exitSignIndex">{{exitSign}}</a></span>
+                  </ul> 
+                  <div class="periphery_pic">
+                    <div v-for="(pic,exitSelectIndex) in exitCityPic" :key="exitSelectIndex" >
+                      <div class="hot_pic_box domestic_box"  :title="pic.name" >
+                          <a href="javascript:void(0);"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
+                          <p class="domestic_p">{{pic.name}}</p>
                           <p class="domestic_p">
                             <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
                             <svg-icon class="black_money" name="blackMoney"></svg-icon>
-                            </p>
-
+                         </p>
                       </div>
                     </div>
                   </div>
-                  <a href="#" title="银行卡立减">
-                    <div class="main_right">
-                      <el-image class="main_right_image" src="https://images3.c-ctrip.com/dj/201806/yhkhj_220x300.jpg"></el-image>
-                      <div class="rectangle">
-                        <p class="rectangle_text">银行卡立减</p>
-                      </div>
-                    </div>
-                  </a>  
                 </el-main>
               </el-container>
-            </el-tab-pane> -->
+            </el-tab-pane>
             <!-- 出境游结束 -->
             <!-- 境内游开始 -->
-            <!-- <el-tab-pane label="境内游" name="fifth1">
+            <el-tab-pane label="境内游" name="fifth1">
               <el-container>
                  <el-aside class="content_aside">
                   <div>
@@ -208,39 +215,37 @@
                 </el-aside>
                 <el-main>
                   <ul class="main_ul">
-                    <li class="main_li"  v-for="(homestay,homestayIndex) in homestaies" :key="homestayIndex">
-                        <el-button  round="false" size="mini" class="main_button" :class="{active:(homestayIndex==num)}" @click="imageTab(homestayIndex)">{{homestay.title}}</el-button>
+                    <li class="main_li"  v-for="(terCityTitle,terCityTitleyIndex) in terCityTitles.slice(0,8)" :key="terCityTitleyIndex">
+                        <button class="city_button" :class="terCityTitleyIndex==isColor? 'btnColor' : ''"  @click="terImageTab(terCityTitle.py,terCityTitleyIndex)">{{terCityTitle.name}}</button>
                     </li>
-                    <a class="main_a" href="javascript:void(0);">更多客栈></a>
+                     <el-select v-model="terSelect" round size="mini" class="main_button select_city" @change="terCityChage">
+                      <el-option 
+                        v-for="(terSelectTitle,terSelectTitleIndex) in terCityTitles.slice(8)" 
+                        :key="terSelectTitleIndex"
+                        :value="terSelectTitle.name">
+                      </el-option>
+                    </el-select> 
+                    <span class="main_a"><a href="javascript:void(0);"> {{this.terSigns}}</a></span>
                   </ul>
-                  <div class="overseas_pic">
-                    <div v-for="(homestay,homestayIndex) in homestaies" :key="homestayIndex">
-                      <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in homestay.contents" :key="picIndex" v-show="homestay.index==num">
+                  <div class="periphery_pic">
+                    <div v-for="(pic,territoryIndex) in terCityPic" :key="territoryIndex">
+                      <div class="pic_box domestic_box" :title="pic.alt">
                           <a href="#"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
                           <p class="domestic_p">{{pic.alt}}</p>
-                          <p class="domestic_p"></p>
                           <p class="domestic_p">
                             <span class="domestic_pic_span">{{pic.name}}</span>
                             <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
                             <svg-icon class="black_money" name="blackMoney"></svg-icon>
-                            </p>
+                         </p>
                       </div>
                     </div>
                   </div>
-                  <a href="#" title="南靖静心山居客栈">
-                    <div class="main_right">
-                      <el-image class="demostic_right_image" src="https://dimg11.c-ctrip.com/images/26091b000001bkl7lF333.jpg"></el-image>
-                      <div class="rectangle">
-                        <p class="rectangle_text">南靖静心山居客栈</p>
-                      </div>
-                    </div>
-                  </a>  
                 </el-main>
               </el-container>
-            </el-tab-pane> -->
+            </el-tab-pane>
             <!-- 境内游结束 -->
             <!-- 邮轮开始 -->
-            <!-- <el-tab-pane label="邮轮" name="six1">
+            <el-tab-pane label="邮轮" name="six1">
               <el-container>
                  <el-aside class="content_aside">
                   <div>
@@ -254,9 +259,16 @@
                 </el-aside>
                 <el-main>
                   <ul class="main_ul">
-                    <li class="main_li" v-for="(group,groupIndex) in groups" :key="groupIndex">
-                        <el-button round="false" size="mini" class="main_button" :class="{active:(groupIndex==num)}" @click="imageTab(groupIndex)">{{group.title}}</el-button>
+                    <li class="main_li" v-for="(linerCityTitle,linerCityTitleIndex) in linerCityTitles.slice(0,8)" :key="linerCityTitleIndex">
+                        <button class="city_button"  @click="linerImageTab(linerCityTitleIndex)">{{linerCityTitle.name}}</button>
                     </li>
+                    <el-select v-model="linerSelect" round size="mini" class="main_button select_city" @change="linerCityChage">
+                      <el-option 
+                        v-for="(linerSelectTitle,linerSelectTitleIndex) in linerCityTitles.slice(8)" 
+                        :key="linerSelectTitleIndex"
+                        :value="linerSelectTitle.name">
+                      </el-option>
+                    </el-select> 
                     <a class="main_a" href="javascript:void(0);">更多团购产品></a>
                   </ul>
                   <div class="overseas_pic">
@@ -273,17 +285,17 @@
                       </div>
                     </div>
                   </div>
-                  <a href="#" title="好吃的在这里，吃货们看过来!">
+                  <a href="#" title="">
                     <div class="main_right">
-                      <el-image class="main_right_image" src="https://pages.ctrip.com/commerce/promote/20170720/yydzx/img/msbkf_220_330.jpg"></el-image>
-                      <div class="rectangle">
-                        <p class="rectangle_text">好吃的在这里，吃货们看过来!</p>
-                      </div>
+                      <!-- <el-image class="main_right_image" src=""></el-image> -->
+                      <!-- <div class="rectangle"> -->
+                        <!-- <p class="rectangle_text"></p> -->
+                      <!-- </div> -->
                     </div>
                   </a>  
                 </el-main>
               </el-container>
-            </el-tab-pane> -->
+            </el-tab-pane>
             <!-- 邮轮结束 -->
 
         </el-tabs>
@@ -581,16 +593,41 @@ export default {
   },
   data() { 
     return {
-      activeName1:"first1",
+      activeName1:"six1",
       hotImages:[],
       num1:0, 
+      num2:0,
       bg:false,
       current:0,
       isblur:false,
       round:false,
-      peripherys:[],
-      isAside_icon:true,
-      // text:"",
+      peripherys:{},
+      selectValue:"更多",
+      perCityTitles:[],
+      peripheryPic:[],
+      isColor:0,
+      themePlays:[],
+      ticketSelect:"更多",
+      ticketTitles:[],
+      ticketPics:{},
+      ticketPic:[],
+      ticketThemePlays:[],
+      ticketDestinations:[],
+      exitSelect:"更多",
+      exitCityTitles:[],
+      exitCityPics:{},
+      exitCityPic:[],
+      perSigns:[],
+      exitSigns:[],
+      terCityTitles:[],
+      terCityPics:{},
+      terCityPic:[],
+      terSelect:"更多",
+      terSigns:[],
+      linerCityTitles:[],
+      linerCityPics:{},
+      linerCityPic:[],
+
 
       pics: [],
       activeName: 'first',
@@ -617,6 +654,7 @@ export default {
          
     };
   },
+ 
   methods: {
     loadAll() {
       this.hotImages = [
@@ -1168,10 +1206,61 @@ export default {
            index:6
          },
       ],
-      this.peripherys = [
+      this.perCityTitles = [
         {
-          title:"精选",
-          contents:[
+          name:"精选",
+          py:"jingXuan",
+          index:0
+        },
+         {
+          name:"汕头",
+          py:"shanTou",
+          index:1
+        },
+         {
+          name:"厦门",
+          py:"xiaMen",
+          index:2
+        },
+         {
+          name:"漳州",
+          py:"zhangZhou",
+          index:3
+        },
+         {
+          name:"惠州",
+          py:"huiZhou",
+          index:4
+        },
+         {
+          name:"潮州",
+          py:"chaoZhou",
+          index:5
+        },
+         {
+          name:"梅州",
+          py:"meiZhou",
+          index:6
+        },
+        {
+          name:"广州",
+          py:"guangZhou",
+          index:7
+        },
+        {
+          name:"揭阳",
+          py:"jieYang",
+          index:8
+        },
+        {
+          name:"深圳",
+          py:"shenZhen",
+          index:9
+        }
+
+      ]
+      this.peripherys = {
+        "jingXuan":[     
             {
               src:"https://dimg03.c-ctrip.com/images/100s0r000000h753vAE4D_C_228_132.jpg ",
               alt:"Q加·南澳黄金海岸希维尔假日公寓1-2晚，浪漫海景房型，面朝大海，心旷神怡！•【离青澳湾步行距离近】",
@@ -1180,7 +1269,7 @@ export default {
             {
               src:"https://dimg03.c-ctrip.com/images/20030x000000lebrj4314_C_228_132.jpg",
               alt:"厦门灵玲大酒店1-3晚+部分房型含马戏城/动物园套餐 房型礼包为准•【可选灵玲马戏城】",
-              money:"451"
+              money:"451",
             },
             {
               src:"https://images4.c-ctrip.com/target/20030t000000iimlnA49B_C_228_132.jpg",
@@ -1213,11 +1302,7 @@ export default {
               money:"1631"
             },
           ],
-            index:0
-        },
-        {
-          title:"汕头",
-          contents:[
+        "shanTou":[
             {
               src:"https://dimg03.c-ctrip.com/images/100s0r000000h753vAE4D_C_228_132.jpg",
               alt:"Q加·南澳黄金海岸希维尔假日公寓1-2晚，浪漫海景房型，面朝大海，心旷神怡！•【离青澳湾步行距离近】",
@@ -1259,11 +1344,7 @@ export default {
               money:"116"
             },
           ],
-          index:1
-        },
-        {
-          title:"厦门",
-          contents:[
+        "xiaMen":[
             {
               src:"https://dimg03.c-ctrip.com/images/20030x000000lebrj4314_C_228_132.jpg",
               alt:"厦门灵玲大酒店1-3晚+部分房型含马戏城/动物园套餐 房型礼包为准•【可选灵玲马戏城】",
@@ -1305,11 +1386,7 @@ export default {
               money:"470"
             },
           ],
-          index:2
-        },
-        {
-          title:"南澳",
-          contents:[
+        "nanAO":[
             {
               src:"https://dimg03.c-ctrip.com/images/100s0r000000h753vAE4D_C_228_132.jpg",
               alt:"Q加·南澳黄金海岸希维尔假日公寓1-2晚，浪漫海景房型，面朝大海，心旷神怡！•【离青澳湾步行距离近】",
@@ -1351,11 +1428,7 @@ export default {
               money:"116"
             },
           ],
-          index:3
-        },
-        {
-          title:"漳州",
-          contents:[
+        "zhangZhou":[
             {
               src:"https://images4.c-ctrip.com/target/2004190000015iczpE442_C_228_132.jpg",
               alt:"云水谣1949老四合院1号民宿1晚+可选云水谣古镇•【每间客房都是自己设计的，每一间都有不一样原色和元素】",
@@ -1397,11 +1470,7 @@ export default {
               money:"539"
             },
           ],
-          index:4
-        },
-        {
-          title:"惠州",
-          contents:[
+        "huiZhou":[
             {
               src:"https://dimg03.c-ctrip.com/images/100j0s000000hf4bc2AC4_C_228_132.jpg",
               alt:"惠州双月湾檀悦豪生温泉度假酒店·打卡网红无边际泳池+300米私属沙滩+瑜伽健身房【五一热卖，打卡“水滴酒店”！】",
@@ -1443,11 +1512,7 @@ export default {
               money:"577"
             },
           ],
-          index:5
-        },
-        {
-          title:"潮州",
-          contents:[
+        "chaoZhou":[
             {
               src:"https://dimg03.c-ctrip.com/images/200d0s000000hq1ktD4D6_C_228_132.jpg",
               alt:"潮州书香客栈1晚，周边景点云集，客栈毗邻开元寺、牌坊街、广济桥！•【以书香气息为主题的艺术装修风格为特色】",
@@ -1489,11 +1554,7 @@ export default {
               money:"238"
             },
           ],
-          index:6
-        },
-        {
-          title:"梅州",
-          contents:[
+        "meiZhou":[
             {
               src:"https://dimg03.c-ctrip.com/images/200q0q000000gosg95499_C_228_132.jpg",
               alt:"【携程自营】梅州客天下国际大酒店1-2晚+双人客家小镇门票【品客家风情，享南国情调】•【情侣|亲子游】",
@@ -1535,10 +1596,1139 @@ export default {
               money:"121"
             },
           ],
-          index:7
-        }
+        "guangZhou":[
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g5/M03/B1/AD/CggYr1bFXRaAGyKBACSzLEIGjQU464_C_228_132.jpg",
+              alt:"广州2日自由行·【高铁往返】粤享美食·打卡网红餐厅·吃喝逛街嗨不停",
+              money:"538"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200s0w000000ks3jt1DC9_C_228_132.jpg",
+              alt:"长隆酒店(广州长隆野生动物世界店)1-3晚+享免费穿梭往返园区及地铁口，可加购野生动物世界/欢乐世界/大马戏门票",
+              money:"862"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200s0g00000088mf5799A_C_228_132.jpg",
+              alt:"广州卓思道温泉度假酒店+双人早餐+午餐+晚餐，部分房型含私家泡池•【从化温泉】",
+              money:"1009"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200d170000011h7f4B1ED_C_228_132.jpg",
+              alt:"广州融创堇山酒店+融创雪世界/陆乐园/体育世界等多套票可选·【融创度假区内五钻酒店 融创自营品牌】",
+              money:"实时计价"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200c0w000000kraj3BCBE_C_228_132.jpg",
+              alt:"广州南沙花园酒店+2大1小(12岁以下)早餐+200元桃园馆中餐厅消费额度+赠送特色甜品2份+畅游滨海公园•【亲子游】",
+              money:"799"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200t16000001053p15852_C_228_132.jpg",
+              alt:"州温斯顿高.级公寓1-3晚，公寓紧邻景区",
+              money:"260"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200q11000000rbjce77A0_C_228_132.jpg",
+              alt:"广州三英温泉度假酒店+双人早餐+房间独立温泉池无限次畅泡，可选含晚餐套票•【增城温泉】",
+              money:"711"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200j0n000000e1l148219_C_228_132.jpg",
+              alt:"奥美家国际公寓(广州汉溪长隆地铁站店)1-3晚，可加购长隆野生动物世界/大马戏/欢乐世界门票•【长隆商圈 5公里内】",
+              money:"118"
+            },
+          ],
+        "jieYang":[
+            {
+              src:"https://dimg04.c-ctrip.com/images/30061900000160si45848_C_228_132.png",
+              alt:"普宁盘龙湾温泉度假村+盘龙湾温泉+双人早餐+民族杂技表演+露天恒温泳池+无限次养生温泉/私家温泉池·【特惠】",
+              money:"338"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200e0700000021h041F77_C_228_132.jpg",
+              alt:"普宁盘龙湾温泉度假村1晚+可选盘龙湾温泉",
+              money:"302"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g2/M0B/E5/05/Cghzf1WdCKOAf040ACXk4zkKudo873_C_228_132.jpg",
+              alt:"揭西京明温泉度假村1-2晚，特色温泉、生态美景、度假村，欢乐之旅！",
+              money:"316"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200t0h000000906638449_C_228_132.jpg",
+              alt:"揭阳大洋国际生态旅游度假区，可选大洋国际生态旅游度假区",
+              money:"232"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100p0b0000005sg6mB8E2_C_228_132.jpg",
+              alt:"揭阳大北山度假村1-2晚，位于国家森林公园内，毗邻十八湾瀑布、茶园风光，位置得天独厚，尽收湖光山色！【森林 瀑布 茶园】",
+              money:"286"
+            },
+            {
+              src:"https://dimg04.c-ctrip.com/images/300t1b0000019vwdo9E03_C_228_132.jpg",
+              alt:"普宁盘龙湾温泉度假村+盘龙湾温泉+球馆体验券·毗邻粤东拜佛胜地——盘龙阁寺，依山傍水、空气清新、风景秀丽",
+              money:"338"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/hotel/433000/432073/860d4db7738541c9b52c342299f4a658_C_228_132.jpg",
+              alt:"揭西大北山度假村1晚+可选黄满寨瀑布",
+              money:"286"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200p0l000000d6aesF968_C_228_132.jpg",
+              alt:"维也纳国际酒店(揭阳楼店)(原中天文化酒店)1晚+可选宝山湖",
+              money:"199"
+            },
+          ],
+        "shenZhen":[
+            {
+              src:"https://dimg03.c-ctrip.com/images/hotel/80000/79883/d28a24ab6615495f884e3e9f1cc3a603_C_228_132.jpg",
+              alt:"深圳东部华侨城黑森林酒店+可选双人2日无限次大峡谷/茶溪谷套票/单房，部分送缆车/小火车，黑森林主题•【亲子度假】",
+              money:"333"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/hotel/g1/M04/6D/3A/CghzfFWCKxiAWhQcAALIMPd-wrY852_C_228_132.jpg",
+              alt:"深圳海上田园酒店1晚•【住店就可免门票 景区步行距离250米（约4分钟）】",
+              money:"443"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200f090000003t2zs72B5_C_228_132.jpg",
+              alt:"城市客栈（深圳世界之窗店）1-2晚+可选世界之窗门票+徒步可达世界之窗•【高性价比】",
+              money:"294"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200b0k000000bl3401196_C_228_132.jpg",
+              alt:"深圳东部华侨城茵特拉根酒店+2日无限次大峡谷/茶溪谷套票/净房可选，部分送缆车/小火车·立减20元/单，亲子情侣度假",
+              money:"719"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g3/M09/4A/C6/CggYGVaUpY2AZk-yACGJ8DHMMOs490_C_228_132.jpg",
+              alt:"惠州+深圳3日自由行·{高铁}·小西湖美景+探游鹏城·一键预定·小长假悠选",
+              money:"662"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/10090t000000ihmjbC31C_C_228_132.jpg",
+              alt:"抖音网红！深圳凯贝丽君临海域服务公寓+45层无边际海景泳池+望海健身房，近大小梅沙、东部华侨城•【海滨沙滩】",
+              money:"376"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200f0m000000dgdw8439F_C_228_132.jpg",
+              alt:"深圳华侨城洲际大酒店1-2晚,可加购世界之窗阿尔卑斯冰雪世界门票•【畅玩酒店人工沙滩、儿童乐园、室内外游泳池】",
+              money:"867"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200t0q000000g97gn2FA1_C_228_132.jpg",
+              alt:"【单谷+温泉】深圳东部华侨城瀑布酒店1晚（含早）+双人2日无限次大峡谷+双人茵特拉根单次温泉+网红小火车+缆车•【亲子温泉】",
+              money:"808"
+            },
+
+          ]
+        
+     
+     
+     },
+      this.themePlays = [
+        {
+          name:"海岛"
+        },
+        {
+          name:"古镇"
+        },
+        {
+          name:"蜜月"
+        },
+        {
+          name:"亲子"
+        },
+        {
+          name:"爸妈游"
+        },
+        {
+          name:"美食"
+        },
 
       ],
+      this.ticketTitles = [
+        {
+          name:"广东",
+          py:"guangDong",
+          index:0
+        },
+        {
+          name:"广西",
+          py:"guangXi",
+          index:1
+        },
+        {
+          name:"湖南",
+          py:"huNan",
+          index:2
+        },
+        {
+          name:"湖北",
+          py:"huBei",
+          index:3
+        },
+        {
+          name:"海南",
+          py:"haiNan",
+          index:4
+        },
+        {
+          name:"江西",
+          py:"jiangXi",
+          index:5
+        },
+        {
+          name:"福建",
+          py:"fuJian",
+          index:6
+        },
+        {
+          name:"港澳台",
+          py:"gangAoTai",
+          index:7
+        },
+        {
+          name:"日韩",
+          py:"riHan",
+          index:8
+        },
+      ],
+      this.ticketPics = {
+        "guangDong":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/350j1f000001fxewq122A_C_220_110.jpg",
+            alt:"深圳欢乐谷",
+            money:"115"
+          },
+          {
+            src:"https://dimg02.c-ctrip.com/images/fd/tg/g4/M01/1A/C7/CggYHlXJyO6AWI2oAAJJQTk6VNA030_C_220_110.jpg",
+            alt:"深圳野生动物园",
+            money:"180"
+          },
+          {
+            src:"https://dimg05.c-ctrip.com/images/100n0d0000006yg4mEF3D_C_220_110.jpg",
+            alt:"锦绣中华民俗村",
+            money:"88"
+          },
+          {
+            src:"https://dimg02.c-ctrip.com/images/100e0e0000006z9mhEE4D_C_220_110.jpg",
+            alt:"东部华侨城",
+            money:"68"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/fd/tg/g5/M09/54/A5/CggYsFcVlWyAWQPIAACQvqq8ZC0432_C_220_110.jpg",
+            alt:"正佳极地海洋世界",
+            money:"110"
+          },
+        ],
+        "guangXi":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/350l180000014eyiy54CB_C_220_110.jpg",
+            alt:"《印象刘三姐》山水实景演出",
+            money:"99"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/10060x000000lenxuCE71_C_220_110.jpg",
+            alt:"漓江",
+            money:"108"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350p180000013x80v4D56_C_220_110.jpg",
+            alt:"两江四湖",
+            money:"29"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/fd/tg/g2/M02/DE/21/Cghzf1THSCmAB2kOAAvmHQPXVyQ419_C_220_110.jpg",
+            alt:"象山景区",
+            money:"51"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/fd/tg/g2/M0A/4D/48/CghzgFSzKnCANXHYAAQxl99Il8k201_C_220_110.jpg",
+            alt:"七星景区",
+            money:"50"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/tg/017/415/265/e671ebc1a4d145a28d5cc9546e4e03df_C_220_110.jpg",
+            alt:"天籁·蝴蝶泉",
+            money:"22.5"
+          },
+        ],
+        "huNan":[
+          {
+            src:"https://youimg1.c-ctrip.com/target/fd/tg/g3/M0B/79/0A/CggYGVaCMmeABWKvABclN5juAxw435_C_220_110.jpg",
+            alt:"天门山国家森林公园",
+            money:"126"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/35051e000001ezir2DF15_C_220_110.jpg",
+            alt:"新华联铜官窑古镇",
+            money:"30"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350j12000000sxjcgBC01_C_220_110.jpg",
+            alt:"凤凰古城",
+            money:"25"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350a14000000wasn2DBCC_C_220_110.jpg",
+            alt:"长沙世界之窗",
+            money:"191"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350m1f000001glfhiEDF9_C_220_110.jpg",
+            alt:"张家界千古情景区",
+            money:"265"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350e13000000v6mws479C_C_220_110.jpg",
+            alt:"长沙生态动物园",
+            money:"20"
+          },
+        ],
+        "huBei":[
+          {
+            src:"https://youimg1.c-ctrip.com/target/100c0p000000fpu0gC1CC_C_220_110.jpg",
+            alt:"武汉两江游览（夜游长江）",
+            money:"110"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/100l0e00000076sqe5EC4_C_220_110.jpg",
+            alt:"知音号",
+            money:"100"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350v160000010zsx7A3C3_C_220_110.jpg",
+            alt:"朝天吼漂流",
+            money:"99"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350311000000r01mxC5A2_C_220_110.jpg",
+            alt:"中国唐城",
+            money:"40"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350l180000015h82qE4E1_C_220_110.jpg",
+            alt:"恩施地心谷景区石门河",
+            money:"190"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350n190000015w3lq7850_C_220_110.jpg",
+            alt:"恩施大峡谷",
+            money:"70"
+          },
+        ],
+        "haiNan":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/3501180000013ycqo191F_C_220_110.jpg",
+            alt:"亚龙湾热带天堂森林公园",
+            money:"145"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350l15000000yck99BA47_C_220_110.jpg",
+            alt:"呀诺达雨林文化旅游区",
+            money:"66"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350r1a0000019lyzv4858_C_220_110.jpg",
+            alt:"三亚亚特兰蒂斯C秀",
+            money:"138"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350m0x000000ljyki2B70_C_220_110.jpg",
+            alt:"蜈支洲岛",
+            money:"133"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350l15000000xyqth6933_C_220_110.jpg",
+            alt:"天涯海角",
+            money:"60"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/fd/tg/g1/M03/7D/32/CghzfFWwz9eAFdICABJIucYkXDg976_C_220_110.jpg",
+            alt:"亚龙湾",
+            money:"120"
+          },
+        ],
+        "jiangXi":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/35031c000001d52ui15D0_C_220_110.jpg",
+            alt:"南昌融创乐园",
+            money:"实时计价"
+          },
+          {
+            src:"https://dimg06.c-ctrip.com/images/350t0v000000jsqicC53D_C_220_110.jpg",
+            alt:"古窑民俗博览区",
+            money:"85"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/10030d0000006w9830D9F_C_220_110.jpg",
+            alt:"婺源风景区",
+            money:"105"
+          },
+          {
+            src:"https://dimg06.c-ctrip.com/images/350j0p000000fmflk273B_C_220_110.jpg",
+            alt:"灵山风景名胜区",
+            money:"75"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350m13000000tqrpi136C_C_220_110.jpg",
+            alt:"婺源篁岭",
+            money:"140"
+          },
+          {
+            src:"https://dimg06.c-ctrip.com/images/350i0v000000k1a0s032D_C_220_110.jpg",
+            alt:"龙虎山风景区",
+            money:"45"
+          },
+        ],
+        "fuJian":[
+          {
+            src:"https://youimg1.c-ctrip.com/target/1006050000000sr6w87FC_C_220_110.jpg",
+            alt:"武夷山",
+            money:"85"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/35021b000001bd01rFD81_C_220_110.jpg",
+            alt:"巨鹏飞梦幻海岸",
+            money:"65"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/100b0h00000090t4q990F_C_220_110.jpg",
+            alt:"鹭江夜游",
+            money:"69"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/35011e000001g24c8A60E_C_220_110.jpg",
+            alt:"《闽南神韵》演出",
+            money:"129"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350h0y000000m2fka5F8D_C_220_110.jpg",
+            alt:"灵玲马戏城",
+            money:"70"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/350616000000z133d583D_C_220_110.jpg",
+            alt:"厦门科技馆",
+            money:"30"
+          },
+        ],
+        "gangAoTai":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/350a1800000143hlrDB98_C_220_110.jpg",
+            alt:"香港天际100观景台",
+            money:"118"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/100l0e000000725v1870C_C_220_110.jpg",
+            alt:"挪亚方舟",
+            money:"67"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/100u0r000000gpm964EBB_C_220_110.jpg",
+            alt:"台北101大楼",
+            money:"118"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/100d080000003c0mw3230_C_220_110.jpg",
+            alt:"太平山顶",
+            money:"39"
+          },
+        ],
+        "riHan":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/3509180000014kq2a77C1_C_220_110.jpg",
+            alt:"爱宝乐园",
+            money:"220"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/fd/tg/g2/M03/4A/EF/Cghzf1WjfKKAErYmABFj1QV6_XM155_C_220_110.jpg",
+            alt:"济州泰迪熊博物馆",
+            money:"40.5"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/100q0d0000006rhpf1BA5_C_220_110.jpg",
+            alt:"藤子·F·不二雄博物馆",
+            money:"104"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/100l0p000000fit9z18ED_C_220_110.jpg",
+            alt:"冲绳美丽海水族馆",
+            money:"119"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/fd/tg/g5/M06/6B/53/CggYsFcV1s6AZKAXACiXEXn1JII084_C_220_110.jpg",
+            alt:"三鹰之森吉卜力美术馆",
+            money:"97"
+          },
+          {
+            src:"https://youimg1.c-ctrip.com/target/10070a00000055m6kA921_C_220_110.jpg",
+            alt:"日本环球影城",
+            money:"509"
+          },
+        ],
+      },
+      this.ticketThemePlays = [
+        {
+          name:"门票9元起"
+        },
+        {
+          name:"当季热卖"
+        },
+        {
+          name:"全球乐园"
+        },
+        {
+          name:"长隆龙秀"
+        },
+      ],
+      this.ticketDestinations = [
+        {
+          name:"长隆野生动物世界广州融创乐园"
+        },
+        {
+          name:"欢乐谷"
+        },
+        {
+          name:"长隆海洋王国"
+        },
+        {
+          name:"珠江夜游"
+        },
+        {
+          name:"珠海长隆剧院"
+        },
+        {
+          name:"小梅沙海洋公园"
+        },
+        {
+          name:"长鹿旅游休博园"
+        },
+        {
+          name:"东部华侨城"
+        },
+        {
+          name:"百万葵园"
+        },
+        {
+          name:"古龙峡"
+        },
+        {
+          name:"长隆欢乐世界"
+        },
+        {
+          name:"广州塔"
+        },
+      ],
+      this.exitCityTitles = [
+        {
+          name:"精选",
+          py:"jingXuan",
+          index:0
+        },
+        {
+          name:"泰国",
+          py:"taiGuo",
+          index:1
+        },
+        {
+          name:"日本",
+          py:"riBen",
+          index:2
+        },
+        {
+          name:"东京",
+          py:"dongJing",
+          index:3
+        },
+        {
+          name:"美国",
+          py:"meiGuo",
+          index:4
+        },
+        {
+          name:"马尔代夫",
+          py:"maErDaiFu",
+          index:5
+        },
+        {
+          name:"塞尔维亚",
+          py:"saiErWeiYa",
+          index:6
+        },
+        {
+          name:"巴厘岛",
+          py:"baLiDao",
+          index:7
+        },
+        {
+          name:"普吉岛",
+          py:"puJiDao",
+          index:8
+        },
+        {
+          name:"俄罗斯",
+          py:"eLuoSi",
+          index:9
+        },
+      ],
+      this.terCityTitles = [
+        {
+          name:"精选",
+          py:"jingXuan",
+          index:0
+        },
+        {
+          name:"深圳",
+          py:"shenZhen",
+          index:1
+        },
+        {
+          name:"惠州",
+          py:"huiZhou",
+          index:2
+        },
+        {
+          name:"桂林",
+          py:"guiLin",
+          index:3
+        },
+        {
+          name:"厦门",
+          py:"xiaMen",
+          index:4
+        },
+        {
+          name:"珠海",
+          py:"zhuHai",
+          index:5
+        },
+        {
+          name:"三亚",
+          py:"sanYa",
+          index:6
+        },
+        {
+          name:"清远",
+          py:"qingYuan",
+          index:7
+        },
+        {
+          name:"丽江",
+          py:"liJiang",
+          index:8
+        },
+        {
+          name:"云南",
+          py:"yunNan",
+          index:9
+        },
+      ],
+      this.terCityPics = {
+        "jingXuan":[
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g3/M09/4A/C6/CggYGVaUpY2AZk-yACGJ8DHMMOs490_C_228_132.jpg",
+            alt:"惠州+深圳3日自由行·{高铁}·小西湖美景+探游鹏城·一键预定·小长假悠选",
+            money:"662"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g4/M00/C2/0E/CggYHVX7s8yAKDAxABIUI29-T6Q219_C_228_132.jpg",
+            alt:"深圳+惠州3日自由行·{高铁}·探游鹏城+小西湖美景·一键预定·小长假悠选（深进惠出）",
+            money:"786"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300q15000000ypkf6A31F_C_228_132.jpg",
+            alt:"广西北海+涠洲岛+桂林+漓江+阳朔+龙脊梯田8日7晚私家团(5钻) 【携程自营-新颖玩法】一单一团【住2晚涠洲岛海景民宿】四星船游漓江+龙脊梯田双缆车+遇龙河竹筏 【二选一：印象刘三姐or千古情】多人出行至高立减8888",
+            money:"实时计价"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g4/M09/1B/82/CggYHlYkvBmAYzxAABkOZQ_bSBQ343_C_228_132.jpg",
+            alt:"厦门+鼓浪屿+福建土楼4日3晚跟团游(5钻) 【爸妈放心游】全程含餐 多重保障 观赏双土楼 永定土楼王+云水谣古镇深度游 赠 『暖心保温杯+尽孝按摩捶』 让爸妈爱上旅行",
+            money:"1857"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g1/M07/7B/1B/CghzfFWwtDKAcL7CACXHUBEwW5s310_C_228_132.jpg",
+            alt:"珠海+澳门4日自由行(5钻)·1晚长隆酒店+2晚澳门五钻酒店|可选长隆海洋王国门票 【亲子游热卖】",
+            money:"985"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j10000000ocs9zCC0E_C_228_132.jpg",
+            alt:"海南三亚+海口5日4晚跟团游(4钻)【度假预售】买一送一+五星海景房+蜈支洲一整天+篝火派对+特色美食+一起浪迹天涯海角~",
+            money:"2440"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30011c000001dfwe3E974_C_228_132.jpg",
+            alt:"云南丽江+大理6日5晚跟团游(4钻) 『国际五星·一价全含·父母带娃儿童免单』赠20寸行李箱+现金红包『自家发团 0差评』VIP私人游船+雪山大索登顶4680+敞篷JEEP游洱海『网红天空之境+蓝月谷+5A石林』赠【丽水金沙表演】",
+            money:"2155"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/hotel/g3/M08/AB/98/CggYGlZeg9CAEgIYAARRRT08clk983_C_228_132.jpg",
+            alt:"清远聚龙湾温泉2日1晚自由行 【踏春自驾游】佛冈聚龙湾天然度假村，住宿1晚+双人自助早餐+双人无限次温泉+双人汽车特技表演门票+大风车游乐园150元一套游乐金币（此产品为单订房，一间房可入住2成人）",
+            money:"268"
+          },
+        ],
+        "shenZhen":[
+          {
+              src:"https://dimg03.c-ctrip.com/images/hotel/80000/79883/d28a24ab6615495f884e3e9f1cc3a603_C_228_132.jpg",
+              alt:"深圳东部华侨城黑森林酒店+可选双人2日无限次大峡谷/茶溪谷套票/单房，部分送缆车/小火车，黑森林主题•【亲子度假】",
+              money:"333"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/hotel/g1/M04/6D/3A/CghzfFWCKxiAWhQcAALIMPd-wrY852_C_228_132.jpg",
+              alt:"深圳海上田园酒店1晚•【住店就可免门票 景区步行距离250米（约4分钟）】",
+              money:"443"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200f090000003t2zs72B5_C_228_132.jpg",
+              alt:"城市客栈（深圳世界之窗店）1-2晚+可选世界之窗门票+徒步可达世界之窗•【高性价比】",
+              money:"294"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200b0k000000bl3401196_C_228_132.jpg",
+              alt:"深圳东部华侨城茵特拉根酒店+2日无限次大峡谷/茶溪谷套票/净房可选，部分送缆车/小火车·立减20元/单，亲子情侣度假",
+              money:"719"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/fd/tg/g3/M09/4A/C6/CggYGVaUpY2AZk-yACGJ8DHMMOs490_C_228_132.jpg",
+              alt:"惠州+深圳3日自由行·{高铁}·小西湖美景+探游鹏城·一键预定·小长假悠选",
+              money:"662"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/10090t000000ihmjbC31C_C_228_132.jpg",
+              alt:"抖音网红！深圳凯贝丽君临海域服务公寓+45层无边际海景泳池+望海健身房，近大小梅沙、东部华侨城•【海滨沙滩】",
+              money:"376"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200f0m000000dgdw8439F_C_228_132.jpg",
+              alt:"深圳华侨城洲际大酒店1-2晚,可加购世界之窗阿尔卑斯冰雪世界门票•【畅玩酒店人工沙滩、儿童乐园、室内外游泳池】",
+              money:"867"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200t0q000000g97gn2FA1_C_228_132.jpg",
+              alt:"【单谷+温泉】深圳东部华侨城瀑布酒店1晚（含早）+双人2日无限次大峡谷+双人茵特拉根单次温泉+网红小火车+缆车•【亲子温泉】",
+              money:"808"
+            },
+        ],
+        "huiZhou":[
+          {
+              src:"https://dimg03.c-ctrip.com/images/100j0s000000hf4bc2AC4_C_228_132.jpg",
+              alt:"惠州双月湾檀悦豪生温泉度假酒店·打卡网红无边际泳池+300米私属沙滩+瑜伽健身房【五一热卖，打卡“水滴酒店”！】",
+              money:"449"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200u0z000000mx9s5994F_C_228_132.jpg",
+              alt:"惠州双月湾檀悦都喜天丽度假酒店·无边际泳池嬉戏+私享沙滩漫步+健身房——天境之城，打卡网红酒店【五一热卖】",
+              money:"458"
+            },
+            {
+              src:"https://dimg04.c-ctrip.com/images/3004170000010zpsh287D_C_228_132.jpg",
+              alt:"惠东双月湾享海温泉度假酒店·含早+双人自助晚餐+网红秋千+私家沙滩+双人卡丁车+双人观光小火车+双人蹦床+双人淘气堡【开业特惠】",
+              money:"679"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200v0u000000jakh36B90_C_228_132.jpg",
+              alt:"顺逸东方白盆湖温泉（惠州惠东白盆珠店）1-2晚+双人免费22个温泉池无限次浸泡+自助早餐•【白盆珠库区内】",
+              money:"198"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/100p0a0000004zg4l8C1A_C_228_132.jpg",
+              alt:"『网红泳池』惠东屿海云天假日酒店1-2晚+环球美食节&海鲜自助晚餐+自助早餐+无限次UFO室外泳池，步行至沙滩仅需5-7分钟！",
+              money:"481"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200711000000rwbpsF459_C_228_132.jpg",
+              alt:"下单立减30元！惠州候鸟水榕庄度假酒店1-3晚，坐拥2700亩高尔夫球场、6大自然湖泊！【私家泳池别墅】",
+              money:"746"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/280e0y000000m1aoaAD4B_C_228_132.jpg",
+              alt:"惠东富力希尔顿逸林度假酒店1-3晚，饱览整个海湾和惠州海湾大桥，度假优选！",
+              money:"447"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/20020w000000kp2se4930_C_228_132.jpg",
+              alt:"【全独立泡池】龙门南昆山温德姆温泉酒店+早餐+无限次露台温泉，可选双人晚餐套票『立减20/单』",
+              money:"577"
+            },
+        ],
+        "guiLin":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300q15000000ypkf6A31F_C_228_132.jpg",
+            alt:"广西北海+涠洲岛+桂林+漓江+阳朔+龙脊梯田8日7晚私家团(5钻) 【携程自营-新颖玩法】一单一团【住2晚涠洲岛海景民宿】四星船游漓江+龙脊梯田双缆车+遇龙河竹筏 【二选一：印象刘三姐or千古情】多人出行至高立减8888",
+            money:"实时计价"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300o0m000000dn9wi16F3_C_228_132.jpg",
+            alt:"海南三亚+广西北海+涠洲岛10日9晚跟团游【山海传奇·暖春预售】【赠刺激骏达车技+桂林千古情】升级一晚特色4钻住宿丨【分界洲岛+呀诺达热带雨林+天涯海角】浪漫亲海丨【北海银滩+网红涠洲岛】一次旅行丨多重体验！",
+            money:"4010"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/hotel/g1/M03/8A/C2/CghzfVVSD1eACKGbAAFlW3TGSuo507_C_228_132.jpg",
+            alt:"广西北海+银滩+涠洲岛+桂林+阳朔+漓江7日6晚私家团(5钻) 【自营保障·1单1团·5钻私享·海岛之旅】 五星香格里拉 住1晚网红涠洲岛 漓江四星船+赠印象刘三姐 告别都市的熙攘与喧闹 体验无拘束的自在小假期",
+            money:"实时计价"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300m1a0000018tjp611AA_C_228_132.jpg",
+            alt:"贵州贵阳+广西桂林8日7晚跟团游 【黔桂连线·奇幻山水】【荔波小七孔+黄果树瀑布】人在画中游丨【千户苗寨+青岩古镇】品苗家长桌宴丨【兴坪漓江+十里画廊】赠遇龙河漂流丨【象鼻山+日月双塔】赏梦幻漓江/山水间表演！",
+            money:"3655"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300u0z000000mldywB601_C_228_132.jpg",
+            alt:"海南三亚+桂林+北海+阳朔10日9晚跟团游【跨过山海·爸妈放心游】【赠送刺激骏达车技+桂林千古情+升级一晚特色4钻住宿】【分界洲岛+呀诺达雨林+天涯海角+北海银滩+兴坪漓江+世外桃源+阳朔西街】丨一次旅行 多重体验",
+            money:"3146"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30070n000000eu9ay4085_C_228_132.jpg",
+            alt:"广西南宁+桂林+漓江+阳朔+龙脊梯田+越南河内+下龙湾9日8晚跟团游(4钻) 【桂林+下龙湾】经典山水之旅【升级5星酒店+刘三姐+送温泉】【0自费】新春抢红包 单单赠上千元礼包",
+            money:"5010"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300v0z000000mwgp6AA59_C_228_132.jpg",
+            alt:"海南三亚+广西桂林+北海10日9晚跟团游 【山海传奇·暖春钜惠】【网红蜈支洲岛+天堂森林公园+天涯海角】赠夜游三亚湾丨【漓江竹筏+阳朔西街+象鼻山+北海银滩】赠遇龙河竹筏漂流丨品特色美食丨一次旅行丨多重体验！",
+            money:"3146"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30060f00000079cdw8A08_C_228_132.jpg",
+            alt:"广西桂林+阳朔+兴坪+漓江+北海+银滩+涠洲岛7日6晚跟团游【鼠年大促.限量VIP激情桂北涠】+【赠桂林千古情演出+兴坪渔村+北海银滩+银子岩】+【漓江竹筏康美之恋.世外桃源+西街】+【24小时无缝接送机.金秋出行无忧】",
+            money:"3030"
+          },
+        ],
+        "xiaMen":[
+           {
+              src:"https://dimg03.c-ctrip.com/images/20030x000000lebrj4314_C_228_132.jpg",
+              alt:"厦门灵玲大酒店1-3晚+部分房型含马戏城/动物园套餐 房型礼包为准•【可选灵玲马戏城】",
+              money:"451"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200j15000000y8qo34517_C_228_132.jpg",
+              alt:"厦门云也酒店1晚+可选观音山梦幻海岸",
+              money:"463"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200c0r000000h0eit197E_C_228_132.jpg",
+              alt:"亲子度假一站式！厦门灵玲大酒店1-2晚",
+              money:"1298"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200710000000pmi0t6E46_C_228_132.jpg",
+              alt:"厦门鼓浪屿柏文熊酒店1晚+可选厦门海底世界/鼓浪屿联票•【领略不一样美景】",
+              money:"222"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200815000000xgdqyC7CB_C_228_132.jpg",
+              alt:"厦门梧境山海间行馆1晚+可选厦门园林植物园",
+              money:"395"
+            },
+            {
+              src:"https://images4.c-ctrip.com/target/200q070000002ku5kCDD1_C_228_132.jpg",
+              alt:"厦门君怡酒店1-3晚·可选鼓浪屿五大景点联票",
+              money:"182"
+            },
+            {
+              src:"https://dimg04.c-ctrip.com/images/300814000000wjye1D2A7_C_228_132.jpg",
+              alt:"厦门豪威莱斯汀溪房车公园+豪威莱斯房车露营公园·萌虫学园+三角梅基地参观 家庭亲子周边自驾好去处",
+              money:"299"
+            },
+            {
+              src:"https://dimg03.c-ctrip.com/images/200n0z000000nhgn87ACC_C_228_132.jpg",
+              alt:"厦门北海湾惠龙万达嘉华酒店1晚+可选厦门园林博览苑/红点博物馆•【坐落于集美学村内，毗邻嘉庚公】",
+              money:"470"
+            },
+        ],
+        "zhuHai":[
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g1/M07/7B/1B/CghzfFWwtDKAcL7CACXHUBEwW5s310_C_228_132.jpg",
+            alt:"珠海+澳门4日自由行(5钻)·1晚长隆酒店+2晚澳门五钻酒店|可选长隆海洋王国门票 【亲子游热卖】",
+            money:"985"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g1/M06/CA/E5/CghzflWw4UWAe4FwAAfs2cRuFNw210_C_228_132.jpg",
+            alt:"珠海+澳门3日自由行·【立减100元/单|含澳门一日游】1晚珠海口岸酒店+1晚澳门酒店|码头集合游澳门·可选长隆乐园门票",
+            money:"927"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g2/M02/DA/1B/CghzgFUvhXWAReC9ADE7ZEfhi78922_C_228_132.jpg",
+            alt:"深圳+香港+澳门+珠海3-8日自由行·可选入住深圳或珠海 接受L签 【不含往返机票】",
+            money:"588"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/20070m000000drpjb186D_C_228_132.jpg",
+            alt:"澳门+珠海3日自由行(4钻)·【动车游】澳门1晚+长隆企鹅/马戏/横琴湾酒店1晚，可选海洋王国套票房型",
+            money:"1365"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/20070m000000drpjb186D_C_228_132.jpg",
+            alt:"珠海+澳门3日自由行(4钻)·【动车游】长隆企鹅/马戏/横琴湾酒店1晚+澳门1晚，可选海洋王国套票房型",
+            money:"1090"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/20070m000000drpjb186D_C_228_132.jpg",
+            alt:"澳门+珠海4日自由行(4钻)·【动车游】澳门1晚+长隆企鹅/马戏/横琴湾酒店2晚，可选海洋王国套票房型",
+            money:"1814"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/20070m000000drpjb186D_C_228_132.jpg",
+            alt:"珠海+澳门4日自由行(4钻)·【动车游】长隆企鹅/马戏/横琴湾酒店2晚+澳门1晚，可选海洋王国套票房型",
+            money:"1291"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g2/M05/89/7B/Cghzf1WwxLaATloOACr-6wzbrvw414_C_228_132.jpg",
+            alt:"香港+珠海3日自由行·#可加购昂坪缆车·360度欣赏大屿山风景#港珠澳大桥穿梭直达巴士【尝鲜世纪工程】！【入住珠海长隆系列酒店，亲子游潮玩法】",
+            money:"712"
+          },
+        ],
+        "sanYa":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j10000000ocs9zCC0E_C_228_132.jpg",
+            alt:"海南三亚+海口5日4晚跟团游(4钻) 【度假预售】买一送一+五星海景房+蜈支洲一整天+篝火派对+特色美食+一起浪迹天涯海角~",
+            money:"2440"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j10000000ocs9zCC0E_C_228_132.jpg",
+            alt:"海南三亚+海口5日4晚跟团游(4钻) 【度假预售】买一送一+五星海景房+蜈支洲一整天+篝火派对+特色美食+一起浪迹天涯海角~",
+            money:"2440"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300w1b000001aa1uwE877_C_228_132.jpg",
+            alt:"三亚+天涯海角5日4晚跟团游(4钻)全程无自费·双飞三亚【全程连住4钻海景房，不挪窝】『超人气蜈支洲岛+南山海上观音+亚龙湾全海景玻璃栈桥』赠送双表演【三亚千古情表演+拉斯维加斯表演秀】（24小时间接受电话咨询）",
+            money:"4980"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/3001170000011p4n21BE2_C_228_132.jpg",
+            alt:"潜水·海南 三亚6日5晚·【OW潜水考证+专业持证教练指导】24小时跑车自驾+三亚五星海景房",
+            money:"9800"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300f0t000000ikkwtAD39_C_228_132.jpg",
+            alt:"海南海口+三亚6日5晚跟团游(4钻)【错峰特推.克拉海岛.打卡明星同款】【海时光.蜈支洲+南山+天涯海角+大东海】【山时光.亚龙湾天堂森林公园+梦时光.住五星海景】【味时光.赠海鲜霸王餐+特色素斋】+【24小时接送机】",
+            money:"3890"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300d180000015898y3260_C_228_132.jpg",
+            alt:"全球户外·海南 三亚5日4晚·【私家游艇出海+2人即可成团】海上小飞机体验+24小时超跑自驾+海上拖拽伞+海上摩托艇+海上大飞鱼+专业教练指导潜水+五星海景房",
+            money:"9800"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300o0m000000dn9wi16F3_C_228_132.jpg",
+            alt:"海南三亚6日5晚跟团游【春季亲子家庭游.畅玩亚特兰蒂斯水世界+升级1晚海棠湾·福海棠套房】+【中国马尔代夫.蜈支洲+祈福圣地.南山寺+天堂森林公园.天然氧吧+执子之手.天涯海角+亚龙湾】+【24小时贴心接送.舌尖海南】",
+            money:"4140"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300i0q000000g89ps9997_C_228_132.jpg",
+            alt:"海南三亚+海口6日5晚跟团游(4钻)度假爆惠【蜈支洲岛畅玩一整天】五星海景房激情派对特色美食一起浪迹天涯海角",
+            money:"2640"
+          },
+        ],
+        "qingYuan":[
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/hotel/g3/M08/AB/98/CggYGlZeg9CAEgIYAARRRT08clk983_C_228_132.jpg",
+            alt:"清远聚龙湾温泉2日1晚自由行【踏春自驾游】佛冈聚龙湾天然度假村，住宿1晚+双人自助早餐+双人无限次温泉+双人汽车特技表演门票+大风车游乐园150元一套游乐金币（此产品为单订房，一间房可入住2成人）",
+            money:"268"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/100j0b0000005vj6479AD_C_228_132.jpg",
+            alt:"佛冈2日1晚自由行(5钻)·佛冈熹乐谷温泉度假酒店1晚+双人自助早餐+双人自助晚餐+无限次温泉+影剧院电影+七彩花田【不含交通】",
+            money:"实时计价"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/20020w000000kf7c9A661_C_228_132.jpg",
+            alt:"清远+佛冈2日1晚自由行·碧桂园假日温泉酒店+含双早+双人无限次温泉",
+            money:"200"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300q1800000156mja1EA0_C_228_132.jpg",
+            alt:"清远+英德2日1晚跟团游 入住浈阳坊主题客栈+积庆里红茶谷+浈阳峡景区+赠送养生赞醴泉+【品生态蘑菇走地鸡火锅宴/茶园宴+九大簋】+天天发团+广州/佛山均可上车+可接包团",
+            money:"286"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300a1c000001cl7a508D9_C_228_132.jpg",
+            alt:"清远黄腾峡天门悬廊2日跟团游 ",
+            money:"168"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300v14000000xb2jg3A59_C_228_132.jpg",
+            alt:"清远+英德2日1晚跟团游 宝墩湖温泉+浈阳坊小镇+茶趣园+英西峰林走廊+船游洞天仙境.玻璃栈道+纯玩.0自费+可定制公司包团",
+            money:"395"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30011c000001cwo3e123E_C_228_132.jpg",
+            alt:"清远古龙峡玻璃大峡谷2日跟团游 古龙峡9项世界纪录，挑战玻璃观光霸主云天玻霸！ 游览【西班牙小镇】一条欧陆风情街，体验屋顶摩天轮—大家元摩天轮！ 春节假期飞来寺祈福（此线路为1日游）",
+            money:"168"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300v14000000xd81q534F_C_228_132.jpg",
+            alt:"清远+连州地下河2日1晚跟团游 古龙峡玻璃大峡谷+古龙九瀑+连州地下银河+摄影沙龙圣地.万山朝王+可定制公司包团",
+            money:"365"
+          },
+        ],
+        "liJiang":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/30011c000001dfwe3E974_C_228_132.jpg",
+            alt:"云南丽江+大理6日5晚跟团游(4钻) 『国际五星·一价全含·父母带娃儿童免单』赠20寸行李箱+现金红包『自家发团 0差评』VIP私人游船+雪山大索登顶4680+敞篷JEEP游洱海『网红天空之境+蓝月谷+5A石林』赠【丽水金沙表演】",
+            money:"2155"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300r1900000180026F009_C_228_132.jpg",
+            alt:"云南昆明+大理+丽江6日5晚跟团游(4钻) 赠400元现金红包+温泉酒店+玉龙雪山登顶+360敞篷吉普游洱海+石林峰丛+逛3大古城+《丽水金沙》民族表演+20寸行李箱+自家发团+千人好评+错峰出游+免费接送机",
+            money:"2701"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300512000000rp1h895D9_C_228_132.png",
+            alt:"云南昆明+大理+丽江6日5晚跟团游(4钻) 动车返昆·儿童免单『国际5星花之城+海景酒店+古城客栈+温泉酒店』玻璃栈道+VIP私人游船+玉龙雪山大索道+双廊网红打卡地+敞篷Jeep洱海旅拍+徒步蓝月谷 赠《雪山神话歌舞表演》",
+            money:"2459"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30091b000001a7wbeB064_C_228_132.jpg",
+            alt:"昆明+大理+丽江+西双版纳7日6晚跟团游【纯玩0购物·高端4飞双动】网红热门&经典深度|玉龙雪山登顶【赠防寒服+氧气瓶】+热门打卡点【拉市海骑马旅拍&天空之境&VIP私人游船&网红鸟窝·旅拍天梯】+探秘雨林【野象谷亲密亚洲象+原始森林公园】金沙江高空玻璃栈道&铁索桥+高原牧场东巴秘境+纳西篝火晚会 赠《纳西古乐》表演",
+            money:"实时计价"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300d19000001803gkD8F1_C_228_132.jpg",
+            alt:"云南昆明+大理+丽江6日5晚跟团游(4钻) 赠400元现金红包+温泉酒店+玉龙雪山登顶+360敞篷吉普游洱海+石林峰丛+逛3大古城+《丽水金沙》民族表演+自家发团+千人好评+错峰出游+免费接送机",
+            money:"2650"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300h0o000000f961jBE1C_C_228_132.png",
+            alt:"云南丽江+玉龙雪山+大理+昆明6日5晚跟团游(4钻) 高端纯玩团·双飞一动『年龄无限制 1人起订』赏季节性红嘴鸥+打卡网红花街 雪山大索登顶4680 敞篷JEEP车环海 房车营地+天空之境+红酒派对+篝火晚会+蓝月谷蜜月闺蜜游",
+            money:"4113"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300t1e000001foyht983F_C_228_132.png",
+            alt:"云南昆明+大理+洱海+丽江+玉龙雪山6日5晚跟团游(4钻) 【好货提前囤】买一送一&冰川大索※游船越野※漫步古镇※民族美味※大型歌舞表演※赠送西双版纳4日游~",
+            money:"2160"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300l0r000000hbtu6D180_C_228_132.png",
+            alt:"云南丽江+大理+香格里拉+西双版纳10日9晚跟团游(4钻) 四程环飞『暖冬春节预售 云南全景游』VIP私人游艇+冰川大索+ 赠【土司宴歌舞伴餐+丽水金沙歌舞表演+敞篷吉普环洱海】徒步虎跳峡+探秘野象谷 高端亲子蜜月游首推",
+            money:"4458"
+          },
+        ],
+        "yunNan":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/30011c000001dfwe3E974_C_228_132.jpg",
+            alt:"云南丽江+大理6日5晚跟团游(4钻) 『国际五星·一价全含·父母带娃儿童免单』赠20寸行李箱+现金红包『自家发团 0差评』VIP私人游船+雪山大索登顶4680+敞篷JEEP游洱海『网红天空之境+蓝月谷+5A石林』赠【丽水金沙表演】",
+            money:"2155"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300r1900000180026F009_C_228_132.jpg",
+            alt:"云南昆明+大理+丽江6日5晚跟团游(4钻) 赠400元现金红包+温泉酒店+玉龙雪山登顶+360敞篷吉普游洱海+石林峰丛+逛3大古城+《丽水金沙》民族表演+20寸行李箱+自家发团+千人好评+错峰出游+免费接送机",
+            money:"2701"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300512000000rp1h895D9_C_228_132.png",
+            alt:"云南昆明+大理+丽江6日5晚跟团游(4钻) 动车返昆·儿童免单『国际5星花之城+海景酒店+古城客栈+温泉酒店』玻璃栈道+VIP私人游船+玉龙雪山大索道+双廊网红打卡地+敞篷Jeep洱海旅拍+徒步蓝月谷 赠《雪山神话歌舞表演》",
+            money:"2459"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30091b000001a7wbeB064_C_228_132.jpg",
+            alt:"昆明+大理+丽江+西双版纳7日6晚跟团游【纯玩0购物·高端4飞双动】网红热门&经典深度|玉龙雪山登顶【赠防寒服+氧气瓶】+热门打卡点【拉市海骑马旅拍&天空之境&VIP私人游船&网红鸟窝·旅拍天梯】+探秘雨林【野象谷亲密亚洲象+原始森林公园】金沙江高空玻璃栈道&铁索桥+高原牧场东巴秘境+纳西篝火晚会 赠《纳西古乐》表演",
+            money:"实时计价"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300d19000001803gkD8F1_C_228_132.jpg",
+            alt:"云南昆明+大理+丽江6日5晚跟团游(4钻) 赠400元现金红包+温泉酒店+玉龙雪山登顶+360敞篷吉普游洱海+石林峰丛+逛3大古城+《丽水金沙》民族表演+自家发团+千人好评+错峰出游+免费接送机",
+            money:"2650"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300h0o000000f961jBE1C_C_228_132.png",
+            alt:"云南丽江+玉龙雪山+大理+昆明6日5晚跟团游(4钻) 高端纯玩团·双飞一动『年龄无限制 1人起订』赏季节性红嘴鸥+打卡网红花街 雪山大索登顶4680 敞篷JEEP车环海 房车营地+天空之境+红酒派对+篝火晚会+蓝月谷蜜月闺蜜游",
+            money:"4113"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300e1c000001d5q27FC34_C_228_132.jpg",
+            alt:"云南西双版纳+昆明6日5晚跟团游(4钻) 飞『亲子专线 一价全含 销量3000+』赠年夜饭 国际五星希尔顿+温泉SPA【九乡溶洞+亲密亚洲象+5A勐仑植物园+总佛寺+告庄篝火晚会】五大特色餐 赠《魔幻傣秀》 暖冬高端亲子蜜月游",
+            money:"7155"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300t1e000001foyht983F_C_228_132.png",
+            alt:"云南昆明+大理+洱海+丽江+玉龙雪山6日5晚跟团游(4钻) 【好货提前囤】买一送一&冰川大索※游船越野※漫步古镇※民族美味※大型歌舞表演※赠送西双版纳4日游~",
+            money:"2160"
+          },
+        ],
+      }
+      this.linerCityTitles = [
+        {
+          name:"日本",
+          py:"riBen",
+          index:0
+        },
+        {
+          name:"东南亚",
+          py:"dongNanYa",
+          index:1
+        },
+        {
+          name:"港澳台",
+          py:"gangAoTai",
+          index:2
+        },
+        {
+          name:"阿拉斯加",
+          py:"aLaSiJia",
+          index:3
+        },
+        {
+          name:"河轮",
+          py:"heLun",
+          index:4
+        },
+        {
+          name:"加勒比海",
+          py:"jiaLeBiHai",
+          index:5
+        },
+        {
+          name:"爱琴海",
+          py:"aiQingHai",
+          index:6
+        },
+        {
+          name:"夏威夷",
+          py:"xiaWeiYi",
+          index:7
+        },
+        {
+          name:"北欧",
+          py:"beiOu",
+          index:8
+        },
+        {
+          name:"地中海",
+          py:"diZhongHai",
+          index:9
+        },
+      ],
+      this.linerCityPics = {
+        "riBen":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/310c0g00000088lvjEE1F_R_500_280_Q50.jpg",
+            name:"",
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310e0g00000088667524D_R_500_280_Q50.jpg",
+            name:"",
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/31050g00000088l6l0A1B_R_500_280_Q50.jpg",
+            name:"",
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/31050g00000088l7zF654_R_500_280_Q50.jpg",
+            name:"",
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310k0g0000008879e5C69_R_500_280_Q50.jpg",
+            name:"",
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310c0g00000088lvjEE1F_R_500_280_Q50.jpg",
+            name:"",
+          },
+        ]
+      }
+     
 
       this.pics = [
         {
@@ -2893,7 +4083,429 @@ export default {
           index:6
         },
 
-      ]
+      ],
+      this.exitCityPics = {
+        "jingXuan":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/30031800000140wez2B00_C_228_132.jpg",
+            name:"曼芭【高端团】+清迈【9人精致小团】【 无购物无自费 】全程五钻酒店+4飞丨打卡海岛+经典蓝白黑寺庙丨国际人妖秀 火车夜市丨赠清迈传统泰式按摩+骑大象 轻松玩转曼芭清",
+            money:"6054"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j190000015xva636B0_C_228_132.jpg",
+            name:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
+            money:"6299"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30081900000163km7A1C5_C_228_132.jpg",
+            name:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
+            money:"6699"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300v12000000t1h5bF5EF_C_228_132.jpg",
+            name:"【海鸥携程旗下】前4客立减200+黄石/锡安/布莱斯峡谷/大提顿4大国家公园+羚羊彩穴+马蹄湾+尼亚加拉瀑布+海鲜餐+游船+奥莱+网红Vessel旋转大楼【全国联运+拼房·拒签保障】",
+            money:"15299"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300e1a0000018qjiu8224_C_228_132.jpg",
+            name:"【鼠你惠玩 早定优惠】【高颜值 INS网红打卡地 超长拖尾沙滩】2沙2水+三餐（可优惠升级一价全包）+岛屿面积大私密性高+蜜月优选+超高性价比+全国出发可联运",
+            money:"10520"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30071b000001bt0qi3084_C_228_132.jpg",
+            name:"大促立减！欧洲免签出行+北京/上海/广州出发+全4星级酒店+【ABCDEG无自费】+【BCEH线一价全含】+BC线赠上网卡+卡莱梅格丹城堡+科托尔古城+莫斯塔尔+萨拉热窝+特色餐",
+            money:"11700"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300g1b000001aope1A964_C_228_132.jpg",
+            name:"含导服『国际四星』出行不将就『挚爱网红』秋千鸟巢『蓝梦出海』赠印尼精油SPA·充足自由活动·广州出发//C线升级2晚海边国际五星",
+            money:"3999"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/100608000000386zqF325_C_228_132.jpg",
+            name:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
+            money:"2482"
+          },
+        ],
+        "taiGuo":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/30031800000140wez2B00_C_228_132.jpg",
+            name:"曼芭【高端团】+清迈【9人精致小团】【 无购物无自费 】全程五钻酒店+4飞丨打卡海岛+经典蓝白黑寺庙丨国际人妖秀 火车夜市丨赠清迈传统泰式按摩+骑大象 轻松玩转曼芭清",
+            money:"6054"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/3004180000014h2qmED67_C_228_132.jpg",
+            name:"精致纯玩小团无自费【两人下单立减500元/人】A线五钻泳池酒店·人妖秀+网红夜市+海鲜烧烤+国际自助餐 B线五钻酒店升级一晚180度海景房·夜秀+摩天轮夜市+海鲜BBQ",
+            money:"6800"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/100608000000386zqF325_C_228_132.jpg",
+            name:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
+            money:"2482"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300h180000015682lE7E6_C_228_132.jpg",
+            name:"【错峰出游，下单享优惠】【A线7晚国际5星酒店+泰国段纯玩无购物】【B线固定600元自费套餐】【C线深圳起止】【F线南京起止】不强制购物+双子塔+大皇宫+鱼尾狮+更多产品请咨询客服",
+            money:"3480"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300r1c000001dabyhE0A7_C_228_132.jpg",
+            name:"【无购物·无自费 高端纯玩】全程国际五钻+1晚喜来登or万豪等丨赠：骑大象+放水灯+超人气人妖秀丨高素质导游带队 玩转热门网红景点：大皇宫·水上市场·拉差火车夜市·快艇出海沙美岛",
+            money:"2399"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300q1a0000018mz9920E6_C_228_132.jpg",
+            name:"正点航班【A线1晚国际五星丨沙美岛/夜游公主号/网红郑王庙/拉差达夜市丨按摩+湄南河畔泰餐】【B线仅进2店+高标住宿：曼谷河畔五星+芭提雅私家沙滩海景酒店丨摩天轮夜市+水上市场+海鲜餐",
+            money:"2699"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300n15000000ygicuED73_C_228_132.jpg",
+            name:"【专享VIP团*无自费】国际品牌酒店+高标泰餐+升级国际五星万豪或喜来登【娱】国际人妖秀·唐人街·泼水party·泰服体验·出海沙美岛【享】光海鲜咖喱餐+御厨火锅",
+            money:"2739"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30041900000163bcr638B_C_228_132.jpg",
+            name:"【赠新马签+全程无自费】+【泰段纯玩+5晚黄金地段国五+赠666元玩乐大礼包：骑大象+实弹射击+人妖秀+快艇沙美岛】『马段：2晚私人沙滩或私人湖景妃俪雅国五』吃喝玩乐一网打尽",
+            money:"3899"
+          },
+        ],
+        "riBen":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j190000015xva636B0_C_228_132.jpg",
+            name:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
+            money:"6299"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30081900000163km7A1C5_C_228_132.jpg",
+            name:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
+            money:"6699"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30031c000001cww7dFD1D_C_228_132.png",
+            name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+            money:"6180"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300t1c000001cdkxg99CE_C_228_132.jpg",
+            name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+            money:"6180"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300i1c000001cccovB380_C_228_132.jpg",
+            name:"『童话白川乡+名古屋+古都海景温泉』「富士山冰雪游乐园+上山之町古街+祇园艺妓街」『抹茶冰淇淋体验+京都豆腐汤+温泉会席料理』~双点进出，不走回头路，仅2站购物",
+            money:"5699"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30071b000001b1i2sF09F_C_228_132.png",
+            name:"白川乡+本州+忍野八海+御殿场奥特莱斯+心斋桥+大阪环球影城+皇居广场+浅草雷门观音寺祈福~~直飞不经停不转机",
+            money:"6899"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30011a0000019mtff2359_C_228_132.jpg",
+            name:"『全程五星指定酒店』『东京一整天自由活动』『大阪城公园+心斋桥道顿崛商业街+河口湖·红叶渚』『两点进出不走回头路+直飞不经停不转机』可全国联运",
+            money:"7499"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300b1a0000018aube0AC5_C_228_132.png",
+            name:"【双点进出不走回头路】全程当地四星酒店+升级日式特色双温泉海景+奈良公园与可爱的小鹿来一场亲密的喂食接触【京都汤豆腐、日式烤肉BBQ、日式陶板烧，日式温泉会席料理】",
+            money:"5699"
+          },
+        ],
+        "dongJing":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j190000015xva636B0_C_228_132.jpg",
+            name:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
+            money:"6299"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30081900000163km7A1C5_C_228_132.jpg",
+            name:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
+            money:"6699"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30031c000001cww7dFD1D_C_228_132.png",
+            name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+            money:"6180"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300t1c000001cdkxg99CE_C_228_132.jpg",
+            name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+            money:"6180"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300i1c000001cccovB380_C_228_132.jpg",
+            name:"『童话白川乡+名古屋+古都海景温泉』「富士山冰雪游乐园+上山之町古街+祇园艺妓街」『抹茶冰淇淋体验+京都豆腐汤+温泉会席料理』~双点进出，不走回头路，仅2站购物",
+            money:"5699"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30071b000001b1i2sF09F_C_228_132.png",
+            name:"白川乡+本州+忍野八海+御殿场奥特莱斯+心斋桥+大阪环球影城+皇居广场+浅草雷门观音寺祈福~~直飞不经停不转机",
+            money:"6899"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30011a0000019mtff2359_C_228_132.jpg",
+            name:"『全程五星指定酒店』『东京一整天自由活动』『大阪城公园+心斋桥道顿崛商业街+河口湖·红叶渚』『两点进出不走回头路+直飞不经停不转机』可全国联运",
+            money:"7499"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300b1a0000018aube0AC5_C_228_132.png",
+            name:"【双点进出不走回头路】全程当地四星酒店+升级日式特色双温泉海景+奈良公园与可爱的小鹿来一场亲密的喂食接触【京都汤豆腐、日式烤肉BBQ、日式陶板烧，日式温泉会席料理】",
+            money:"5699"
+          },
+        ],
+        "meiGuo":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300v12000000t1h5bF5EF_C_228_132.jpg",
+            name:"【海鸥携程旗下】前4客立减200+黄石/锡安/布莱斯峡谷/大提顿4大国家公园+羚羊彩穴+马蹄湾+尼亚加拉瀑布+海鲜餐+游船+奥莱+网红Vessel旋转大楼【全国联运+拼房·拒签保障】",
+            money:"15299"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300v0e00000073o4m78C0_C_228_132.jpg",
+            name:"【海鸥优选】春季预售+多地联运省1000+旧金山市区游+优胜美地公园+奥莱畅购+曼哈顿游船+拉斯宿大道酒店+拉斯自由畅玩一整天+上海直飞+全国联运+签证·拼房双保障",
+            money:"15999"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300a0z000000mtqti308B_C_228_132.jpg",
+            name:"【海鸥携程旗下】6大公园+羚羊谷+马蹄湾+女神像·瀑布双游船+奥莱+A线大峡谷东南双峡·黄石深度2次入园+圣地亚哥·墨西哥一日游+洛杉矶市区游",
+            money:"21299"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g3/M08/78/2A/CggYG1Z7v0KAZdA5ADiLvQWEhs0878_C_228_132.jpg",
+            name:"【报名送美签】初游必选 【上海直飞+多城联运惠仅需6799起】酒店连宿不换住/可升级【往返接送+珍珠港+小环岛+恐龙湾】【威基基海岛风情】3天自由活动【赠送：露天购物中心折扣券+叮当车票】",
+            money:"7699"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/fd/tg/g3/M08/78/2A/CggYG1Z7v0KAZdA5ADiLvQWEhs0878_C_228_132.jpg",
+            name:"【送美签】往返接送+珍珠港+小环岛+恐龙湾 【上海直飞+联运立减】【A/B线欧胡岛+大岛·火山公园/A线茂易岛·捕鲸镇/C线欧胡岛连宿不换住】可升级+4天自由活动【送:购物中心折扣券+叮当车票】",
+            money:"8259"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/100a0b0000005jp9v7ADA_C_228_132.jpg",
+            name:"【拒签仅收签证费】尼亚加拉大瀑布+圣约瑟夫大教堂+蒙特利尔【住全新黄石小木屋】黄石+大提顿+大峡谷+本土全程含餐（除飞机餐）【东航直飞+指定城市联运立减】",
+            money:"28786"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300e0s000000hoc2cB994_C_228_132.jpg",
+            name:"【5.26即将成团】【三大国家公园·黄石+大峡谷+布莱斯】【旧金山深度】羚羊峡谷/尼亚加拉大瀑布/费城独立大厅/自由女神像游船/圣塔莫尼卡海滩/奥特莱斯/沃尔玛",
+            money:"21099"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300411000000r3gao911E_C_228_132.jpg",
+            name:"春节班期两人下单立减-2020】A线特价美东超高性价比一次玩遍/B线波士顿龙虾餐【纽约3晚连住全程希尔顿+万豪集团系列】4大常春藤名校·S-Led讲解/大瀑布/帝国大厦登顶/大都会博物馆讲解",
+            money:"15518"
+          },
+        ],
+        "maErDaiFu":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300e1a0000018qjiu8224_C_228_132.jpg",
+            name:"【鼠你惠玩 早定优惠】【高颜值 INS网红打卡地 超长拖尾沙滩】2沙2水+三餐（可优惠升级一价全包）+岛屿面积大私密性高+蜜月优选+超高性价比+全国出发可联运",
+            money:"10520"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300m1b000001adrb17A88_C_228_132.jpg",
+            name:"『薄利多销·只想成交』『咨询立减500』更有机会直接免单+专业解决选岛困难+免费申请蜜月、周年庆套餐+房型可选&超大别墅&私人泳池+一价包含＆赠送一次出海项目+赠送30分钟spa",
+            money:"16880"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300r1c000001c66fiBE72_C_228_132.jpg",
+            name:"『春节钜惠』『赠送2次出海』咨询有礼（ 一价全包+A级浮潜+A级沙滩+出海活动全免费+儿童俱乐部免费+蜜月大礼包+早中晚三餐及酒水全含+酒吧免费+中文服务）",
+            money:"16400"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30070q000000h20xw3086_C_228_132.jpg",
+            name:"属你惠玩＆网红奢豪岛】每天主题活动『酒会＆派对』私密好超大别墅（房型可选）首晚马累+4晚岛上+私人管家+中文服务+唯美沙滩『驻岛婚纱摄影』",
+            money:"14750"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300g1b000001bfdh9A775_C_228_132.jpg",
+            name:"『新春特惠热卖』『咨询立减500』专车专中文司导+沙漠冲沙＆骑骆驼＆看日落＆音乐喷泉+可升级体验高空跳伞＆热气球+可升级亚特兰蒂斯＆帆船酒店＆皇宫酒店 +马代岛屿可升级",
+            money:"13820"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30060y000000mgg59C4F3_C_228_132.jpg",
+            name:"【让兰卡爱上马代】加勒古堡+国家公园游猎+狮子岩古王朝探秘+出海观鲸看海豚+兰卡金牌导游+茶园海边小火车+携程四钻酒店+马代岛屿2沙2水可升级泳池别墅+可升一价全含+可升水飞上岛",
+            money:"11856"
+          },
+          {
+            src:"https://dimg03.c-ctrip.com/images/220819000001633yj6644_C_228_132.jpg",
+            name:"『迪拜全程5钻升级1亚特+马尔代夫伊露薇利.2沙2水』迪拜-失落空间水族馆+冒险水世界乐园+沙漠冲沙+哈利法塔124层+法拉利主题公园-全国出发",
+            money:"19880"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300g0q000000g911u72AD_C_228_132.jpg",
+            name:"纯白简约风-4晚泳池水屋+早晚餐+浮潜优质+超大泳池别墅+私人管家-全国出发",
+            money:"18135"
+          },
+        ],
+        "saiErWeiYa":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/30071b000001bt0qi3084_C_228_132.jpg",
+            name:"塞尔维亚+黑山+波黑10日跟团游 ",
+            money:"11700"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30091900000179na276B7_C_228_132.jpg",
+            name:"全球旅拍·塞尔维亚波黑黑山12日10晚·纯玩旅拍（6人舒适小团+专业摄影师随团跟拍+精选4-5星酒店）|历史山城莫斯塔尔+世外秘境杜米托尔+风情古都贝尔格莱德，欧洲免签小众之地，深度享受自由慢旅行",
+            money:"25900"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300b190000016st6o52BD_C_228_132.png",
+            name:"塞尔维亚+黑山+波黑13日跟团游",
+            money:"16300"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300s190000017zc5a325E_C_228_132.jpg",
+            name:"克罗地亚+斯洛文尼亚+波黑+黑山+塞尔维亚+匈牙利+奥地利14日跟团游】",
+            money:"18200"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300o12000000slj77D12A_C_228_132.png",
+            name:"匈牙利+克罗地亚+罗马尼亚+斯洛文尼亚+波黑+黑山+阿尔巴尼亚+塞尔维亚+北马其顿共和国+保加利亚20日跟团游",
+            money:"23980"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300b180000015bm0oBFAA_C_228_132.jpg",
+            name:"塞尔维亚+波黑+克罗地亚+奥地利+捷克+匈牙利+斯洛伐克13日半自助游",
+            money:"15000"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/3009180000015i2el4408_C_228_132.jpg",
+            name:"塞尔维亚+黑山+波黑10日半自助游",
+            money:"14400"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300w180000013vaugCAF8_C_228_132.jpg",
+            name:"匈牙利+克罗地亚+波黑+塞尔维亚+斯洛文尼亚+黑山+阿尔巴尼亚15日跟团游 ",
+            money:"18980"
+          },
+        ],
+        "baLiDao":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300g1b000001aope1A964_C_228_132.jpg",
+            name:"印度尼西亚巴厘岛5日4晚跟团游(4钻)",
+            money:"3999"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30021b000001am1f62A99_C_228_132.png",
+            name:"印度尼西亚巴厘岛7日5晚半自助游",
+            money:"5890"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30050y000000mgljc96C9_C_228_132.jpg",
+            name:"印度尼西亚巴厘岛5日4晚半自助游(5钻)",
+            money:"4752"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30051900000189f6fD7BB_C_228_132.jpg",
+            name:"印度尼西亚巴厘岛5日4晚跟团游",
+            money:"5599"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30051900000183g4lB55E_C_228_132.jpg",
+            name:"印度尼西亚巴厘岛5日半自助游 ",
+            money:"4650"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300b12000000si4nt9897_C_228_132.png",
+            name:"印度尼西亚巴厘岛7日半自助游(5钻)",
+            money:"6490"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300b12000000si4nt9897_C_228_132.png",
+            name:"印度尼西亚巴厘岛5日半自助游",
+            money:"5490"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300d1900000185fpk4E25_C_228_132.jpg",
+            name:"印度尼西亚巴厘岛5日半自助游",
+            money:"4890"
+          },
+        ],
+        "puJiDao":[
+          {
+            src:"https://dimg03.c-ctrip.com/images/100608000000386zqF325_C_228_132.jpg",
+            name:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
+            money:"2482"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300u190000017xuej2C56_C_228_132.jpg",
+            name:"泰国普吉岛6日5晚跟团游(4钻)【口碑】A线『全程5钻·步入式泳池连住·3天出海+赠送大堡礁浮潜＆珍珠岛』B线『VIP2-8人精致小包团·纯玩无购·泳池酒店连住·可升级斯米兰』｜纯休闲度假＆美食美景刺激嗨爆整个假期｜",
+            money:"2400"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300v0z000000mt5sx3BAE_C_228_132.jpg",
+            name:"泰国曼谷+芭堤雅+普吉岛8日7晚跟团游(4钻)小资奢游 高品4飞【免费升级】五钻泳池别墅【超 值赠送】泰式按摩+人妖秀表演【超多项目】+快艇出海+激情漂流+皮划艇探险等【美食之旅】泰式料理+韩膳BBQ+国际自助 ",
+            money:"3438"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j1a0000019rl962633_C_228_132.jpg",
+            name:"泰国普吉岛6日5晚跟团游(4钻)下单立减900/人丨A线【全程5钻·经典皮皮岛环游·步入泳池房·龙虾面·赠价值666大堡礁浮潜+珍珠岛娱乐项目】B线【VIP2-8人精致小包团·纯玩无购物·巴东黄金地段泳池酒店连住·可升级斯米兰】",
+            money:"2441"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300q10000000ohalwABBF_C_228_132.jpg",
+            name:"泰国曼谷+芭堤雅+普吉岛8日7晚跟团游(4钻)100％好评优质力荐4飞【免费升级】国五泳池别墅【超 值赠送】泰式按摩+人妖秀表演【超多项目】+快艇出海+激情漂流+皮划艇探险等【美食之旅】泰式料理+韩膳BBQ+国际自助 ",
+            money:"2698"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300j14000000wpov59648_C_228_132.jpg",
+            name:"泰国普吉岛6日4晚跟团游(4钻)下单立减900/成人丨+0元续住1晚 全程网评热门五星+升级1晚长岛蓝湾别墅【小资时尚】斯米兰鸡蛋岛双出海 赠浮潜【泰好玩】泼水+spa+射击+大象乐园丨泰国旅行专家为您海底捞式一条龙服务 ",
+            money:"2949"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300m170000011nsmf0B58_C_228_132.jpg",
+            name:"全球户外·泰国普吉岛6天5晚·【全程无购物店】【浮潜+深潜双体验】【攀牙湾5公里漂流】【驾驶ATV丛林越野车】【感受实弹射击体验】",
+            money:"29000"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300m160000010zi8a50AC_C_228_132.jpg",
+            name:"泰国普吉岛+甲米6日5晚跟团游【2人减2000元】网红·热卖产品·全国出发·高满意度·人气推荐·下单送电话卡！『精选蜜月·闺蜜款·亲子·爸妈款』『可升级CD线纯玩·无购物』『游抖音爆红景点』+24h在线管家服务！",
+            money:"5720"
+          },
+        ],
+        "eLuoSi":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/300p1a0000018vboi69C5_C_228_132.jpg",
+            name:"圣彼得堡8日7晚跟团游【春节热卖】ACDG线【全国联运】+冬宫+金环谢镇+黄金三岛+扎利亚季耶公园+格鲁吉亚烤肉+俄式桑拿浴+苏联展览中心+EFHI线喀琅小城+冬宫+卡洛+察里双庄园+【4钻酒店】 ",
+            money:"7999"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30061b000001bpi6kE99D_C_228_132.jpg",
+            name:"俄罗斯莫斯科+圣彼得堡8日跟团游免签！【纯玩+无购物+无自费+0小费】+全4星酒店+各地出发+AB『双点进出+东航』+【ABD线双城高铁】+ABDEF四宫入内【冬宫+夏宫+克林姆林宫+叶卡捷琳娜花园及琥珀宫】+谢镇",
+            money:"11900"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30011a000001994ci1331_C_228_132.jpg",
+            name:"俄罗斯9日7晚跟团游【春节热卖一价全包】+BDG线南航东航海航【全国联运】+与熊共餐+升级1晚5钻+内陆动车或高铁+CEFI线金环谢镇+四大宫殿+喀琅小城+卡洛+察里双庄园+新圣女公墓+AEH线【纯玩无购物】+【4钻酒店】",
+            money:"10199"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300g190000017zapy92F8_C_228_132.jpg",
+            name:"俄罗斯贝加尔湖5日跟团游或4日【春节热卖】海航直飞0时差【2.5小时直达】+塔利茨博物馆+【1-2天自由活动】+圣女修道院+喀山圣母教堂+130风情街+卡尔马克思大街+3钻酒店+【独立卫浴】+免签+【1对1管家】",
+            money:"3999"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/30061900000178wv8C9A5_C_228_132.jpg",
+            name:"全球摄影·俄罗斯摩尔曼斯克7天·【北冰洋极光小木屋&新华社签约摄影师同行，追极光大片】—狗拉雪橇+冰湖垂钓+雪地摩托+极夜追光，行摄世界尽头 ",
+            money:"18801"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300d0z000000mu4rcBBD8_C_228_132.jpg",
+            name:"全球旅拍·俄罗斯贝加尔湖8天6晚·【纯玩旅拍】（6-8人舒适小团+每人每日写真出片+小众景点破冰船+俄式特色小镇）|【网罗贝加尔湖美景：冰乳洞+翡翠冰+冰裂纹+小冰泡+雾凇+森林雪景】",
+            money:"16300"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300g0o000000f485yD76F_C_228_132.jpg",
+            name:"芬兰+丹麦+挪威+俄罗斯12日跟团游(4钻)4钻酒店丨莫斯科进，往返直飞丨13顿正餐+3顿特色餐丨塔林游览+峡湾游船+双峡湾丨冬宫+夏宫花园+克里姆林宫+斯德哥尔摩市政厅+瓦萨战船博物馆+峡湾游船+岩石教堂+WIFI",
+            money:"17017"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/300q1b0000019xpte5F95_C_228_132.jpg",
+            name:"俄罗斯莫斯科+圣彼得堡8日跟团游 纯玩0购物0自费0小费+双城高铁，拒绝夜火车+全4星酒店+【涅瓦河游船】+【拉多加湖】+4大宫入内【冬宫+克里姆林宫+叶卡捷琳娜花园及宫殿+夏宫花园及宫殿】+察里庄园+新圣女公墓",
+            money:"12200"
+          },
+        ],
+      }
 
       
      
@@ -2918,32 +4530,214 @@ export default {
       this.current = picIndex;
       this.isblur = false;
     },
-    spanIcon :function(text){
-        // let a = this.name.text.replace(/\n/g,'" "');
-        let a= /[/n]/;
-        if(text == a){
-          text = text.replace(a,"</ br>")
-          this.isAside_icon = false;
-        console.log(this.isAside_icon);
-
-
-        }
-        console.log(this.isAside_icon);
-        
-       
-
-
+    perImageTab(py,index){
+      this.peripheryPic = this.peripherys[py];
+      this.isColor = index;
+      if(index == 0){
+        this.perSigns = " ";
       }
-
+      else{
+        this.perSigns = '更多'+this.perCityTitles[index].name + '游>';
+      }
+    },
+    cityChange(val){
+      let array = this.perCityTitles.slice(8);
+      let obj = {};
+      obj = array.find((item)=>{
+         return item.name === val;
+      });
+       this.perCityTitles.splice(obj.index,1);
+       this.perCityTitles.splice(7,0,obj);
+       this.perCityTitles.forEach((el,i)=>{
+         el.index = i;
+       })
+       this.peripheryPic = this.peripherys[obj.py];
+       this.isColor = obj.index;
+       this.perSigns = '更多'+this.perCityTitles[obj.index].name + '游>';
+       document.getElementById("test").innerHTML
+       this.selectValue = "更多";
+    },
+    ticketImageTab(py,index){
+      this.ticketPic = this.ticketPics[py];
+      this.isColor = index;
+    },
+    ticketCityChange(val){
+      let array = this.ticketTitles.slice(8);
+      let obj = {};
+      obj = array.find((item)=>{
+         return item.name === val;
+      });
+       this.ticketTitles.splice(obj.index,1);
+       this.ticketTitles.splice(7,0,obj);
+       this.ticketTitles.forEach((el,i)=>{
+         el.index = i;
+       })
+       this.ticketPic = this.ticketPics[obj.py];
+       this.isColor = obj.index;
+       this.ticketSelect = "更多";
+    },
+    exitImageTab(py,index){
+      this.exitCityPic = this.exitCityPics[py];
+      this.isColor = index;
+      if(index == 0){
+        this.exitSigns = " ";
+      }
+      else{
+        this.exitSigns = '更多'+this.exitCityTitles[index].name + '游>';
+      }
+    },
+    exitCityChage(val){
+      let array = this.exitCityTitles.slice(8);
+      let obj = {};
+      obj = array.find((item)=>{
+         return item.name === val;
+      });
+      console.log(obj)
+       this.exitCityTitles.splice(obj.index,1);
+       this.exitCityTitles.splice(7,0,obj);
+       this.exitCityTitles.forEach((el,i)=>{
+         el.index = i;
+       })
+       this.exitCityPic = this.exitCityPics[obj.py];
+       this.isColor = obj.index;
+       if(obj.index == 0){
+         this.exitSigns = " ";
+       }
+       else{
+         this.exitSigns = '更多'+this.exitCityTitles[obj.index].name + '游>';
+       }
+       this.exitSelect = "更多";
+    },
+    ticketHot(){
+      let max  = document.getElementById("aside-width").clientWidth;
+      let len = 0;
+      let arr = this.$refs.ticketHot
+      this.$refs.ticketHot.forEach((i,index)=>{
+        len += i.clientWidth;
+        console.log(i.clientWidth);
+        if(len > max){
+          arr[index-1].style.borderRight = 'none';
+          len = i.clientWidth;
+        }
+      })
+      arr[arr.length-1].style.borderRight = 'none';
+    },
     
+    autoBorder () {
+      let max  = document.getElementById("aside-width").clientWidth;
+      let len = 0;
+      let arr = this.$refs.exitHot;
+      this.$refs.exitHot.forEach((i,index)=>{
+        len += i.clientWidth;
+        console.log(i.clientWidth);
+        if(len > max){
+          arr[index-1].style.borderRight = 'none';
+          len = i.clientWidth;
+        }
+      }) 
+      arr[arr.length-1].style.borderRight = 'none';
+    },
+    exitDestination(){
+      let max  = document.getElementById("aside-width").clientWidth;
+      let len = 0;
+      let arr = this.$refs.exitDestination
+      this.$refs.exitDestination.forEach((i,index)=>{
+        len += i.clientWidth;
+        if(len > max+1){
+          arr[index-1].style.borderRight = 'none';
+          len = i.clientWidth;
+        }
+      })
+      arr[arr.length-1].style.borderRight = 'none';
+    },
+    // perHot(){
+    //   let max  = document.getElementById("aside-width").clientWidth;
+    //   let len = 0;
+    //   let arr = document.getElementsByName("aside-per-hot")
+    //   this.$refs.perHot.forEach((i,index)=>{
+    //     len += i.clientWidth;
+          
+
+    //     if(len > max){
+    //       arr[index-1].style.borderRight = 'none';
+    //       len = i.clientWidth;
+    //     }
+    //   })
+    //   arr[arr.length-1].style.borderRight = 'none';
+    // },
+    // perDestination(){
+    //   let max  = document.getElementById("aside-width").clientWidth;
+    //   let len = 0;
+    //   let arr = document.getElementsByName("aside-per-destinaton")
+    //   this.$refs.perDestination.forEach((i,index)=>{
+    //     len += i.clientWidth;
+    //     console.log(i,index)
+    //     console.log(i.clientWidth)
+    //     if(len > max){
+    //       arr[index-1].style.borderRight = 'none';
+    //       len = i.clientWidth;
+    //     }
+    //   })
+    //   arr[arr.length-1].style.borderRight = 'none';
+    // },
+  
+    
+    // getFirst(obj){ 
+    //   for(var key in obj){
+    //     return obj[key];
+    //   }
+    // },
+    terImageTab(py,index){
+      this.terCityPic = this.terCityPics[py];
+      this.isColor = index;
+      if(index == 0){
+        this.terSigns = " ";
+      }
+      else{
+        this.terSigns = '更多'+this.terCityTitles[index].name + '游>';
+      }
+    },
+    terCityChage(val){
+      let arr = this.terCityTitles.slice(8);
+      let obj = {}
+      obj = arr.find((item)=>{
+        return item.name === val;
+      })
+      console.log(obj)
+      this.terCityTitles.splice(obj.index,1);
+      this.terCityTitles.splice(7,0,obj);
+      this.terCityTitles.forEach((i,item)=>{
+        i.index = item;
+      })
+      this.isColor = obj.index;
+      this.terCityPic = this.terCityPics[obj.py];
+      this.terSigns = '更多'+this.terCityTitles[obj.index].name + '游>';
+    }
+  
+   
    
     
   
   },
   mounted() {
     this.loadAll();
-    this.spanIcon();
+    this.peripheryPic = this.peripherys[this.perCityTitles[0].py];
+    this.ticketPic = this.ticketPics[this.ticketTitles[0].py];
+    this.exitCityPic = this.exitCityPics[this.exitCityTitles[0].py];
+    this.terCityPic = this.terCityPics[this.terCityTitles[0].py];
+
+    this.$nextTick(()=>{this.ticketHot()});
+
+    this.$nextTick(()=>{this.autoBorder()});
+    this.$nextTick(()=>{this.exitDestination()});
+
+    // this.$nextTick(()=>{this.perHot()});
+    // this.$nextTick(()=>{this.perDestination()});
+
+
+    
   }
+  
 };
 </script>
 
@@ -3060,16 +4854,48 @@ export default {
   height: 360px;
   background-color:red;
 }
+.city_button{
+  width: 50px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0px;
+  margin-right: 20px;
+  border: 0;
+  font-size: 12px;
+  border-radius: 15%;
+  margin-top: 10px;
+  color: black;
+}
+.city_button:hover{
+  background-color:rgb(18, 120, 204);
+  color: white;
+}
+.btnColor{
+  background-color: rgb(18, 120, 204);
+  color: white;
+}
+.select_city{
+  width: 50px;
+  height: 25px;
+  margin-top: 8px;
+  position: absolute;
+  left: 560px;
+}
+.ticket_right_image{
+  width: 233px;
+  height: 360px;
+}
+
 
 
 
 
 .content_aside{
-    width: 220px !important;
-    height: 408px;
-    border: 1px solid gray;
-    text-align: left;
-    padding: 15px 25px;
+  width: 220px !important;
+  height: 408px;
+  border: 1px solid gray;
+  text-align: left;
+  padding: 15px 0 15px 25px;
 }
 .sale_dt{
   color: black;
@@ -3089,9 +4915,12 @@ export default {
 
 }
 .find_a{
-    text-decoration: none !important;
-    color: gray;
-    font-size: 13px;
+  text-decoration: none !important;
+  color: gray;
+  font-size: 13px;
+  border-right: 1px solid gray;
+  padding-right: 8px;
+  margin-right: 8px;
 }
 .find_a:hover{
   color: rgb(18, 120, 204);
@@ -3103,6 +4932,7 @@ export default {
   width: 920px;
   height: 30px;
   padding-left: 0;
+  position: relative;
     
 }
 .main_li{
@@ -3111,8 +4941,6 @@ export default {
     line-height: 30px;
 }
 .main_button{
-    /* width: 50px;
-    height: 15px; */
     padding: 0px;
     margin-right: 20px;
     border: 0;
@@ -3358,6 +5186,7 @@ export default {
   margin-top:195px;
 }
 .scene_dd{
+  width: auto;;
   display: block;
   float: left;
 } 
