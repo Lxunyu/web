@@ -163,7 +163,7 @@
                  <el-aside class="content_aside"  >
                   <div id="aside-width"  >
                     <dt class="sale_dt">热门主题游</dt>
-                    <dd class="scene_dd"  @click="autoBorder"  ref="exitHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
+                    <dd class="scene_dd"  @click="autoBorder"  ref="exitHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" name="aside" class="find_a">{{themePlay.name}}</a></dd>
                   </div>
                   <div class="homestay">
                     <dt  class="sale_dt">热门目的地</dt>
@@ -262,7 +262,7 @@
                     <li class="main_li" v-for="(linerCityTitle,linerCityTitleIndex) in linerCityTitles.slice(0,8)" :key="linerCityTitleIndex">
                         <button class="city_button"  @click="linerImageTab(linerCityTitleIndex)">{{linerCityTitle.name}}</button>
                     </li>
-                    <el-select v-model="linerSelect" round size="mini" class="main_button select_city" @change="linerCityChage">
+                    <el-select v-model="linerSelect" round size="mini" class="main_button select_city" >
                       <el-option 
                         v-for="(linerSelectTitle,linerSelectTitleIndex) in linerCityTitles.slice(8)" 
                         :key="linerSelectTitleIndex"
@@ -627,6 +627,7 @@ export default {
       linerCityTitles:[],
       linerCityPics:{},
       linerCityPic:[],
+      linerSelect:"",
 
 
       pics: [],
@@ -2704,29 +2705,263 @@ export default {
         "riBen":[
           {
             src:"https://dimg04.c-ctrip.com/images/310c0g00000088lvjEE1F_R_500_280_Q50.jpg",
-            name:"",
+            name:"丽星邮轮·双子星号4天3晚宫古岛",
           },
           {
             src:"https://dimg04.c-ctrip.com/images/310e0g00000088667524D_R_500_280_Q50.jpg",
-            name:"",
+            name:"丽星邮轮·双子星号4天3晚宫古岛",
           },
           {
             src:"https://dimg04.c-ctrip.com/images/31050g00000088l6l0A1B_R_500_280_Q50.jpg",
-            name:"",
+            name:"丽星邮轮·双子星号4天3晚宫古岛",
           },
           {
             src:"https://dimg04.c-ctrip.com/images/31050g00000088l7zF654_R_500_280_Q50.jpg",
-            name:"",
+            name:"丽星邮轮·双子星号4天3晚宫古岛",
           },
           {
             src:"https://dimg04.c-ctrip.com/images/310k0g0000008879e5C69_R_500_280_Q50.jpg",
-            name:"",
+            name:"丽星邮轮·双子星号4天3晚宫古岛",
           },
           {
             src:"https://dimg04.c-ctrip.com/images/310c0g00000088lvjEE1F_R_500_280_Q50.jpg",
-            name:"",
+            name:"丽星邮轮·双子星号4天3晚宫古岛",
           },
-        ]
+        ],
+        "dongNanya":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/310v1b000001acjqt1A70_R_220_110_Q50.jpg",
+            name:"和平之船 peace boat·天蓝星号101天100晚环球之旅第二期（厦门-横滨）"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310s1b000001b4ncz666A_R_220_110_Q50.jpg",
+            name:"大洋邮轮·Insignia43天42晚香港上船,环球旅行"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310k0g0000007y3gy234A_R_500_280_Q50.jpg",
+            name:"公主邮轮·蓝宝石公主号25天24晚香港上船,环球旅行"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310r0a0000004kfjn90E8_R_500_280_Q50.jpg",
+            name:"公主邮轮·蓝宝石公主号9天8晚越南+胡志明市+曼谷+苏梅岛"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310d0a0000004kfgs778D_R_500_280_Q50.jpg",
+            name:"公主邮轮·蓝宝石公主号9天8晚越南+胡志明市+曼谷+苏梅岛"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310u0k000000bi5ue2F8A_R_220_110_Q50.jpg",
+            name:"公主邮轮·蓝宝石公主号9天8晚越南+胡志明市+曼谷+苏梅岛"
+          },
+        ],
+        "ganAoTai":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/310j1b000001b2i576F83_R_500_280_Q50.jpg",
+            name:"大洋邮轮·Insignia19天18晚中国+日本"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310w1b000001b8qx8AA89_R_500_280_Q50.jpg",
+            name:"大洋邮轮·Insignia19天18晚中国+日本"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/31021b000001b5hmsFD4B_R_500_280_Q50.jpg",
+            name:"大洋邮轮·Insignia43天42晚null"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310n0q000000gepj56B95_R_220_110_Q50.jpg",
+            name:"大洋邮轮·Insignia43天42晚null"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310t1d000001eerh4C8DF_R_220_110_Q50.jpg",
+            name:"星梦邮轮·世界梦号6天5晚那霸（冲绳）+宫古岛"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310f1b000001ayfkoC13C_R_500_280_Q50.jpg",
+            name:"大洋邮轮·Insignia43天42晚香港上船,环球旅行"
+          },
+        ],
+        "aLaSiJia":[
+          {
+            src:"https://dimg04.c-ctrip.com/images/310j1b000001b2i576F83_R_500_280_Q50.jpg",
+            name:"大洋邮轮·Insignia43天42晚null"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310w1b000001b8qx8AA89_R_500_280_Q50.jpg",
+            name:"大洋邮轮·Insignia63天62晚香港上船,环球旅行"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/31021b000001b5hmsFD4B_R_500_280_Q50.jpg",
+            name:"大洋邮轮·Insignia43天42晚香港上船,环球旅行"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310v1a0000019hknp0DB2_R_500_280_Q50.jpg",
+            name:"维京游轮·Viking Orion37天36晚东京+西沃德"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310u1a0000019n0atEF9C_R_500_280_Q50.jpg",
+            name:"维京游轮·Viking Orion37天36晚东京+西沃德"
+          },
+          {
+            src:"https://dimg04.c-ctrip.com/images/310n17000001141ltADA7_R_220_110_Q50.jpg",
+            name:"风星邮轮·Star Breeze25天24晚神户上船,环球旅行"
+          },
+        ],
+        "heLun":[
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+        ],
+        "jiaLeBiHai":[
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+        ],
+        "aiQinHai":[
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+        ],
+        "diZhongHai":[
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+        ],
+        "beiOu":[
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+        ],
+        "xiaWeiYi":[
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+          {
+            src:"",
+            name:""
+          },
+        ],
       }
      
 
@@ -4627,7 +4862,7 @@ export default {
       let max  = document.getElementById("aside-width").clientWidth;
       let len = 0;
       let arr = this.$refs.exitHot;
-      this.$refs.exitHot.forEach((i,index)=>{
+      arr.forEach((i,index)=>{
         len += i.clientWidth;
         console.log(i.clientWidth);
         if(len > max){
@@ -4650,36 +4885,7 @@ export default {
       })
       arr[arr.length-1].style.borderRight = 'none';
     },
-    // perHot(){
-    //   let max  = document.getElementById("aside-width").clientWidth;
-    //   let len = 0;
-    //   let arr = document.getElementsByName("aside-per-hot")
-    //   this.$refs.perHot.forEach((i,index)=>{
-    //     len += i.clientWidth;
-          
-
-    //     if(len > max){
-    //       arr[index-1].style.borderRight = 'none';
-    //       len = i.clientWidth;
-    //     }
-    //   })
-    //   arr[arr.length-1].style.borderRight = 'none';
-    // },
-    // perDestination(){
-    //   let max  = document.getElementById("aside-width").clientWidth;
-    //   let len = 0;
-    //   let arr = document.getElementsByName("aside-per-destinaton")
-    //   this.$refs.perDestination.forEach((i,index)=>{
-    //     len += i.clientWidth;
-    //     console.log(i,index)
-    //     console.log(i.clientWidth)
-    //     if(len > max){
-    //       arr[index-1].style.borderRight = 'none';
-    //       len = i.clientWidth;
-    //     }
-    //   })
-    //   arr[arr.length-1].style.borderRight = 'none';
-    // },
+   
   
     
     // getFirst(obj){ 
