@@ -163,7 +163,7 @@
                  <el-aside class="content_aside"  >
                   <div id="aside-width"  >
                     <dt class="sale_dt">热门主题游</dt>
-                    <dd class="scene_dd"  @click="autoBorder"  ref="exitHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" name="aside" class="find_a">{{themePlay.name}}</a></dd>
+                    <dd class="scene_dd" ref="exitHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" name="aside" class="find_a">{{themePlay.name}}</a></dd>
                   </div>
                   <div class="homestay">
                     <dt  class="sale_dt">热门目的地</dt>
@@ -4859,18 +4859,23 @@ export default {
     },
     
     autoBorder () {
+      console.log("autoBorder triggered")
       let max  = document.getElementById("aside-width").clientWidth;
       let len = 0;
       let arr = this.$refs.exitHot;
+      console.log("max", max)
+      console.log("arr", arr)
       arr.forEach((i,index)=>{
         len += i.clientWidth;
-        console.log(i.clientWidth);
+        console.log("i.clientWidth", i.clientWidth);
+        console.log("len", len)
         if(len > max){
-          arr[index-1].style.borderRight = 'none';
+          console.log("arr[index-1].childNodes[0]", arr[index-1].childNodes[0])
+          arr[index-1].childNodes[0].style.borderRight = 'none';
           len = i.clientWidth;
         }
       }) 
-      arr[arr.length-1].style.borderRight = 'none';
+      arr[arr.length-1].childNodes[0].style.borderRight = 'none';
     },
     exitDestination(){
       let max  = document.getElementById("aside-width").clientWidth;
@@ -4934,7 +4939,10 @@ export default {
 
     this.$nextTick(()=>{this.ticketHot()});
 
-    this.$nextTick(()=>{this.autoBorder()});
+
+    setTimeout(() => this.autoBorder(), 3000)
+
+    //this.$nextTick(()=>{this.autoBorder()});
     this.$nextTick(()=>{this.exitDestination()});
 
     // this.$nextTick(()=>{this.perHot()});
