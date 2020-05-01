@@ -12,7 +12,7 @@
       <!-- 轮播图+查询机票结束 -->
 
       <div  class="block">
-        <el-tabs v-model="activeName1" >
+        <el-tabs v-model="activeName1" @tab-click="handleClick">
             <!-- 热门开始 -->
             <el-tab-pane label="热门" name="first1">
                 <el-container>
@@ -62,16 +62,16 @@
             </el-tab-pane>
             <!-- 热门结束 -->
             <!-- 周边游开始 -->
-            <el-tab-pane label="周边游" name="secend1">
+            <el-tab-pane label="周边游" name="second1">
               <el-container>
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">热门主题游</dt>
-                    <dd class="scene_dd"  v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
+                    <dd class="scene_dd" ref="perHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
                   </div>
                   <div class="homestay">
                     <dt  class="sale_dt">热门目的地</dt>
-                    <dd class="scene_dd" v-for="(hotDestination,hotDestinationIndex) in perCityTitles.slice(1)" :key="hotDestinationIndex"><a class="find_a" href="#" >{{hotDestination.name}}</a></dd> 
+                    <dd class="scene_dd" ref="perDestination" v-for="(hotDestination,hotDestinationIndex) in perCityTitles.slice(1)" :key="hotDestinationIndex"><a class="find_a" href="#" >{{hotDestination.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -110,11 +110,11 @@
                 <el-aside class="content_aside">
                   <div id="aa">
                     <dt class="sale_dt">热门主题游</dt>
-                    <dd class="scene_dd" @click="ticketHot" ref="ticketHot" v-for="(ticketThemePlay,ticketThemePlayIndex) in ticketThemePlays" :key="ticketThemePlayIndex"><a href="#" class="find_a">{{ticketThemePlay.name}}</a></dd>
+                    <dd class="scene_dd" ref="ticketHot" v-for="(ticketThemePlay,ticketThemePlayIndex) in ticketThemePlays" :key="ticketThemePlayIndex"><a href="#" class="find_a">{{ticketThemePlay.name}}</a></dd>
                   </div>
                   <div class="find">
                     <dt  class="sale_dt">热门目的地</dt>
-                    <dd class="scene_dd" v-for="(ticketDestination,ticketDestinationIndex) in ticketDestinations" :key="ticketDestinationIndex"><a class="find_a" href="#">{{ticketDestination.name}}</a></dd> 
+                    <dd class="scene_dd" ref="ticketDestination" v-for="(ticketDestination,ticketDestinationIndex) in ticketDestinations" :key="ticketDestinationIndex"><a class="find_a" href="#">{{ticketDestination.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -163,11 +163,11 @@
                  <el-aside class="content_aside"  >
                   <div id="aside-width"  >
                     <dt class="sale_dt">热门主题游</dt>
-                    <dd class="scene_dd"  @click="autoBorder"  ref="exitHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
+                    <dd class="scene_dd" ref="exitHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
                   </div>
                   <div class="homestay">
                     <dt  class="sale_dt">热门目的地</dt>
-                    <dd class="scene_dd" @click="exitDestination" ref="exitDestination" v-for="(exitDestination,exitDestinationIndex) in exitCityTitles.slice(1)" :key="exitDestinationIndex"><a class="find_a" href="#">{{exitDestination.name}}</a></dd> 
+                    <dd class="scene_dd" ref="exitDestination" v-for="(exitDestination,exitDestinationIndex) in exitCityTitles.slice(1)" :key="exitDestinationIndex"><a class="find_a" href="#">{{exitDestination.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -181,7 +181,7 @@
                         :key="exitSelectTitleIndex"
                         :value="exitSelectTitle.name">
                       </el-option>
-                    </el-select> 
+                    </el-select>
                     <span class="main_a"><a href="javascript:void(0);" v-for="(exitSign,exitSignIndex) in exitSigns" :key="exitSignIndex">{{exitSign}}</a></span>
                   </ul> 
                   <div class="periphery_pic">
@@ -262,7 +262,7 @@
                     <li class="main_li" v-for="(linerCityTitle,linerCityTitleIndex) in linerCityTitles.slice(0,8)" :key="linerCityTitleIndex">
                         <button class="city_button"  @click="linerImageTab(linerCityTitleIndex)">{{linerCityTitle.name}}</button>
                     </li>
-                    <el-select v-model="linerSelect" round size="mini" class="main_button select_city" @change="linerCityChage">
+                    <el-select v-model="linerSelect" round size="mini" class="main_button select_city" >
                       <el-option 
                         v-for="(linerSelectTitle,linerSelectTitleIndex) in linerCityTitles.slice(8)" 
                         :key="linerSelectTitleIndex"
@@ -627,6 +627,7 @@ export default {
       linerCityTitles:[],
       linerCityPics:{},
       linerCityPic:[],
+      linerSelect:"更多",
 
 
       pics: [],
@@ -4614,7 +4615,6 @@ export default {
       let arr = this.$refs.ticketHot
       this.$refs.ticketHot.forEach((i,index)=>{
         len += i.clientWidth;
-        console.log(i.clientWidth);
         if(len > max){
           arr[index-1].style.borderRight = 'none';
           len = i.clientWidth;
@@ -4622,65 +4622,50 @@ export default {
       })
       arr[arr.length-1].style.borderRight = 'none';
     },
-    
-    autoBorder () {
-      let max  = document.getElementById("aside-width").clientWidth;
-      let len = 0;
-      let arr = this.$refs.exitHot;
-      this.$refs.exitHot.forEach((i,index)=>{
-        len += i.clientWidth;
-        console.log(i.clientWidth);
-        if(len > max){
-          arr[index-1].style.borderRight = 'none';
-          len = i.clientWidth;
-        }
-      }) 
-      arr[arr.length-1].style.borderRight = 'none';
+    handleClick(tab){
+      console.log("he")
+      var n = tab.name
+      // if(tab.name==='fourth1'){
+      //   this.$nextTick(() =>{this.autoBorder(this.$refs.exitHot)});
+      // }
+      switch(n){
+        case 'second1':
+          this.$nextTick(() =>{this.autoBorder(this.$refs.perHot)});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.pertDestination)});
+          console.log("tab2")
+
+          break;
+        case 'third1':
+          this.$nextTick(() =>{this.autoBorder(this.$refs.ticketHot)});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.ticketDestination)});
+          console.log("tab3")
+          console.log(this.$refs.ticketHot)
+
+          break;
+        case 'fourth1':
+          this.$nextTick(() =>{this.autoBorder(this.$refs.exitHot)});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.exitDestination)});
+          console.log("tab4")
+
+          break;
+
+
+      }
     },
-    exitDestination(){
+    autoBorder (arr) {
       let max  = document.getElementById("aside-width").clientWidth;
-      let len = 0;
-      let arr = this.$refs.exitDestination
-      this.$refs.exitDestination.forEach((i,index)=>{
+      var len = 0;
+        arr.forEach((i,index)=>{
         len += i.clientWidth;
         if(len > max+1){
-          arr[index-1].style.borderRight = 'none';
+          console.log("arr[index-1].children",this.$refs.perHot[index-1].children)
+
+          arr[index-1].childNodes[0].style.borderRight = 'none';
           len = i.clientWidth;
         }
-      })
-      arr[arr.length-1].style.borderRight = 'none';
+       }) 
+      arr[arr.length-1].childNodes[0].style.borderRight = 'none';
     },
-    // perHot(){
-    //   let max  = document.getElementById("aside-width").clientWidth;
-    //   let len = 0;
-    //   let arr = document.getElementsByName("aside-per-hot")
-    //   this.$refs.perHot.forEach((i,index)=>{
-    //     len += i.clientWidth;
-          
-
-    //     if(len > max){
-    //       arr[index-1].style.borderRight = 'none';
-    //       len = i.clientWidth;
-    //     }
-    //   })
-    //   arr[arr.length-1].style.borderRight = 'none';
-    // },
-    // perDestination(){
-    //   let max  = document.getElementById("aside-width").clientWidth;
-    //   let len = 0;
-    //   let arr = document.getElementsByName("aside-per-destinaton")
-    //   this.$refs.perDestination.forEach((i,index)=>{
-    //     len += i.clientWidth;
-    //     console.log(i,index)
-    //     console.log(i.clientWidth)
-    //     if(len > max){
-    //       arr[index-1].style.borderRight = 'none';
-    //       len = i.clientWidth;
-    //     }
-    //   })
-    //   arr[arr.length-1].style.borderRight = 'none';
-    // },
-  
     
     // getFirst(obj){ 
     //   for(var key in obj){
@@ -4726,12 +4711,11 @@ export default {
     this.exitCityPic = this.exitCityPics[this.exitCityTitles[0].py];
     this.terCityPic = this.terCityPics[this.terCityTitles[0].py];
 
-    this.$nextTick(()=>{this.ticketHot()});
-
-    this.$nextTick(()=>{this.autoBorder()});
-    this.$nextTick(()=>{this.exitDestination()});
-
-    // this.$nextTick(()=>{this.perHot()});
+    setTimeout(() => this.autoBorder(), 3000)
+    // this.$nextTick(()=>{this.autoBorder()});
+    // setTimeout(() => this.handleClick(), 3000)
+    // this.handleClick()
+    this.$nextTick(()=>{this.handleClick()});
     // this.$nextTick(()=>{this.perDestination()});
 
 
@@ -5186,7 +5170,7 @@ export default {
   margin-top:195px;
 }
 .scene_dd{
-  width: auto;;
+  /* width: auto; */
   display: block;
   float: left;
 } 
