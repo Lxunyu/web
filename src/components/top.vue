@@ -3,7 +3,7 @@
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
-                <b-nav-item href="#">您好，请登陆</b-nav-item>
+                <b-nav-item>您好，请登陆</b-nav-item>
                 <b-nav-item href="#">免费注册</b-nav-item>
             </b-navbar-nav>
             <b-navbar-nav class="ml-auto">
@@ -484,4 +484,5 @@ export default {
   font-size: 13px;
   color: black;
 }
+
 </style>

@@ -4,19 +4,23 @@
       <top></top>
     </div>
     <Center></Center>
+    <Ticket></Ticket>
   </div>
 </template>
 
 <script>
 import top from "./components/top.vue";
 import Center from "./components/Center.vue";
+import Ticket from "./components/Ticket.vue";
+
 
 
 export default {
   name: "app",
   components: {
     top,
-    Center
+    Center,
+    Ticket
   },
   data() {
     return {
@@ -134,6 +138,32 @@ export default {
   padding-top: 15px !important;
 } */
 
+/*cneter中周边的el-select  */
+.select_city .el-input--mini{
+  width: 67px !important; 
+}
+.select_city .el-input__inner{
+  padding-right: 0 !important;
+}
 
-
+/* Ticket/Center中的citySelect */
+.city_select>.el-input{
+  width: 65px;
+  height: 20px;
+  line-height: 20px;
+}
+.city_select>.el-input>.el-input__inner{
+  border: 0;
+  padding-right: 10px;
+  padding-left: 0px !important;
+  width: 45px;
+  height: 20px;
+}
+.city_select>.el-input>.el-input__suffix{
+  height: 20px;
+  line-height: 20px;
+}
+.el-input__icon{
+line-height: 20px !important;
+}
 </style>

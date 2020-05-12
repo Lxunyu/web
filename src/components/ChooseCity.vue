@@ -43,7 +43,10 @@
 <script>
 export default {
   name: "ChooseCity",
-  props:['city'],
+  props:{
+    city:String,
+    sendData:Object
+  },
  
  
   data(){
@@ -52,9 +55,19 @@ export default {
     activeName:"hotTab",
     mainTabs: [],
     InternationalTabs:[],
+    test:this.sendData,
     
 };
   },
+  // watch:{
+  //   test(culVal){
+  //     this.hotTab  = this.test;
+  //     console.log(culVal);
+  //     console.log(this.hotTab);
+  //     console.log(this.test);
+
+  //   }
+  // },
   methods:{
       loadAll() {
       this.hotTab = {
