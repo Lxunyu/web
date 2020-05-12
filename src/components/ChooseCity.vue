@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName">
       <el-tab-pane :label="hotTab.tabName" name="hotTab">
         <template v-for="(city,cityIndex) in hotTab.cities">
-          <a @click="get" class="a_style" href="#" v-bind:key="cityIndex">{{city}}</a>
+          <a @click="get" class="a_style" href="javascript:void(0)" v-bind:key="cityIndex">{{city}}</a>
         </template>
       </el-tab-pane>
       <template v-for="(tab,tabIndex) in mainTabs">
@@ -19,7 +19,7 @@
               </div>
               <div class="top_right">
                 <template v-for="(city,cityIndex) in group.cities">
-                  <a @click="get" class="a_style" href="#" v-bind:key="cityIndex">{{city}}</a>
+                  <a @click="get" class="a_style" href="javascript:void(0)" v-bind:key="cityIndex">{{city}}</a>
                 </template>
               </div>
             </div>
@@ -29,7 +29,7 @@
       <template v-for="(internation,internationIndex) in InternationalTabs" >
         <el-tab-pane :label="internation.tabName" :name="internation.tabName" v-bind:key="internationIndex+mainTabs.length">
           <template v-for="(internate,internateIndex) in internation.cities">
-            <a @click="get" class="a_style" href="#" v-bind:key="internateIndex">{{internate}}</a>
+            <a @click="get" class="a_style" href="javascript:void(0)" v-bind:key="internateIndex">{{internate}}</a>
           </template>
         </el-tab-pane>
       </template>
@@ -45,7 +45,6 @@ export default {
   name: "ChooseCity",
   props:{
     city:String,
-    sendData:Object
   },
  
  
@@ -55,7 +54,7 @@ export default {
     activeName:"hotTab",
     mainTabs: [],
     InternationalTabs:[],
-    test:this.sendData,
+    
     
 };
   },

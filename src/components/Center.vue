@@ -396,11 +396,11 @@
               <el-popover
                 placement="right"
                 trigger="click" >
-              
+                
                 <el-select ref="select" slot="reference" v-model="citySelect" placeholder="上海" class="city_select" @click="aaa" @visible-change="visibleChange">
-                  
+                  <el-option v-show="elOption"></el-option>
                  </el-select>
-                 <ChooseCity class="choose_width" v-bind:sendData="hotCity" :hot="this.hotCity" ref="data"></ChooseCity>
+                 <ChooseCity class="choose_width"  ref="data"></ChooseCity>
               </el-popover>
 
               <!-- <el-option>
@@ -555,7 +555,7 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">热门主题</dt>
-                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="find_a">{{hotTheme.name}}</a><span class="aside_icon">|</span></dd>
+                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="find_a">{{hotTheme.name}}</a></dd>
                   </div>
                   <div class="scene">
                     <dt  class="sale_dt">促销</dt>
@@ -601,11 +601,11 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">游山玩水</dt>
-                    <dd class="scene_dd" v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a><span class="aside_icon">|</span></dd>
+                    <dd class="scene_dd" v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a></dd>
                   </div>
                   <div class="homestay">
                     <dt  class="sale_dt">民俗艺术</dt>
-                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a><span class="aside_icon">|</span></dd> 
+                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -647,7 +647,7 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">热门团购</dt>
-                    <dd class="scene_dd" v-for="(hotGroup,hotGroupIndex) in hotGroups" :key="hotGroupIndex"><a href="#" class="find_a">{{hotGroup.name}}</a><span class="aside_icon">|</span></dd>
+                    <dd class="scene_dd" v-for="(hotGroup,hotGroupIndex) in hotGroups" :key="hotGroupIndex"><a href="#" class="find_a">{{hotGroup.name}}</a></dd>
                   </div>
                   <div class="group_select">
                     <dt  class="sale_dt">团购精选</dt>
@@ -656,13 +656,13 @@
                 </el-aside>
                 <el-main>
                   <ul class="main_ul">
-                    <li class="main_li" v-for="(group,groupIndex) in groups" :key="groupIndex">
+                    <li class="main_li" v-for="(group,groupIndex) in group" :key="groupIndex">
                         <el-button round size="mini" class="main_button" :class="{active:(groupIndex==num)}" @click="imageTab(groupIndex)">{{group.title}}</el-button>
                     </li>
                     <a class="main_a" href="javascript:void(0);">更多团购产品></a>
                   </ul>
                   <div class="overseas_pic">
-                    <div v-for="(group,groupIndex) in groups" :key="groupIndex">
+                    <div v-for="(group,groupIndex) in group" :key="groupIndex">
                       <div class="pic_box domestic_box" :title="pic.alt" v-for="(pic,picIndex) in group.contents" :key="picIndex" v-show="group.index==num">
                           <a href="#"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
                           <p class="domestic_p">{{pic.alt}}</p>
@@ -781,10 +781,12 @@ export default {
       homestaies:[],
       hotGroups:[],
       groupSelecteds:[],
-      groups:[],
+      group:[],
       hotCity:{},
+      maincities:[],
       citySelect:"",
-      visible:Boolean
+      visible:Boolean,
+      elOption:false
     };
   },
  
@@ -806,7 +808,185 @@ export default {
           "武汉",
           "厦门",
         ]
-      }
+      },
+      this.maincities = [
+        {
+          tabName:"ABCDE",
+          groups:[
+            {
+              start:"B",
+              cities:[
+                "北京",
+                "包头",
+              ]
+            },
+            {
+              start:"C",
+              cities:[
+                "重庆",
+                "成都",
+                "长春",
+                "长沙",
+                "常州",
+              ]
+            },
+            {
+              start:"D",
+              cities:[
+                "大连",
+                "东莞",
+              ]
+            },
+          ]
+        },
+        {
+          tabName:"FGHJ",
+          groups:[
+            {
+              start:"F",
+              cities:[
+                "佛山",
+                "福州",
+              ]
+            },
+            {
+              start:"G",
+              cities:[
+                "广州",
+                "贵阳",
+                "长春",
+              ]
+            },
+            {
+              start:"H",
+              cities:[
+                "哈尔滨",
+                "杭州",
+                "海口",
+                "呼和浩特",
+                "合肥",
+              ]
+            },
+            {
+              start:"J",
+              cities:[
+                "济南",
+                "江门",
+              ]
+            },
+          ]
+        },
+        {
+          tabName:"KLMNP",
+          groups:[
+            {
+              start:"K",
+              cities:[
+                "昆明",
+                "喀什市",
+              ]
+            },
+            {
+              start:"L",
+              cities:[
+                "拉萨",
+                "兰州",
+              ]
+            },
+            {
+              start:"M",
+              cities:[
+                "绵阳",
+              ]
+            },
+            {
+              start:"N",
+              cities:[
+                "南京",
+                "南通",
+                "宁波",
+                "南昌",
+                "南宁",
+              ]
+            },
+          ]
+        },
+        {
+          tabName:"QRSTW",
+          groups:[
+            {
+              start:"Q",
+              cities:[
+                "青岛",
+                "泉州",
+              ]
+            },
+            {
+              start:"S",
+              cities:[
+                "上海",
+                "苏州",
+                "深圳",
+                "三亚",
+                "石家庄",
+                "汕头",
+              ]
+            },
+            {
+              start:"T",
+              cities:[
+                "天津",
+                "太原",
+                "台州",
+              ]
+            },
+            {
+              start:"W",
+              cities:[
+                "无锡",
+                "乌鲁木齐",
+                "武汉",
+                "威海",
+                "温州",
+              ]
+            },
+          ]
+        },
+        {
+          tabName:"XYZ",
+          groups:[
+            {
+              start:"X",
+              cities:[
+                "西安",
+                "厦门",
+                "西宁",
+                "西昌",
+                "徐州",
+              ]
+            },
+            {
+              start:"Y",
+              cities:[
+                "银川",
+                "运城",
+                "延吉",
+                "榆林",
+                "烟台",
+                "义乌",
+              ]
+            },
+            {
+              start:"Z",
+              cities:[
+                "珠海",
+                "中山",
+                "郑州",
+              ]
+            },
+          ]
+        },
+      ]
     },
     loadAll() {
      this.hotImages = [
@@ -1062,7 +1242,7 @@ export default {
                 money:"1620",
                 number:"4",
                 scene:"景点:草莓园、斯米兰群岛、大峡谷、芭提雅海滩、红岛、金三角、翡翠湾、珊瑚岛、大佛寺、甲米天堂岛",
-                food:"美食:泰式炒面、泰式椰汁鸡汤、椒盐濑尿虾、泰北烤鱼、咖喱蟹、绿咖喱椰汁鸡、马散麻咖喱鸡、泰南咖喱鱼、烤椰塔、泰式咖喱炒蟹、柠檬蒸鲈鱼、咖喱鸡面、泰式炒饭、青木瓜色拉、泰式炒河粉、椰汁鸡汤、海鲜烧烤、菠萝炒饭、青木瓜沙拉、咖喱螃蟹、泰式菠萝炒饭、水果飞饼、椰子冰淇淋、泰式炒稞条、炸椰子丸和枣椰丸、绿咖喱鸡、泰式咖喱蟹、泰式汤米粉、泰式酸辣汤、海鲜、芒果糯米饭、咖啡、泰式青木瓜沙拉、炸猪皮、甲米烤鸡腿、冬阴功汤、青木瓜沙律、龙虾、泰式空心菜",
+                food:"美食:泰式炒面、泰式椰汁鸡汤、椒盐濑尿虾、泰北烤鱼、咖喱蟹、绿咖喱椰汁鸡、马散麻咖喱��、泰南咖喱鱼、烤椰塔、泰式咖喱炒蟹、柠檬蒸鲈鱼、咖喱鸡面、泰式炒饭、青木瓜色拉、泰式炒河粉、椰汁鸡汤、海鲜烧烤、菠萝炒饭、青木瓜沙拉、咖喱螃蟹、泰式菠萝炒饭、水果飞饼、椰子冰淇淋、泰式炒稞条、炸椰子丸和枣椰丸、绿咖喱鸡、泰式咖喱蟹、泰式汤米粉、泰式酸辣汤、海鲜、芒果糯米饭、咖啡、泰式青木瓜沙拉、炸猪皮、甲米烤鸡腿、冬阴功汤、青木瓜沙律、龙虾、泰式空心菜",
                 product:"立即查看3000条产品>"
               },
               {
@@ -4813,7 +4993,7 @@ export default {
         name:"下午茶9.9元起"
       },
      ],
-     this.groups = [
+     this.group = [
       {
         title:"北京",
         contents:[
@@ -5610,9 +5790,6 @@ export default {
    
     handleClick(tab){
       var n = tab.name
-      // if(tab.name==='fourth1'){
-      //   this.$nextTick(() =>{this.autoBorder(this.$refs.exitHot)});
-      // }
       switch(n){
         case 'second1':
           this.$nextTick(() =>{this.autoBorder(this.$refs.perHot,"per-width")});
@@ -5753,11 +5930,14 @@ export default {
   
     
   aaa(){
+    this.$refs.select.blur();
      this.$refs.data.hotTab = this.hotCity;
-
+     this.$refs.data.mainTabs = this.maincities;
+     this.$refs.data.InternationalTabs.length = 0;
   },
-  visibleChange(){
-    this.visible = false;
+  visibleChange(event){
+    event = false;
+    console.log(event)
   }
    
    
@@ -5778,10 +5958,9 @@ export default {
 
     setTimeout(()=>{ this.aaa()},1000);
 
-    this.$refs.select.forEach(v=>v.blur)
 
 
-    setTimeout(() => this.autoBorder(), 3000)
+    setTimeout(() => this.autoBorder(), 3000);
     // this.$nextTick(()=>{this.autoBorder()});
     // setTimeout(() => this.handleClick(), 3000)
     // this.handleClick()
@@ -6024,6 +6203,7 @@ overflow-y: hidden;
 }
 .main_a:hover{
   border: 1px solid rgb(18, 120, 204);
+  text-decoration: none;
 }
 .overseas_pic{
   width: 690px;
@@ -6313,6 +6493,7 @@ overflow-y: hidden;
 .choose_width{
   width: 430px;
 }
+
 </style>
 
 

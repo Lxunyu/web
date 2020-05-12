@@ -166,4 +166,10 @@ export default {
 .el-input__icon{
 line-height: 20px !important;
 }
+/* .el-select-dropdown{
+  visibility: hidden;
+}
+#tab-2 .el-select-dropdown{
+  visibility: visible !important;
+} */
 </style>
