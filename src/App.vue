@@ -133,10 +133,10 @@ export default {
   padding: 0px !important;
 }
 
-/* Cneter中的oversea顶部 */
-/* .el-tabs__content{
-  padding-top: 15px !important;
-} */
+/* Cneter中的tab顶部 */
+.el-tabs__header{
+  width: 1175px;
+}
 
 /*cneter中周边的el-select  */
 .select_city .el-input--mini{

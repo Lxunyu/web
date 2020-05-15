@@ -6,6 +6,7 @@ import ElementUI from 'element-ui';
 import BootstrapVue from 'bootstrap-vue'
 import 'element-ui/lib/theme-chalk/index.css';
 import SvgIcon from './components/SvgIcon.vue';
+require('./mock');
 
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false

@@ -394,8 +394,9 @@
             <span slot="label">
             
               <el-popover
-                placement="right"
-                trigger="click" >
+                placement="right-start"
+                trigger="click" 
+               >
                 
                 <el-select ref="select" slot="reference" v-model="citySelect" placeholder="上海" class="city_select" @click="aaa" @visible-change="visibleChange">
                   <el-option v-show="elOption"></el-option>
@@ -403,8 +404,7 @@
                  <ChooseCity class="choose_width"  ref="data"></ChooseCity>
               </el-popover>
 
-              <!-- <el-option>
-              </el-option> -->
+             
             </span>
           </el-tab-pane>
 
@@ -435,20 +435,19 @@
                             </li>
                             <a class="main_a" href="javascript:void(0);">更多海外酒店></a>
                         </ul>
-                        <a href="javascript:void(0);">
-                          <div class="overseas_pic">
-                            <div  v-for="(image,imageIndex) in images" :key="imageIndex">
-                              <div class="pic_box" :title='pic.alt' v-for="(pic,picIndex) in image.contents" :key="picIndex" v-show="image.index==num">
-                                  <el-image  class="pic_item" :src="pic.src" :alt="image.alt" ></el-image>
-                                  <div class="circle">
-                                    <p class="circle_alt">{{pic.alt}}</p>
-                                    <hr class="cicle_hr">
-                                    <p class="circle_num">{{pic.num}}</p>
-                                    <p class="circle_num"><svg-icon class="icon_money" name="money"></svg-icon><span class="circle_money">{{pic.money}}</span>起</p>
-                                  </div>
-                              </div>
+                        <div class="overseas_pic">
+                          <div  v-for="(image,imageIndex) in images" :key="imageIndex">
+                            <div class="pic_box" :title='pic.alt' v-for="(pic,picIndex) in image.contents" :key="picIndex" v-show="image.index==num">
+                              <a href="javascript:void(0)"><el-image  class="pic_item" :src="pic.src" :alt="image.alt" ></el-image></a>
+                                <div class="circle">
+                                  <p class="circle_alt">{{pic.alt}}</p>
+                                  <hr class="cicle_hr">
+                                  <p class="circle_num">{{pic.num}}</p>
+                                  <p class="circle_num"><svg-icon class="icon_money" name="money"></svg-icon><span class="circle_money">{{pic.money}}</span>起</p>
+                                </div>
                             </div>
-                           </div>
+                          </div>
+                          </div>
                           <a href="#" title="泰国免落地签证费啦!">
                               <div class="main_right">
                                 <el-image class="main_right_image" src="https://pages.c-ctrip.com/hotel/201805/thailand/220330.jpg"></el-image>
@@ -457,7 +456,6 @@
                                 </div>
                               </div>
                             </a>  
-                        </a>
                       </div>
                        
                     </el-main>
@@ -466,10 +464,8 @@
             <!-- 海外酒店结束 -->
             <!-- 海外民俗+短租开始 -->
             <el-tab-pane label="海外民俗+短租" name="second">
-              <ul>
-                <li class="oversea_li">
-                  <a class="main_a" href="javascript:void(0);">更多海外民宿></a>
-                </li>
+              <ul class="oversea_ul"> 
+                <a class="main_a" href="javascript:void(0);">更多海外民宿></a>
               </ul>
               <div class="oversea">
                 <div class="oversea_left"> 
@@ -579,7 +575,6 @@
                             <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
                             <svg-icon class="black_money" name="blackMoney"></svg-icon>
                             </p>
-
                       </div>
                     </div>
                   </div>
@@ -5986,9 +5981,8 @@ export default {
 .block{
   padding: 0 40px;
   height: 500px;
-   display: flex;
-overflow-x: auto;
-overflow-y: hidden;
+  display: flex;
+  
 }
 .content {
   width: 100%;
@@ -6007,6 +6001,7 @@ overflow-y: hidden;
   width: 225px;
   height: 180px;
   float: left;
+  overflow: hidden;
 }
 .hot_pic_item{
   width: 225px;
@@ -6171,8 +6166,13 @@ overflow-y: hidden;
   width: 920px;
   height: 30px;
   padding-left: 0;
-  position: relative;
-    
+  position: relative;   
+}
+.oversea_ul{
+  width: 1160px;
+  height: 30px;
+  padding-left: 0;
+  position: relative;  
 }
 .main_li{
   list-style: none;
@@ -6212,26 +6212,24 @@ overflow-y: hidden;
 }
 .pic_box{
   position: relative;
-  width: 230px;
+  width: 220px;
   height: 180px;
   float: left;
   overflow: hidden;
+  margin:0 10px 10px 0;
 }
 .pic_box:hover {
   border-bottom: 1px solid gray;
 }
-.pic_box:hover>.pic_item{
+.pic_box:hover .pic_item{
   transform: scale(1.1);
 
 }
 .pic_item{
   width: 230px !important ;
   height: 180px;
-  padding:0 10px 10px 0;
   float: left;
   transition: all 0.5s;
-  overflow: hidden;
-
 }
 /* .pic_item:hover{
   transform: scale(1.1);
@@ -6335,7 +6333,8 @@ overflow-y: hidden;
   width: 220px;
   height: auto;
   float: left;
-  margin: 5px 5px;
+  /* margin: 5px 5px; */
+  transition: all 0.5s linear;
 }
 .oversea_title{
   position: absolute;
@@ -6353,11 +6352,17 @@ overflow-y: hidden;
 }
 .oversea_box{
   position: relative;
-  width: 230px;
-  height: 170px;
+  width: 220px;
+  height: 160px;
   float: left;
-  padding:0 10px 10px 0;
+  margin:0 10px 10px 0;
   overflow: hidden;
+}
+.oversea_box:hover{
+  border-bottom: 1px solid gray;
+}
+.oversea_box:hover .oversea_pic{
+  transform: scale(1.1);
 }
 .oversea_circle{
   width: 80px;
@@ -6377,10 +6382,22 @@ overflow-y: hidden;
 .oversea_right_box{
   position: relative;
   float: left;
+  width: 220px;
+  height: auto;
+  float: left;
+  margin:0 10px 10px 0;
+  overflow: hidden;
+  left: -15px;
+}
+.oversea_right_box:hover{
+  border-bottom: 1px solid gray;
+}
+.oversea_right_box:hover .oversea_pic{
+  transform: scale(1.1);
 }
 .overseaTitle1,.overseaTitle2{
   position: absolute;
-  left: 5px;
+  left: 0px;
   top: 135px;
   text-align: center;
   width: 220px;
@@ -6418,6 +6435,9 @@ overflow-y: hidden;
 }
 .domestic_box :hover .domestic_pic_item{
   transform: scale(1.1);  
+}
+.domestic_box :hover .scene_pic_item{
+  transform: scale(1.1);
 }
 .domestic_p{
   position: relative;
@@ -6459,6 +6479,7 @@ overflow-y: hidden;
 .scene_pic_item{
   width: 220px;
   height: 100px;
+  transition: all 0.5s linear;
 }
 .scene_P{
   margin-top: 0px !important ;
@@ -6477,23 +6498,24 @@ overflow-y: hidden;
 }
 
 .city_select{
-  left: 665px;
+  left: 650px;
   top: 5px;
   height: 20px;
   line-height: 20px;
 }
-.aa{
+/* .aa{
   position: relative;
 }
 .bb{
   position: absolute;
   right: -400px;
-  /* flex-shrink: 0; */
-}
+} */
 .choose_width{
   width: 430px;
 }
-
+.popover{
+  overflow-x: scroll
+}
 </style>
 
 
