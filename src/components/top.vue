@@ -1,10 +1,12 @@
 <template>
-    <div class="">
+    <div class=""> 
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
-                <b-nav-item>您好，请登陆</b-nav-item>
-                <b-nav-item href="#">免费注册</b-nav-item>
+                <b-nav-item  @click="login" >您好，请登陆</b-nav-item>
+                <b-nav-item href="http://localhost:8080/HelloWorld.vue">免费注册</b-nav-item>
+                <!-- <router-link tag="a" target="_blank" :to="'/World/'+UserId">ceshi</router-link>  -->
+                <router-view></router-view>
             </b-navbar-nav>
             <b-navbar-nav class="ml-auto">
                 <b-nav-item-dropdown text="我的彩虹管家" right>
@@ -26,10 +28,12 @@
                 <img src="./../assets/imgs/logo.png" class="pic_logo" />
             </a>
             </div>
-            <el-input class="inquery" v-model="input" placeholder="搜索旅行地/酒店/旅游/景点门票/交通"></el-input>
+            <div class="inquery">
+            <el-input v-model="input" placeholder="搜索旅行地/酒店/旅游/景点门票/交通"></el-input>
             <el-button class="inquery_button">
             <svg-icon name="inquery"></svg-icon>
             </el-button>
+            </div>
         </div>
          <div>
             <el-menu
@@ -205,6 +209,7 @@ export default {
   name: 'top',
   components:{
   },
+  
    data() {
     return {
       pics: [],
@@ -220,12 +225,15 @@ export default {
       globalPurchases: [],
       giftCards: [],
       addeds: [],
+      $router:'',
+      UserId:'test'
+      // path:this.$router.currentRoute.path
 
     };
   },
   methods:{
       loadAall(){
-            (this.hotels = [
+        (this.hotels = [
         "国内酒店",
         "国外酒店",
         "民俗客栈",
@@ -235,7 +243,7 @@ export default {
         "酒店+景点",
         "团队房间•长住房",
         "会议"
-      ]),
+        ]),
         (this.travels = [
           "旅游首页",
           "周末游",
@@ -339,10 +347,20 @@ export default {
            name:"外币兑换"
          }
         ]  
+      },
+      login(){
+          let routeUrl = this.$router.resolve({
+            name:'Login',
+            path:'/Login/UserId'
+          })
+           window.open(routeUrl .href, '_blank');
+         
+
       }
   },
   mounted(){
       this.loadAall();
+      this.login()
   }
 }
 </script>
@@ -397,10 +415,13 @@ export default {
   margin: 0px !important;
   border: 1px solid skyblue;
 }
+.inquery{
+  position: relative;
+}
 .inquery_button {
   position: absolute;
-  top: 63px;
-  left: 549px;
+  top: -12px;
+  left: 551px;
   padding: 0px !important;
   width: 40px;
   height: 33.5px;

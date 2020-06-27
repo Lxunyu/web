@@ -14,9 +14,12 @@
     "core-js": "^3.4.4",
     "element-ui": "^2.13.0",
     "jquery": "^3.4.1",
+    "lib-flexible": "^0.3.2",
     "mockjs": "^1.1.0",
     "popper.js": "^1.16.1",
-    "vue": "^2.6.10"
+    "postcss-px2rem": "^0.3.0",
+    "vue": "^2.6.10",
+    "vue-router": "^3.3.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
@@ -25,6 +28,7 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "px2rem-loader": "^0.1.9",
     "svgo": "^1.1.0",
     "svgo-loader": "^2.1.0",
     "vue-cli-plugin-svg-sprite": "^1.0.0",

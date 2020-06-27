@@ -6,6 +6,7 @@ import ElementUI from 'element-ui';
 import BootstrapVue from 'bootstrap-vue'
 import 'element-ui/lib/theme-chalk/index.css';
 import SvgIcon from './components/SvgIcon.vue';
+import router from './router'
 require('./mock');
 
 Vue.use(BootstrapVue)
@@ -17,4 +18,6 @@ Vue.component('SvgIcon', SvgIcon);
 
 new Vue({
   render: h => h(App),
+  router:router
 }).$mount('#app')
+

@@ -1,52 +1,40 @@
 <template>
   <div id="app">
-    <div class="top">
-      <top></top>
-    </div>
-    <Center></Center>
-    <Ticket></Ticket>
+    <router-link to="/all"></router-link>
+    <router-view></router-view>
+    <!-- <all></all> -->
   </div>
 </template>
 
 <script>
-import top from "./components/top.vue";
-import Center from "./components/Center.vue";
-import Ticket from "./components/Ticket.vue";
+// import top from "./components/top.vue";
+// import Center from "./components/Center.vue";
+// import all from "./components/all.vue";
+
 
 
 
 export default {
   name: "app",
   components: {
-    top,
-    Center,
-    Ticket
+    // top,
+    // Center,
+    
   },
+ 
+  
   data() {
     return {
       pics: [],
       icons:[],
-      shu: {}
     };
   },
   methods: {
-    loadAll() {
-      // this.pics = [
-      //   {
-      //     url: require("./assets/imgs/pic1.jpg")
-      //   },
-      //   {
-      //     url: require("./assets/imgs/pic2.jpg")
-      //   }
-      // ];
-    },
-    // handleSelect(key, keyPath) {
-    //   console.log(key, keyPath);
-    // }
+  
   },
   computed: {},
   mounted() {
-    this.loadAll();
+   
   }
 };
 </script>
@@ -58,6 +46,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow: hidden;
 }
 .el-tabs__content {
   padding-top: 15px;
@@ -134,9 +123,9 @@ export default {
 }
 
 /* Cneter中的tab顶部 */
-.el-tabs__header{
+/* .el-tabs__header{
   width: 1175px;
-}
+} */
 
 /*cneter中周边的el-select  */
 .select_city .el-input--mini{
@@ -172,4 +161,5 @@ line-height: 20px !important;
 #tab-2 .el-select-dropdown{
   visibility: visible !important;
 } */
+
 </style>

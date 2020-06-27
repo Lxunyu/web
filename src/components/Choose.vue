@@ -5,7 +5,7 @@
          <div class="choose_style">
             <div class="choose_style_left">
                <span>航程类型</span>
-                <el-radio-group v-model="radio" @change="singleWay"  >
+                <el-radio-group v-model="radio" @change="singleWay" class="radio_group" >
                   <el-radio  label="1">单程</el-radio>
                   <el-radio  label="2">往返</el-radio>
                   <el-radio  label="3">多程(含缺口程)</el-radio>\
@@ -278,6 +278,8 @@ export default {
   line-height: 50px;
 }
 
-
+.radio_group{
+  padding-top: 7px;
+}
 
 </style>

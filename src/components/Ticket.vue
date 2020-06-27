@@ -2,9 +2,9 @@
     <div>
          <!-- 特价机票开始 -->
       <div class="ticketBlock">
-        <div class="test">
+        <!-- <div class="test">
             
-         </div>
+         </div> -->
         <el-tabs v-model="activeTicket" >
           <!--国际•港澳台特价机票开始-->
           <el-tab-pane label="国际•港澳台特价机票" name="ticket1">
@@ -100,7 +100,8 @@ export default {
        cheapDomesticPic:[],
        cheapDomesticPics:{},
        options:[],
-       citySelect:"上海"
+       citySelect:"上海",
+       
 
     };
   },
@@ -599,8 +600,9 @@ export default {
 
 <style scoped>
 .ticketBlock{
-  padding: 0 30px;
+  padding: 0 40px;
   height: 500px;
+  display: flex;
 }
 .city_button{
   width: 50px;

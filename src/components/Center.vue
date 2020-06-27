@@ -1,61 +1,60 @@
 <template>
      <div class="content">
       <!-- 轮播图+查询机票开始 -->
-      <div>
-        <el-carousel trigger="click">
+      <div class="test">
+        <el-carousel trigger="click" class="carousel">
           <el-carousel-item v-for="(item,itemIndex) in pics" :key="itemIndex">
             <img class="img_style" :src="item.url" />
           </el-carousel-item>
         </el-carousel>
-        <air-tickets class="air"></air-tickets>
+        <air-tickets></air-tickets>
       </div>
       <!-- 轮播图+查询机票结束 -->
       <!-- 游玩开始 -->
-      <div class="block">
-        <el-tabs v-model="activeName1" @tab-click="handleClick">
-            <!-- 热门开始 -->
+      <div class="block" >
+        <el-tabs v-model="activeName1" @tab-click="handleClick" class="tabs">
+            <!-- 热门开始  -->
             <el-tab-pane label="热门" name="first1">
                 <el-container>
-                    <el-main>
-                      <div >
+                    <el-main class="el_main">
+                      <!-- <div  > -->
                         <ul class="main_ul hot_ul">
                             <li class="main_li"  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
                                 <el-button round size="mini" :class="{active:(hotImageIndex==num1)}" @click="hotImageTab(hotImageIndex)" class="main_button" >{{hotImage.title}}</el-button>
                             </li>
                         </ul>
-                          <div class="hot_pic">
-                            <div  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
-                              <div class="hot_pic_box" :title='pic.alt' v-for="(pic,picIndex) in hotImage.contents" :key="picIndex" v-show="hotImage.index==num1" @mouseover="mouserover(picIndex)" @mouseleave="mouseleave(picIndex)">
-                                <a href="javascript:void(0);">
-                                  <div :class="{'blur':isblur&&picIndex==current}">
-                                    <el-image  class="hot_pic_item" :src="pic.src" :alt="hotImage.alt"></el-image>
-                                    <div class="hot_pic_icon">
-                                      <p class="hot_pic_p">月销{{pic.number}}笔</p>
-                                    </div>
-                                    <div class="circle">
-                                      <p class="circle_alt">{{pic.alt}}</p>
-                                      <hr class="cicle_hr">
-                                      <p class="circle_num"><svg-icon class="hot_icon_money" name="money"></svg-icon><span class="circle_money">{{pic.money}}</span>/人起</p>
-                                    </div>
-                                    <!-- <div class="blur"></div> -->
+                        <div class="hot_pic">
+                          <div  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
+                            <div class="hot_pic_box" :title='pic.alt' v-for="(pic,picIndex) in hotImage.contents" :key="picIndex" v-show="hotImage.index==num1" @mouseover="mouserover(picIndex)" @mouseleave="mouseleave(picIndex)">
+                              <a href="javascript:void(0);">
+                                <div :class="{'blur':isblur&&picIndex==current}">
+                                  <el-image  class="hot_pic_item" :src="pic.src" :alt="hotImage.alt"></el-image>
+                                  <div class="hot_pic_icon">
+                                    <p class="hot_pic_p">月销{{pic.number}}笔</p>
                                   </div>
-                                    <div class="background" v-show="bg&&picIndex==current">
-                                      <p class="background_title">{{pic.alt}}</p>
-                                      <p class="background_content"><svg-icon class="bg_icon" name="scene"></svg-icon>{{pic.scene}}</p>
-                                      <p class="background_content"><svg-icon class="bg_icon" name="food"></svg-icon>{{pic.food}}</p>
-                                      <p class="background_content background_product">{{pic.product}}</p>
-                                    </div>
-                                </a>
-                              </div>
+                                  <div class="circle">
+                                    <p class="circle_alt">{{pic.alt}}</p>
+                                    <hr class="cicle_hr">
+                                    <p class="circle_num"><svg-icon class="hot_icon_money" name="money"></svg-icon><span class="circle_money">{{pic.money}}</span>/人起</p>
+                                  </div>
+                                  <!-- <div class="blur"></div> -->
+                                </div>
+                                  <div class="background" v-show="bg&&picIndex==current">
+                                    <p class="background_title">{{pic.alt}}</p>
+                                    <p class="background_content"><svg-icon class="bg_icon" name="scene"></svg-icon>{{pic.scene}}</p>
+                                    <p class="background_content"><svg-icon class="bg_icon" name="food"></svg-icon>{{pic.food}}</p>
+                                    <p class="background_content background_product">{{pic.product}}</p>
+                                  </div>
+                              </a>
                             </div>
-                           </div>
-                          <a href="#">
-                            <div class="main_right">
-                              <el-image class="main_right_image" src="https://dimg04.c-ctrip.com/images/zg0i1d000001e7tc3205C.jpg"></el-image>
-                            </div>
-                           </a>   
+                          </div>
+                        </div>
+                        <div class="main_right">
+                          <a href="javascrip:void(0)"><el-image class="main_right_image" src="https://dimg04.c-ctrip.com/images/zg0i1d000001e7tc3205C.jpg"></el-image></a>
+                        </div>
+                             
                         
-                      </div>
+                      <!-- </div> -->
                        
                     </el-main>
                 </el-container>
@@ -63,45 +62,26 @@
             <!-- 热门结束 -->
             <!-- 周边游开始 -->
             <el-tab-pane label="周边游" name="second1">
-              <el-container>
-                 <el-aside class="content_aside">
-                  <div id="per-width">
-                    <dt class="sale_dt">热门主题游</dt>
-                    <dd class="scene_dd" ref="perHot" v-for="(themePlay,themePlayIndex) in themePlays" :key="themePlayIndex"><a href="#" class="find_a">{{themePlay.name}}</a></dd>
-                  </div>
-                  <div class="homestay">
-                    <dt  class="sale_dt">热门目的地</dt>
-                    <dd class="scene_dd" ref="perDestination" v-for="(hotDestination,hotDestinationIndex) in perCityTitles.slice(1)" :key="hotDestinationIndex"><a class="find_a" href="#" >{{hotDestination.name}}</a></dd> 
-                  </div>
-                </el-aside>
-                <el-main>
-                  <ul class="main_ul">
-                    <li class="main_li" v-for="(perCityTitle,perCityTitleIndex) in perCityTitles.slice(0,8)" :key="perCityTitleIndex">
-                        <button class="city_button" :class="isColor==perCityTitleIndex?'btnColor':'' "  @click="perImageTab(perCityTitle.py,perCityTitleIndex,testIndex)">{{perCityTitle.name}}</button>
-                    </li>
-                    <el-select v-model="selectValue" round size="mini" class="main_button select_city" @change="cityChange">
-                        <el-option 
-                         v-for="(selectTitle,selectTitleIndex) in perCityTitles.slice(8)" :key="selectTitleIndex"
-                          :value="selectTitle.name">
-                        </el-option>
-                      </el-select> 
-                    <span class="main_a"><a href="javascript:void(0);" v-for="(perSign,perSigntIndex) in perSigns" :key="perSigntIndex">{{perSign}}</a></span>
-                  </ul> 
-                  <div class="periphery_pic">
-                    <div v-for="(pic,peripheryIndex) in peripheryPic" :key="peripheryIndex" >
-                      <div class="hot_pic_box domestic_box"  :title="pic.alt" >
-                          <a href="javascript:void(0);"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
-                          <p class="domestic_p">{{pic.alt}}</p>
-                          <p class="domestic_p"></p>
-                          <p class="domestic_p">
-                            <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
-                            <svg-icon class="black_money" name="blackMoney"></svg-icon>
-                         </p>
-                      </div>
-                    </div>
-                  </div>
-                </el-main>
-              </el-container>
+              <TravalBar>
+                 <travalItem :navs="themePlays" slot="TravalNav" id="per-width"  ref="rightBorder">
+                   <dt slot="hot-name">热门主题游</dt>
+                   <template slot-scope="slotProps">
+                     <span>{{slotProps.navName.name}}</span>
+                   </template>
+                 </travalItem>
+                 <travalItem :navs="perCityTitles.slice(1)" slot="TravalNav">
+                    <dt slot="hot-name">热门目的地</dt>
+                    <template slot-scope="slotProps">
+                      <span>{{slotProps.navName.name}}</span>
+                    </template>
+                 </travalItem>
+                 <travalButton :buttonNames="perCityTitles" :picNames="peripherys" slot="ButtonBar">
+                   <template slot-scope="cityNames">
+                     <span >{{cityNames.cityName.name}}</span>
+                   </template>
+                 </travalButton>
+                 <PicBar slot="PicBar"></PicBar>
+              </TravalBar>
             </el-tab-pane>
             <!-- 周边游结束 -->
             <!-- 门票开始 -->
@@ -117,7 +97,7 @@
                     <dd class="scene_dd" ref="ticketDestination" v-for="(ticketDestination,ticketDestinationIndex) in ticketDestinations" :key="ticketDestinationIndex"><a class="find_a" href="#">{{ticketDestination.name}}</a></dd> 
                   </div>
                 </el-aside>
-                <el-main>
+                <el-main class="el_main">
                   <ul class="main_ul">
                     <li class="main_li"  v-for="(ticketTitle,ticketTitleIndex) in ticketTitles.slice(0,8)" :key="ticketTitleIndex">
                         <button size="mini" class="city_button" :class="isColor===ticketTitleIndex ? 'btnColor':''" @click="ticketImageTab(ticketTitle.py,ticketTitleIndex)">{{ticketTitle.name}}</button>
@@ -159,7 +139,7 @@
             <!-- 门票结束 -->
             <!-- 出境游开始 -->
             <el-tab-pane label="出境游" name="fourth1">
-              <el-container>
+              <!-- <el-container>
                  <el-aside class="content_aside"  >
                   <div id="aside-width"  >
                     <dt class="sale_dt">热门主题游</dt>
@@ -197,12 +177,32 @@
                     </div>
                   </div>
                 </el-main>
-              </el-container>
+              </el-container> -->
+              <TravalBar>
+                 <travalItem :navs="themePlays" slot="TravalNav" id="per-width4"  ref="rightBorder4">
+                   <dt slot="hot-name">热门主题游</dt>
+                   <template slot-scope="slotProps">
+                     <span>{{slotProps.navName.name}}</span>
+                   </template>
+                 </travalItem>
+                 <travalItem :navs="exitCityTitles.slice(1)" slot="TravalNav">
+                    <dt slot="hot-name">热门目的地</dt>
+                    <template slot-scope="slotProps">
+                      <span>{{slotProps.navName.name}}</span>
+                    </template>
+                 </travalItem>
+                 <travalButton :buttonNames="exitCityTitles" :picNames="exitCityPics" slot="ButtonBar">
+                   <template slot-scope="cityNames">
+                     <span >{{cityNames.cityName.name}}</span>
+                   </template>
+                 </travalButton>
+                 <PicBar slot="PicBar"></PicBar>
+              </TravalBar>
             </el-tab-pane>
             <!-- 出境游结束 -->
             <!-- 境内游开始 -->
             <el-tab-pane label="境内游" name="fifth1">
-              <el-container>
+              <!-- <el-container>
                  <el-aside class="content_aside">
                   <div id="ter-width">
                     <dt class="sale_dt">游山玩水</dt>
@@ -229,19 +229,30 @@
                   </ul>
                   <div class="periphery_pic">
                     <div v-for="(pic,territoryIndex) in terCityPic" :key="territoryIndex">
-                      <div class="pic_box domestic_box" :title="pic.alt">
-                          <a href="#"><el-image  class="domestic_pic_item" :src="pic.src"></el-image></a>
-                          <p class="domestic_p">{{pic.alt}}</p>
-                          <p class="domestic_p">
-                            <span class="domestic_pic_span">{{pic.name}}</span>
-                            <span class="domestic_span"><span  class="circle_money">{{pic.money}}</span>起</span>
-                            <svg-icon class="black_money" name="blackMoney"></svg-icon>
-                         </p>
-                      </div>
                     </div>
                   </div>
                 </el-main>
-              </el-container>
+              </el-container> -->
+              <TravalBar>
+                 <travalItem :navs="plays" slot="TravalNav" >
+                   <dt slot="hot-name">游山玩水</dt>
+                   <template slot-scope="slotProps">
+                     <span>{{slotProps.navName.name}}</span>
+                   </template>
+                 </travalItem>
+                 <travalItem :navs="arts" slot="TravalNav">
+                    <dt slot="hot-name">民俗艺术</dt>
+                    <template slot-scope="slotProps">
+                      <span>{{slotProps.navName.name}}</span>
+                    </template>
+                 </travalItem>
+                 <travalButton :buttonNames="terCityTitles" :picNames="terCityPics" slot="ButtonBar">
+                   <template slot-scope="cityNames">
+                     <span >{{cityNames.cityName.name}}</span>
+                   </template>
+                 </travalButton>
+                 <PicBar slot="PicBar"></PicBar>
+              </TravalBar>
             </el-tab-pane>
             <!-- 境内游结束 -->
             <!-- 邮轮开始 -->
@@ -348,7 +359,7 @@
             <!-- 当地玩乐结束 -->
             <!-- 主题游开始 -->
             <el-tab-pane label="主题游" name="eighth1">
-              <el-container>
+              <!-- <el-container>
                  <el-aside class="content_aside">
                   <div id="theme-width">
                     <dt class="sale_dt">户外</dt>
@@ -387,7 +398,39 @@
                     </div>
                   </div>
                 </el-main>
-              </el-container>
+              </el-container> -->
+              <TravalBar>
+                 <travalItem :navs="outdoors" slot="TravalNav" >
+                   <dt slot="hot-name">户外</dt>
+                   <template slot-scope="slotProps">
+                     <span>{{slotProps.navName.name}}</span>
+                   </template>
+                 </travalItem>
+                 <travalItem :navs="naturals" slot="TravalNav">
+                    <dt slot="hot-name">自然</dt>
+                    <template slot-scope="slotProps">
+                      <span>{{slotProps.navName.name}}</span>
+                    </template>
+                 </travalItem>
+                 <travalItem :navs="humanities" slot="TravalNav">
+                    <dt slot="hot-name">人文</dt>
+                    <template slot-scope="slotProps">
+                      <span>{{slotProps.navName.name}}</span>
+                    </template>
+                 </travalItem>
+                 <travalItem :navs="festivals" slot="TravalNav">
+                    <dt slot="hot-name">节庆</dt>
+                    <template slot-scope="slotProps">
+                      <span>{{slotProps.navName.name}}</span>
+                    </template>
+                 </travalItem>
+                 <travalButton :buttonNames="themeCityTitles" :picNames="themeCityPics" slot="ButtonBar">
+                   <template slot-scope="cityNames">
+                     <span >{{cityNames.cityName.name}}</span>
+                   </template>
+                 </travalButton>
+                 <PicBar slot="PicBar"></PicBar>
+              </TravalBar>
             </el-tab-pane>
             <!-- 主题游结束 -->
             <el-tab-pane class="tab_right">
@@ -695,12 +738,19 @@
 <script>
 import AirTickets from "./AirTickets.vue";
 import ChooseCity from "./ChooseCity.vue";
-
+import travalItem from './traval/Traval-item';
+import TravalBar from './traval/TravalBar';
+import TravalButton from './traval/TravalButton';
+import PicBar from './traval/PicBar';
 export default {
   name: "Center",
   components: {
     AirTickets,
-    ChooseCity
+    ChooseCity,
+    travalItem,
+    TravalBar,
+    TravalButton,
+    PicBar
   },
   data() { 
     return {
@@ -715,7 +765,7 @@ export default {
       peripherys:{},
       selectValue:"更多",
       perCityTitles:[],
-      peripheryPic:[],
+      // peripheryPic:[],
       isColor:0,
       themePlays:[],
       ticketSelect:"更多",
@@ -724,17 +774,17 @@ export default {
       ticketPic:[],
       ticketThemePlays:[],
       ticketDestinations:[],
-      exitSelect:"更多",
+      // exitSelect:"更多",
       exitCityTitles:[],
       exitCityPics:{},
-      exitCityPic:[],
-      perSigns:[],
-      exitSigns:[],
+      // exitCityPic:[],
+      // perSigns:[],
+      // exitSigns:[],
       terCityTitles:[],
       terCityPics:{},
-      terCityPic:[],
-      terSelect:"更多",
-      terSigns:[],
+      // terCityPic:[],
+      // terSelect:"更多",
+      // terSigns:[],
       linerCityTitles:[],
       linerCityPics:{},
       linerCityPic:[],
@@ -2057,22 +2107,28 @@ export default {
       },
      this.themePlays = [
       {
-        name:"海岛"
+        name:"海岛",
+        id:1
       },
       {
-        name:"古镇"
+        name:"古镇",
+        id:2
       },
       {
-        name:"蜜月"
+        name:"蜜月",
+        id:3
       },
       {
-        name:"亲子"
+        name:"亲子",
+        id:4
       },
       {
-        name:"爸妈游"
+        name:"爸妈游",
+        id:5
       },
       {
-        name:"美食"
+        name:"美食",
+        id:6
       },
 
      ],
@@ -5261,420 +5317,420 @@ export default {
       "jingXuan":[
         {
           src:"https://dimg04.c-ctrip.com/images/30031800000140wez2B00_C_228_132.jpg",
-          name:"曼芭【高端团】+清迈【9人精致小团】【 无购物无自费 】全程五钻酒店+4飞丨打卡海岛+经典蓝白黑寺庙丨国际人妖秀 火车夜市丨赠清迈传统泰式按摩+骑大象 轻松玩转曼芭清",
+          alt:"曼芭【高端团】+清迈【9人精致小团】【 无购物无自费 】全程五钻酒店+4飞丨打卡海岛+经典蓝白黑寺庙丨国际人妖秀 火车夜市丨赠清迈传统泰式按摩+骑大象 轻松玩转曼芭清",
           money:"6054"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300j190000015xva636B0_C_228_132.jpg",
-          name:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
+          alt:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
           money:"6299"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30081900000163km7A1C5_C_228_132.jpg",
-          name:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
+          alt:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
           money:"6699"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300v12000000t1h5bF5EF_C_228_132.jpg",
-          name:"【海鸥携程旗下】前4客立减200+黄石/锡安/布莱斯峡谷/大提顿4大国家公园+羚羊彩穴+马蹄湾+尼亚加拉瀑布+海鲜餐+游船+奥莱+网红Vessel旋转大楼【全国联运+拼房·拒签保障】",
+          alt:"【海鸥携程旗下】前4客立减200+黄石/锡安/布莱斯峡谷/大提顿4大国家公园+羚羊彩穴+马蹄湾+尼亚加拉瀑布+海鲜餐+游船+奥莱+网红Vessel旋转大楼【全国联运+拼房·拒签保障】",
           money:"15299"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300e1a0000018qjiu8224_C_228_132.jpg",
-          name:"【鼠你惠玩 早定优惠】【高颜值 INS网红打卡地 超长拖尾沙滩】2沙2水+三餐（可优惠升级一价全包）+岛屿面积大私密性高+蜜月优选+超高性价比+全国出发可联运",
+          alt:"【鼠你惠玩 早定优惠】【高颜值 INS网红打卡地 超长拖尾沙滩】2沙2水+三餐（可优惠升级一价全包）+岛屿面积大私密性高+蜜月优选+超高性价比+全国出发可联运",
           money:"10520"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30071b000001bt0qi3084_C_228_132.jpg",
-          name:"大促立减！欧洲免签出行+北京/上海/广州出发+全4星级酒店+【ABCDEG无自费】+【BCEH线一价全含】+BC线赠上网卡+卡莱梅格丹城堡+科托尔古城+莫斯塔尔+萨拉热窝+特色餐",
+          alt:"大促立减！欧洲免签出行+北京/上海/广州出发+全4星级酒店+【ABCDEG无自费】+【BCEH线一价全含】+BC线赠上网卡+卡莱梅格丹城堡+科托尔古城+莫斯塔尔+萨拉热窝+特色餐",
           money:"11700"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300g1b000001aope1A964_C_228_132.jpg",
-          name:"含导服『国际四星』出行不将就『挚爱网红』秋千鸟巢『蓝梦出海』赠印尼精油SPA·充足自由活动·广州出发//C线升级2晚海边国际五星",
+          alt:"含导服『国际四星』出行不将就『挚爱网红』秋千鸟巢『蓝梦出海』赠印尼精油SPA·充足自由活动·广州出发//C线升级2晚海边国际五星",
           money:"3999"
         },
         {
           src:"https://dimg03.c-ctrip.com/images/100608000000386zqF325_C_228_132.jpg",
-          name:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
+          alt:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
           money:"2482"
         },
       ],
       "taiGuo":[
         {
           src:"https://dimg04.c-ctrip.com/images/30031800000140wez2B00_C_228_132.jpg",
-          name:"曼芭【高端团】+清迈【9人精致小团】【 无购物无自费 】全程五钻酒店+4飞丨打卡海岛+经典蓝白黑寺庙丨国际人妖秀 火车夜市丨赠清迈传统泰式按摩+骑大象 轻松玩转曼芭清",
+          alt:"曼芭【高端团】+清迈【9人精致小团】【 无购物无自费 】全程五钻酒店+4飞丨打卡海岛+经典蓝白黑寺庙丨国际人妖秀 火车夜市丨赠清迈传统泰式按摩+骑大象 轻松玩转曼芭清",
           money:"6054"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/3004180000014h2qmED67_C_228_132.jpg",
-          name:"精致纯玩小团无自费【两人下单立减500元/人】A线五钻泳池酒店·人妖秀+网红夜市+海鲜烧烤+国际自助餐 B线五钻酒店升级一晚180度海景房·夜秀+摩天轮夜市+海鲜BBQ",
+          alt:"精致纯玩小团无自费【两人下单立减500元/人】A线五钻泳池酒店·人妖秀+网红夜市+海鲜烧烤+国际自助餐 B线五钻酒店升级一晚180度海景房·夜秀+摩天轮夜市+海鲜BBQ",
           money:"6800"
         },
         {
           src:"https://dimg03.c-ctrip.com/images/100608000000386zqF325_C_228_132.jpg",
-          name:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
+          alt:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
           money:"2482"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300h180000015682lE7E6_C_228_132.jpg",
-          name:"【错峰出游，下单享优惠】【A线7晚国际5星酒店+泰国段纯玩无购物】【B线固定600元自费套餐】【C线深圳起止】【F线南京起止】不强制购物+双子塔+大皇宫+鱼尾狮+更多产品请咨询客服",
+          alt:"【错峰出游，下单享优惠】【A线7晚国际5星酒店+泰国段纯玩无购物】【B线固定600元自费套餐】【C线深圳起止】【F线南京起止】不强制购物+双子塔+大皇宫+鱼尾狮+更多产品请咨询客服",
           money:"3480"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300r1c000001dabyhE0A7_C_228_132.jpg",
-          name:"【无购物·无自费 高端纯玩】全程国际五钻+1晚喜来登or万豪等丨赠：骑大象+放水灯+超人气人妖秀丨高素质导游带队 玩转热门网红景点：大皇宫·水上市场·拉差火车夜市·快艇出海沙美岛",
+          alt:"【无购物·无自费 高端纯玩】全程国际五钻+1晚喜来登or万豪等丨赠：骑大象+放水灯+超人气人妖秀丨高素质导游带队 玩转热门网红景点：大皇宫·水上市场·拉差火车夜市·快艇出海沙美岛",
           money:"2399"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300q1a0000018mz9920E6_C_228_132.jpg",
-          name:"正点航班【A线1晚国际五星丨沙美岛/夜游公主号/网红郑王庙/拉差达夜市丨按摩+湄南河畔泰餐】【B线仅进2店+高标住宿：曼谷河畔五星+芭提雅私家沙滩海景酒店丨摩天轮夜市+水上市场+海鲜餐",
+          alt:"正点航班【A线1晚国际五星丨沙美岛/夜游公主号/网红郑王庙/拉差达夜市丨按摩+湄南河畔泰餐】【B线仅进2店+高标住宿：曼谷河畔五星+芭提雅私家沙滩海景酒店丨摩天轮夜市+水上市场+海鲜餐",
           money:"2699"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300n15000000ygicuED73_C_228_132.jpg",
-          name:"【专享VIP团*无自费】国际品牌酒店+高标泰餐+升级国际五星万豪或喜来登【娱】国际人妖秀·唐人街·泼水party·泰服体验·出海沙美岛【享】光海鲜咖喱餐+御厨火锅",
+          alt:"【专享VIP团*无自费】国际品牌酒店+高标泰餐+升级国际五星万豪或喜来登【娱】国际人妖秀·唐人街·泼水party·泰服体验·出海沙美岛【享】光海鲜咖喱餐+御厨火锅",
           money:"2739"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30041900000163bcr638B_C_228_132.jpg",
-          name:"【赠新马签+全程无自费】+【泰段纯玩+5晚黄金地段国五+赠666元玩乐大礼包：骑大象+实弹射击+人妖秀+快艇沙美岛】『马段：2晚私人沙滩或私人湖景妃俪雅国五』吃喝玩乐一网打尽",
+          alt:"【赠新马签+全程无自费】+【泰段纯玩+5晚黄金地段国五+赠666元玩乐大礼包：骑大象+实弹射击+人妖秀+快艇沙美岛】『马段：2晚私人沙滩或私人湖景妃俪雅国五』吃喝玩乐一网打尽",
           money:"3899"
         },
       ],
       "riBen":[
         {
           src:"https://dimg04.c-ctrip.com/images/300j190000015xva636B0_C_228_132.jpg",
-          name:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
+          alt:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
           money:"6299"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30081900000163km7A1C5_C_228_132.jpg",
-          name:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
+          alt:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
           money:"6699"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30031c000001cww7dFD1D_C_228_132.png",
-          name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+          alt:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
           money:"6180"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300t1c000001cdkxg99CE_C_228_132.jpg",
-          name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+          alt:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
           money:"6180"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300i1c000001cccovB380_C_228_132.jpg",
-          name:"『童话白川乡+名古屋+古都海景温泉』「富士山冰雪游乐园+上山之町古街+祇园艺妓街」『抹茶冰淇淋体验+京都豆腐汤+温泉会席料理』~双点进出，不走回头路，仅2站购物",
+          alt:"『童话白川乡+名古屋+古都海景温泉』「富士山冰雪游乐园+上山之町古街+祇园艺妓街」『抹茶冰淇淋体验+京都豆腐汤+温泉会席料理』~双点进出，不走回头路，仅2站购物",
           money:"5699"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30071b000001b1i2sF09F_C_228_132.png",
-          name:"白川乡+本州+忍野八海+御殿场奥特莱斯+心斋桥+大阪环球影城+皇居广场+浅草雷门观音寺祈福~~直飞不经停不转机",
+          alt:"白川乡+本州+忍野八海+御殿场奥特莱斯+心斋桥+大阪环球影城+皇居广场+浅草雷门观音寺祈福~~直飞不经停不转机",
           money:"6899"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30011a0000019mtff2359_C_228_132.jpg",
-          name:"『全程五星指定酒店』『东京一整天自由活动』『大阪城公园+心斋桥道顿崛商业街+河口湖·红叶渚』『两点进出不走回头路+直飞不经停不转机』可全国联运",
+          alt:"『全程五星指定酒店』『东京一整天自由活动』『大阪城公园+心斋桥道顿崛商业街+河口湖·红叶渚』『两点进出不走回头路+直飞不经停不转机』可全国联运",
           money:"7499"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300b1a0000018aube0AC5_C_228_132.png",
-          name:"【双点进出不走回头路】全程当地四星酒店+升级日式特色双温泉海景+奈良公园与可爱的小鹿来一场亲密的喂食接触【京都汤豆腐、日式烤肉BBQ、日式陶板烧，日式温泉会席料理】",
+          alt:"【双点进出不走回头路】全程当地四星酒店+升级日式特色双温泉海景+奈良公园与可爱的小鹿来一场亲密的喂食接触【京都汤豆腐、日式烤肉BBQ、日式陶板烧，日式温泉会席料理】",
           money:"5699"
         },
       ],
       "dongJing":[
         {
           src:"https://dimg04.c-ctrip.com/images/300j190000015xva636B0_C_228_132.jpg",
-          name:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
+          alt:"【明星口碑】乘船往返深圳不入香港+1晚看得见富士山的温泉+2000日元餐标+矶丸水产+伊势龙虾松叶蟹+和服拍照+【可选环球影城或大阪奈良一日游】+30KG行李",
           money:"6299"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30081900000163km7A1C5_C_228_132.jpg",
-          name:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
+          alt:"【自营】深圳直飞+看见富士山的温泉酒店+自选:环球影城or神户or自由活动+限26人 A线:三古都+不住机场+升级1晚5钻酒店+大阪连住+赠WIFI B线:升级3晚5钻",
           money:"6699"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30031c000001cww7dFD1D_C_228_132.png",
-          name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+          alt:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
           money:"6180"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300t1c000001cdkxg99CE_C_228_132.jpg",
-          name:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
+          alt:"山东航空，济南直飞大阪【奈良喂小鹿 京都清水寺 东京浅草寺求御守+GRINPA 雪乐园 秋叶原 台场高达 】【银座、大阪心斋桥、御殿场奥特莱斯、道顿崛，购物狂欢】",
           money:"6180"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300i1c000001cccovB380_C_228_132.jpg",
-          name:"『童话白川乡+名古屋+古都海景温泉』「富士山冰雪游乐园+上山之町古街+祇园艺妓街」『抹茶冰淇淋体验+京都豆腐汤+温泉会席料理』~双点进出，不走回头路，仅2站购物",
+          alt:"『童话白川乡+名古屋+古都海景温泉』「富士山冰雪游乐园+上山之町古街+祇园艺妓街」『抹茶冰淇淋体验+京都豆腐汤+温泉会席料理』~双点进出，不走回头路，仅2站购物",
           money:"5699"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30071b000001b1i2sF09F_C_228_132.png",
-          name:"白川乡+本州+忍野八海+御殿场奥特莱斯+心斋桥+大阪环球影城+皇居广场+浅草雷门观音寺祈福~~直飞不经停不转机",
+          alt:"白川乡+本州+忍野八海+御殿场奥特莱斯+心斋桥+大阪环球影城+皇居广场+浅草雷门观音寺祈福~~直飞不经停不转机",
           money:"6899"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30011a0000019mtff2359_C_228_132.jpg",
-          name:"『全程五星指定酒店』『东京一整天自由活动』『大阪城公园+心斋桥道顿崛商业街+河口湖·红叶渚』『两点进出不走回头路+直飞不经停不转机』可全国联运",
+          alt:"『全程五星指定酒店』『东京一整天自由活动』『大阪城公园+心斋桥道顿崛商业街+河口湖·红叶渚』『两点进出不走回头路+直飞不经停不转机』可全国联运",
           money:"7499"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300b1a0000018aube0AC5_C_228_132.png",
-          name:"【双点进出不走回头路】全程当地四星酒店+升级日式特色双温泉海景+奈良公园与可爱的小鹿来一场亲密的喂食接触【京都汤豆腐、日式烤肉BBQ、日式陶板烧，日式温泉会席料理】",
+          alt:"【双点进出不走回头路】全程当地四星酒店+升级日式特色双温泉海景+奈良公园与可爱的小鹿来一场亲密的喂食接触【京都汤豆腐、日式烤肉BBQ、日式陶板烧，日式温泉会席料理】",
           money:"5699"
         },
       ],
       "meiGuo":[
         {
           src:"https://dimg04.c-ctrip.com/images/300v12000000t1h5bF5EF_C_228_132.jpg",
-          name:"【海鸥携程旗下】前4客立减200+黄石/锡安/布莱斯峡谷/大提顿4大国家公园+羚羊彩穴+马蹄湾+尼亚加拉瀑布+海鲜餐+游船+奥莱+网红Vessel旋转大楼【全国联运+拼房·拒签保障】",
+          alt:"【海鸥携程旗下】前4客立减200+黄石/锡安/布莱斯峡谷/大提顿4大国家公园+羚羊彩穴+马蹄湾+尼亚加拉瀑布+海鲜餐+游船+奥莱+网红Vessel旋转大楼【全国联运+拼房·拒签保障】",
           money:"15299"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300v0e00000073o4m78C0_C_228_132.jpg",
-          name:"【海鸥优选】春季预售+多地联运省1000+旧金山市区游+优胜美地公园+奥莱畅购+曼哈顿游船+拉斯宿大道酒店+拉斯自由畅玩一整天+上海直飞+全国联运+签证·拼房双保障",
+          alt:"【海鸥优选】春季预售+多地联运省1000+旧金山市区游+优胜美地公园+奥莱畅购+曼哈顿游船+拉斯宿大道酒店+拉斯自由畅玩一整天+上海直飞+全国联运+签证·拼房双保障",
           money:"15999"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300a0z000000mtqti308B_C_228_132.jpg",
-          name:"【海鸥携程旗下】6大公园+羚羊谷+马蹄湾+女神像·瀑布双游船+奥莱+A线大峡谷东南双峡·黄石深度2次入园+圣地亚哥·墨西哥一日游+洛杉矶市区游",
+          alt:"【海鸥携程旗下】6大公园+羚羊谷+马蹄湾+女神像·瀑布双游船+奥莱+A线大峡谷东南双峡·黄石深度2次入园+圣地亚哥·墨西哥一日游+洛杉矶市区游",
           money:"21299"
         },
         {
           src:"https://dimg03.c-ctrip.com/images/fd/tg/g3/M08/78/2A/CggYG1Z7v0KAZdA5ADiLvQWEhs0878_C_228_132.jpg",
-          name:"【报名送美签】初游必选 【上海直飞+多城联运惠仅需6799起】酒店连宿不换住/可升级【往返接送+珍珠港+小环岛+恐龙湾】【威基基海岛风情】3天自由活动【赠送：露天购物中心折扣券+叮当车票】",
+          alt:"【报名送美签】初游必选 【上海直飞+多城联运惠仅需6799起】酒店连宿不换住/可升级【往返接送+珍珠港+小环岛+恐龙湾】【威基基海岛风情】3天自由活动【赠送：露天购物中心折扣券+叮当车票】",
           money:"7699"
         },
         {
           src:"https://dimg03.c-ctrip.com/images/fd/tg/g3/M08/78/2A/CggYG1Z7v0KAZdA5ADiLvQWEhs0878_C_228_132.jpg",
-          name:"【送美签】往返接送+珍珠港+小环岛+恐龙湾 【上海直飞+联运立减】【A/B线欧胡岛+大岛·火山公园/A线茂易岛·捕鲸镇/C线欧胡岛连宿不换住】可升级+4天自由活动【送:购物中心折扣券+叮当车票】",
+          alt:"【送美签】往返接送+珍珠港+小环岛+恐龙湾 【上海直飞+联运立减】【A/B线欧胡岛+大岛·火山公园/A线茂易岛·捕鲸镇/C线欧胡岛连宿不换住】可升级+4天自由活动【送:购物中心折扣券+叮当车票】",
           money:"8259"
         },
         {
           src:"https://dimg03.c-ctrip.com/images/100a0b0000005jp9v7ADA_C_228_132.jpg",
-          name:"【拒签仅收签证费】尼亚加拉大瀑布+圣约瑟夫大教堂+蒙特利尔【住全新黄石小木屋】黄石+大提顿+大峡谷+本土全程含餐（除飞机餐）【东航直飞+指定城市联运立减】",
+          alt:"【拒签仅收签证费】尼亚加拉大瀑布+圣约瑟夫大教堂+蒙特利尔【住全新黄石小木屋】黄石+大提顿+大峡谷+本土全程含餐（除飞机餐）【东航直飞+指定城市联运立减】",
           money:"28786"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300e0s000000hoc2cB994_C_228_132.jpg",
-          name:"【5.26即将成团】【三大国家公园·黄石+大峡谷+布莱斯】【旧金山深度】羚羊峡谷/尼亚加拉大瀑布/费城独立大厅/自由女神像游船/圣塔莫尼卡海滩/奥特莱斯/沃尔玛",
+          alt:"【5.26即将成团】【三大国家公园·黄石+大峡谷+布莱斯】【旧金山深度】羚羊峡谷/尼亚加拉大瀑布/费城独立大厅/自由女神像游船/圣塔莫尼卡海滩/奥特莱斯/沃尔玛",
           money:"21099"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300411000000r3gao911E_C_228_132.jpg",
-          name:"春节班期两人下单立减-2020】A线特价美东超高性价比一次玩遍/B线波士顿龙虾餐【纽约3晚连住全程希尔顿+万豪集团系列】4大常春藤名校·S-Led讲解/大瀑布/帝国大厦登顶/大都会博物馆讲解",
+          alt:"春节班期两人下单立减-2020】A线特价美东超高性价比一次玩遍/B线波士顿龙虾餐【纽约3晚连住全程希尔顿+万豪集团系列】4大常春藤名校·S-Led讲解/大瀑布/帝国大厦登顶/大都会博物馆讲解",
           money:"15518"
         },
       ],
       "maErDaiFu":[
         {
           src:"https://dimg04.c-ctrip.com/images/300e1a0000018qjiu8224_C_228_132.jpg",
-          name:"【鼠你惠玩 早定优惠】【高颜值 INS网红打卡地 超长拖尾沙滩】2沙2水+三餐（可优惠升级一价全包）+岛屿面积大私密性高+蜜月优选+超高性价比+全国出发可联运",
+          alt:"【鼠你惠玩 早定优惠】【高颜值 INS网红打卡地 超长拖尾沙滩】2沙2水+三餐（可优惠升级一价全包）+岛屿面积大私密性高+蜜月优选+超高性价比+全国出发可联运",
           money:"10520"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300m1b000001adrb17A88_C_228_132.jpg",
-          name:"『薄利多销·只想成交』『咨询立减500』更有机会直接免单+专业解决选岛困难+免费申请蜜月、周年庆套餐+房型可选&超大别墅&私人泳池+一价包含＆赠送一次出海项目+赠送30分钟spa",
+          alt:"『薄利多销·只想成交』『咨询立减500』更有机会直接免单+专业解决选岛困难+免费申请蜜月、周年庆套餐+房型可选&超大别墅&私人泳池+一价包含＆赠送一次出海项目+赠送30分钟spa",
           money:"16880"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300r1c000001c66fiBE72_C_228_132.jpg",
-          name:"『春节钜惠』『赠送2次出海』咨询有礼（ 一价全包+A级浮潜+A级沙滩+出海活动全免费+儿童俱乐部免费+蜜月大礼包+早中晚三餐及酒水全含+酒吧免费+中文服务）",
+          alt:"『春节钜惠』『赠送2次出海』咨询有礼（ 一价全包+A级浮潜+A级沙滩+出海活动全免费+儿童俱乐部免费+蜜月大礼包+早中晚三餐及酒水全含+酒吧免费+中文服务）",
           money:"16400"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30070q000000h20xw3086_C_228_132.jpg",
-          name:"属你惠玩＆网红奢豪岛】每天主题活动『酒会＆派对』私密好超大别墅（房型可选）首晚马累+4晚岛上+私人管家+中文服务+唯美沙滩『驻岛婚纱摄影』",
+          alt:"属你惠玩＆网红奢豪岛】每天主题活动『酒会＆派对』私密好超大别墅（房型可选）首晚马累+4晚岛上+私人管家+中文服务+唯美沙滩『驻岛婚纱摄影』",
           money:"14750"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300g1b000001bfdh9A775_C_228_132.jpg",
-          name:"『新春特惠热卖』『咨询立减500』专车专中文司导+沙漠冲沙＆骑骆驼＆看日落＆音乐喷泉+可升级体验高空跳伞＆热气球+可升级亚特兰蒂斯＆帆船酒店＆皇宫酒店 +马代岛屿可升级",
+          alt:"『新春特惠热卖』『咨询立减500』专车专中文司导+沙漠冲沙＆骑骆驼＆看日落＆音乐喷泉+可升级体验高空跳伞＆热气球+可升级亚特兰蒂斯＆帆船酒店＆皇宫酒店 +马代岛屿可升级",
           money:"13820"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30060y000000mgg59C4F3_C_228_132.jpg",
-          name:"【让兰卡爱上马代】加勒古堡+国家公园游猎+狮子岩古王朝探秘+出海观鲸看海豚+兰卡金牌导游+茶园海边小火车+携程四钻酒店+马代岛屿2沙2水可升级泳池别墅+可升一价全含+可升水飞上岛",
+          alt:"【让兰卡爱上马代】加勒古堡+国家公园游猎+狮子岩古王朝探秘+出海观鲸看海豚+兰卡金牌导游+茶园海边小火车+携程四钻酒店+马代岛屿2沙2水可升级泳池别墅+可升一价全含+可升水飞上岛",
           money:"11856"
         },
         {
           src:"https://dimg03.c-ctrip.com/images/220819000001633yj6644_C_228_132.jpg",
-          name:"『迪拜全程5钻升级1亚特+马尔代夫伊露薇利.2沙2水』迪拜-失落空间水族馆+冒险水世界乐园+沙漠冲沙+哈利法塔124层+法拉利主题公园-全国出发",
+          alt:"『迪拜全程5钻升级1亚特+马尔代夫伊露薇利.2沙2水』迪拜-失落空间水族馆+冒险水世界乐园+沙漠冲沙+哈利法塔124层+法拉利主题公园-全国出发",
           money:"19880"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300g0q000000g911u72AD_C_228_132.jpg",
-          name:"纯白简约风-4晚泳池水屋+早晚餐+浮潜优质+超大泳池别墅+私人管家-全国出发",
+          alt:"纯白简约风-4晚泳池水屋+早晚餐+浮潜优质+超大泳池别墅+私人管家-全国出发",
           money:"18135"
         },
       ],
       "saiErWeiYa":[
         {
           src:"https://dimg04.c-ctrip.com/images/30071b000001bt0qi3084_C_228_132.jpg",
-          name:"塞尔维亚+黑山+波黑10日跟团游 ",
+          alt:"塞尔维亚+黑山+波黑10日跟团游 ",
           money:"11700"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30091900000179na276B7_C_228_132.jpg",
-          name:"全球旅拍·塞尔维亚波黑黑山12日10晚·纯玩旅拍（6人舒适小团+专业摄影师随团跟拍+精选4-5星酒店）|历史山城莫斯塔尔+世外秘境杜米托尔+风情古都贝尔格莱德，欧洲免签小众之地，深度享受自由慢旅行",
+          alt:"全球旅拍·塞尔维亚波黑黑山12日10晚·纯玩旅拍（6人舒适小团+专业摄影师随团跟拍+精选4-5星酒店）|历史山城莫斯塔尔+世外秘境杜米托尔+风情古都贝尔格莱德，欧洲免签小众之地，深度享受自由慢旅行",
           money:"25900"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300b190000016st6o52BD_C_228_132.png",
-          name:"塞尔维亚+黑山+波黑13日跟团游",
+          alt:"塞尔维亚+黑山+波黑13日跟团游",
           money:"16300"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300s190000017zc5a325E_C_228_132.jpg",
-          name:"克罗地亚+斯洛文尼亚+波黑+黑山+塞尔维亚+匈牙利+奥地利14日跟团游】",
+          alt:"克罗地亚+斯洛文尼亚+波黑+黑山+塞尔维亚+匈牙利+奥地利14日跟团游】",
           money:"18200"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300o12000000slj77D12A_C_228_132.png",
-          name:"匈牙利+克罗地亚+罗马尼亚+斯洛文尼亚+波黑+黑山+阿尔巴尼亚+塞尔维亚+北马其顿共和国+保加利亚20日跟团游",
+          alt:"匈牙利+克罗地亚+罗马尼亚+斯洛文尼亚+波黑+黑山+阿尔巴尼亚+塞尔维亚+北马其顿共和国+保加利亚20日跟团游",
           money:"23980"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300b180000015bm0oBFAA_C_228_132.jpg",
-          name:"塞尔维亚+波黑+克罗地亚+奥地利+捷克+匈牙利+斯洛伐克13日半自助游",
+          alt:"塞尔维亚+波黑+克罗地亚+奥地利+捷克+匈牙利+斯洛伐克13日半自助游",
           money:"15000"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/3009180000015i2el4408_C_228_132.jpg",
-          name:"塞尔维亚+黑山+波黑10日半自助游",
+          alt:"塞尔维亚+黑山+波黑10日半自助游",
           money:"14400"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300w180000013vaugCAF8_C_228_132.jpg",
-          name:"匈牙利+克罗地亚+波黑+塞尔维亚+斯洛文尼亚+黑山+阿尔巴尼亚15日跟团游 ",
+          alt:"匈牙利+克罗地亚+波黑+塞尔维亚+斯洛文尼亚+黑山+阿尔巴尼亚15日跟团游 ",
           money:"18980"
         },
       ],
       "baLiDao":[
         {
           src:"https://dimg04.c-ctrip.com/images/300g1b000001aope1A964_C_228_132.jpg",
-          name:"印度尼西亚巴厘岛5日4晚跟团游(4钻)",
+          alt:"印度尼西亚巴厘岛5日4晚跟团游(4钻)",
           money:"3999"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30021b000001am1f62A99_C_228_132.png",
-          name:"印度尼西亚巴厘岛7日5晚半自助游",
+          alt:"印度尼西亚巴厘岛7日5晚半自助游",
           money:"5890"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30050y000000mgljc96C9_C_228_132.jpg",
-          name:"印度尼西亚巴厘岛5日4晚半自助游(5钻)",
+          alt:"印度尼西亚巴厘岛5日4晚半自助游(5钻)",
           money:"4752"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30051900000189f6fD7BB_C_228_132.jpg",
-          name:"印度尼西亚巴厘岛5日4晚跟团游",
+          alt:"印度尼西亚巴厘岛5日4晚跟团游",
           money:"5599"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30051900000183g4lB55E_C_228_132.jpg",
-          name:"印度尼西亚巴厘岛5日半自助游 ",
+          alt:"印度尼西亚巴厘岛5日半自助游 ",
           money:"4650"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300b12000000si4nt9897_C_228_132.png",
-          name:"印度尼西亚巴厘岛7日半自助游(5钻)",
+          alt:"印度尼西亚巴厘岛7日半自助游(5钻)",
           money:"6490"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300b12000000si4nt9897_C_228_132.png",
-          name:"印度尼西亚巴厘岛5日半自助游",
+          alt:"印度尼西亚巴厘岛5日半自助游",
           money:"5490"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300d1900000185fpk4E25_C_228_132.jpg",
-          name:"印度尼西亚巴厘岛5日半自助游",
+          alt:"印度尼西亚巴厘岛5日半自助游",
           money:"4890"
         },
       ],
       "puJiDao":[
         {
           src:"https://dimg03.c-ctrip.com/images/100608000000386zqF325_C_228_132.jpg",
-          name:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
+          alt:"普吉岛5日4晚自由行·【香港直飞】单程仅需2.5小时 香港往返 热辣海岛 精致行程 说走就走！周末带着家人一起来普吉岛撒欢#便捷出游# 丰富酒店全覆盖",
           money:"2482"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300u190000017xuej2C56_C_228_132.jpg",
-          name:"泰国普吉岛6日5晚跟团游(4钻)【口碑】A线『全程5钻·步入式泳池连住·3天出海+赠送大堡礁浮潜＆珍珠岛』B线『VIP2-8人精致小包团·纯玩无购·泳池酒店连住·可升级斯米兰』｜纯休闲度假＆美食美景刺激嗨爆整个假期｜",
+          alt:"泰国普吉岛6日5晚跟团游(4钻)【口碑】A线『全程5钻·步入式泳池连住·3天出海+赠送大堡礁浮潜＆珍珠岛』B线『VIP2-8人精致小包团·纯玩无购·泳池酒店连住·可升级斯米兰』｜纯休闲度假＆美食美景刺激嗨爆整个假期｜",
           money:"2400"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300v0z000000mt5sx3BAE_C_228_132.jpg",
-          name:"泰国曼谷+芭堤雅+普吉岛8日7晚跟团游(4钻)小资奢游 高品4飞【免费升级】五钻泳池别墅【超 值赠送】泰式按摩+人妖秀表演【超多项目】+快艇出海+激情漂流+皮划艇探险等【美食之旅】泰式料理+韩膳BBQ+国际自助 ",
+          alt:"泰国曼谷+芭堤雅+普吉岛8日7晚跟团游(4钻)小资奢游 高品4飞【免费升级】五钻泳池别墅【超 值赠送】泰式按摩+人妖秀表演【超多项目】+快艇出海+激情漂流+皮划艇探险等【美食之旅】泰式料理+韩膳BBQ+国际自助 ",
           money:"3438"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300j1a0000019rl962633_C_228_132.jpg",
-          name:"泰国普吉岛6日5晚跟团游(4钻)下单立减900/人丨A线【全程5钻·经典皮皮岛环游·步入泳池房·龙虾面·赠价值666大堡礁浮潜+珍珠岛娱乐项目】B线【VIP2-8人精致小包团·纯玩无购物·巴东黄金地段泳池酒店连住·可升级斯米兰】",
+          alt:"泰国普吉岛6日5晚跟团游(4钻)下单立减900/人丨A线【全程5钻·经典皮皮岛环游·步入泳池房·龙虾面·赠价值666大堡礁浮潜+珍珠岛娱乐项目】B线【VIP2-8人精致小包团·纯玩无购物·巴东黄金地段泳池酒店连住·可升级斯米兰】",
           money:"2441"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300q10000000ohalwABBF_C_228_132.jpg",
-          name:"泰国曼谷+芭堤雅+普吉岛8日7晚跟团游(4钻)100％好评优质力荐4飞【免费升级】国五泳池别墅【超 值赠送】泰式按摩+人妖秀表演【超多项目】+快艇出海+激情漂流+皮划艇探险等【美食之旅】泰式料理+韩膳BBQ+国际自助 ",
+          alt:"泰国曼谷+芭堤雅+普吉岛8日7晚跟团游(4钻)100％好评优质力荐4飞【免费升级】国五泳池别墅【超 值赠送】泰式按摩+人妖秀表演【超多项目】+快艇出海+激情漂流+皮划艇探险等【美食之旅】泰式料理+韩膳BBQ+国际自助 ",
           money:"2698"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300j14000000wpov59648_C_228_132.jpg",
-          name:"泰国普吉岛6日4晚跟团游(4钻)下单立减900/成人丨+0元续住1晚 全程网评热门五星+升级1晚长岛蓝湾别墅【小资时尚】斯米兰鸡蛋岛双出海 赠浮潜【泰好玩】泼水+spa+射击+大象乐园丨泰国旅行专家为您海底捞式一条龙服务 ",
+          alt:"泰国普吉岛6日4晚跟团游(4钻)下单立减900/成人丨+0元续住1晚 全程网评热门五星+升级1晚长岛蓝湾别墅【小资时尚】斯米兰鸡蛋岛双出海 赠浮潜【泰好玩】泼水+spa+射击+大象乐园丨泰国旅行专家为您海底捞式一条龙服务 ",
           money:"2949"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300m170000011nsmf0B58_C_228_132.jpg",
-          name:"全球户外·泰国普吉岛6天5晚·【全程无购物店】【浮潜+深潜双体验】【攀牙湾5公里漂流】【驾驶ATV丛林越野车】【感受实弹射击体验】",
+          alt:"全球户外·泰国普吉岛6天5晚·【全程无购物店】【浮潜+深潜双体验】【攀牙湾5公里漂流】【驾驶ATV丛林越野车】【感受实弹射击体验】",
           money:"29000"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300m160000010zi8a50AC_C_228_132.jpg",
-          name:"泰国普吉岛+甲米6日5晚跟团游【2人减2000元】网红·热卖产品·全国出发·高满意度·人气推荐·下单送电话卡！『精选蜜月·闺蜜款·亲子·爸妈款』『可升级CD线纯玩·无购物』『游抖音爆红景点』+24h在线管家服务！",
+          alt:"泰国普吉岛+甲米6日5晚跟团游【2人减2000元】网红·热卖产品·全国出发·高满意度·人气推荐·下单送电话卡！『精选蜜月·闺蜜款·亲子·爸妈款』『可升级CD线纯玩·无购物』『游抖音爆红景点』+24h在线管家服务！",
           money:"5720"
         },
       ],
       "eLuoSi":[
         {
           src:"https://dimg04.c-ctrip.com/images/300p1a0000018vboi69C5_C_228_132.jpg",
-          name:"圣彼得堡8日7晚跟团游【春节热卖】ACDG线【全国联运】+冬宫+金环谢镇+黄金三岛+扎利亚季耶公园+格鲁吉亚烤肉+俄式桑拿浴+苏联展览中心+EFHI线喀琅小城+冬宫+卡洛+察里双庄园+【4钻酒店】 ",
+          alt:"圣彼得堡8日7晚跟团游【春节热卖】ACDG线【全国联运】+冬宫+金环谢镇+黄金三岛+扎利亚季耶公园+格鲁吉亚烤肉+俄式桑拿浴+苏联展览中心+EFHI线喀琅小城+冬宫+卡洛+察里双庄园+【4钻酒店】 ",
           money:"7999"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30061b000001bpi6kE99D_C_228_132.jpg",
-          name:"俄罗斯莫斯科+圣彼得堡8日跟团游免签！【纯玩+无购物+无自费+0小费】+全4星酒店+各地出发+AB『双点进出+东航』+【ABD线双城高铁】+ABDEF四宫入内【冬宫+夏宫+克林姆林宫+叶卡捷琳娜花园及琥珀宫】+谢镇",
+          alt:"俄罗斯莫斯科+圣彼得堡8日跟团游免签！【纯玩+无购物+无自费+0小费】+全4星酒店+各地出发+AB『双点进出+东航』+【ABD线双城高铁】+ABDEF四宫入内【冬宫+夏宫+克林姆林宫+叶卡捷琳娜花园及琥珀宫】+谢镇",
           money:"11900"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30011a000001994ci1331_C_228_132.jpg",
-          name:"俄罗斯9日7晚跟团游【春节热卖一价全包】+BDG线南航东航海航【全国联运】+与熊共餐+升级1晚5钻+内陆动车或高铁+CEFI线金环谢镇+四大宫殿+喀琅小城+卡洛+察里双庄园+新圣女公墓+AEH线【纯玩无购物】+【4钻酒店】",
+          alt:"俄罗斯9日7晚跟团游【春节热卖一价全包】+BDG线南航东航海航【全国联运】+与熊共餐+升级1晚5钻+内陆动车或高铁+CEFI线金环谢镇+四大宫殿+喀琅小城+卡洛+察里双庄园+新圣女公墓+AEH线【纯玩无购物】+【4钻酒店】",
           money:"10199"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300g190000017zapy92F8_C_228_132.jpg",
-          name:"俄罗斯贝加尔湖5日跟团游或4日【春节热卖】海航直飞0时差【2.5小时直达】+塔利茨博物馆+【1-2天自由活动】+圣女修道院+喀山圣母教堂+130风情街+卡尔马克思大街+3钻酒店+【独立卫浴】+免签+【1对1管家】",
+          alt:"俄罗斯贝加尔湖5日跟团游或4日【春节热卖】海航直飞0时差【2.5小时直达】+塔利茨博物馆+【1-2天自由活动】+圣女修道院+喀山圣母教堂+130风情街+卡尔马克思大街+3钻酒店+【独立卫浴】+免签+【1对1管家】",
           money:"3999"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/30061900000178wv8C9A5_C_228_132.jpg",
-          name:"全球摄影·俄罗斯摩尔曼斯克7天·【北冰洋极光小木屋&新华社签约摄影师同行，追极光大片】—狗拉雪橇+冰湖垂钓+雪地摩托+极夜追光，行摄世界尽头 ",
+          alt:"全球摄影·俄罗斯摩尔曼斯克7天·【北冰洋极光小木屋&新华社签约摄影师同行，追极光大片】—狗拉雪橇+冰湖垂钓+雪地摩托+极夜追光，行摄世界尽头 ",
           money:"18801"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300d0z000000mu4rcBBD8_C_228_132.jpg",
-          name:"全球旅拍·俄罗斯贝加尔湖8天6晚·【纯玩旅拍】（6-8人舒适小团+每人每日写真出片+小众景点破冰船+俄式特色小镇）|【网罗贝加尔湖美景：冰乳洞+翡翠冰+冰裂纹+小冰泡+雾凇+森林雪景】",
+          alt:"全球旅拍·俄罗斯贝加尔湖8天6晚·【纯玩旅拍】（6-8人舒适小团+每人每日写真出片+小众景点破冰船+俄式特色小镇）|【网罗贝加尔湖美景：冰乳洞+翡翠冰+冰裂纹+小冰泡+雾凇+森林雪景】",
           money:"16300"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300g0o000000f485yD76F_C_228_132.jpg",
-          name:"芬兰+丹麦+挪威+俄罗斯12日跟团游(4钻)4钻酒店丨莫斯科进，往返直飞丨13顿正餐+3顿特色餐丨塔林游览+峡湾游船+双峡湾丨冬宫+夏宫花园+克里姆林宫+斯德哥尔摩市政厅+瓦萨战船博物馆+峡湾游船+岩石教堂+WIFI",
+          alt:"芬兰+丹麦+挪威+俄罗斯12日跟团游(4钻)4钻酒店丨莫斯科进，往返直飞丨13顿正餐+3顿特色餐丨塔林游览+峡湾游船+双峡湾丨冬宫+夏宫花园+克里姆林宫+斯德哥尔摩市政厅+瓦萨战船博物馆+峡湾游船+岩石教堂+WIFI",
           money:"17017"
         },
         {
           src:"https://dimg04.c-ctrip.com/images/300q1b0000019xpte5F95_C_228_132.jpg",
-          name:"俄罗斯莫斯科+圣彼得堡8日跟团游 纯玩0购物0自费0小费+双城高铁，拒绝夜火车+全4星酒店+【涅瓦河游船】+【拉多加湖】+4大宫入内【冬宫+克里姆林宫+叶卡捷琳娜花园及宫殿+夏宫花园及宫殿】+察里庄园+新圣女公墓",
+          alt:"俄罗斯莫斯科+圣彼得堡8日跟团游 纯玩0购物0自费0小费+双城高铁，拒绝夜火车+全4星酒店+【涅瓦河游船】+【拉多加湖】+4大宫入内【冬宫+克里姆林宫+叶卡捷琳娜花园及宫殿+夏宫花园及宫殿】+察里庄园+新圣女公墓",
           money:"12200"
         },
       ],
@@ -5704,33 +5760,33 @@ export default {
       this.current = picIndex;
       this.isblur = false;
     },
-    perImageTab(py,index){
-      this.peripheryPic = this.peripherys[py];
-      this.isColor = index;
-      if(index == 0){
-        this.perSigns = " ";
-      }
-      else{
-        this.perSigns = '更多'+this.perCityTitles[index].name + '游>';
-      }
-    },
-    cityChange(val){
-      let array = this.perCityTitles.slice(8);
-      let obj = {};
-      obj = array.find((item)=>{
-         return item.name === val;
-      });
-       this.perCityTitles.splice(obj.index,1);
-       this.perCityTitles.splice(7,0,obj);
-       this.perCityTitles.forEach((el,i)=>{
-         el.index = i;
-       })
-       this.peripheryPic = this.peripherys[obj.py];
-       this.isColor = obj.index;
-       this.perSigns = '更多'+this.perCityTitles[obj.index].name + '游>';
-       document.getElementById("test").innerHTML
-       this.selectValue = "更多";
-    },
+    // perImageTab(py,index){
+    //   this.peripheryPic = this.peripherys[py];
+    //   this.isColor = index;
+    //   if(index == 0){
+    //     this.perSigns = " ";
+    //   }
+    //   else{
+    //     this.perSigns = '更多'+this.perCityTitles[index].name + '游>';
+    //   }
+    // },
+    // cityChange(val){
+    //   let array = this.perCityTitles.slice(8);
+    //   let obj = {};
+    //   obj = array.find((item)=>{
+    //      return item.name === val;
+    //   });
+    //    this.perCityTitles.splice(obj.index,1);
+    //    this.perCityTitles.splice(7,0,obj);
+    //    this.perCityTitles.forEach((el,i)=>{
+    //      el.index = i;
+    //    })
+    //    this.peripheryPic = this.peripherys[obj.py];
+    //    this.isColor = obj.index;
+    //    this.perSigns = '更多'+this.perCityTitles[obj.index].name + '游>';
+    //    document.getElementById("test").innerHTML
+    //    this.selectValue = "更多";
+    // },
     ticketImageTab(py,index){
       this.ticketPic = this.ticketPics[py];
       this.isColor = index;
@@ -5750,44 +5806,45 @@ export default {
        this.isColor = obj.index;
        this.ticketSelect = "更多";
     },
-    exitImageTab(py,index){
-      this.exitCityPic = this.exitCityPics[py];
-      this.isColor = index;
-      if(index == 0){
-        this.exitSigns = " ";
-      }
-      else{
-        this.exitSigns = '更多'+this.exitCityTitles[index].name + '游>';
-      }
-    },
-    exitCityChage(val){
-      let array = this.exitCityTitles.slice(8);
-      let obj = {};
-      obj = array.find((item)=>{
-         return item.name === val;
-      });
-      console.log(obj)
-       this.exitCityTitles.splice(obj.index,1);
-       this.exitCityTitles.splice(7,0,obj);
-       this.exitCityTitles.forEach((el,i)=>{
-         el.index = i;
-       })
-       this.exitCityPic = this.exitCityPics[obj.py];
-       this.isColor = obj.index;
-       if(obj.index == 0){
-         this.exitSigns = " ";
-       }
-       else{
-         this.exitSigns = '更多'+this.exitCityTitles[obj.index].name + '游>';
-       }
-       this.exitSelect = "更多";
-    },
+    // exitImageTab(py,index){
+    //   this.exitCityPic = this.exitCityPics[py];
+    //   this.isColor = index;
+    //   if(index == 0){
+    //     this.exitSigns = " ";
+    //   }
+    //   else{
+    //     this.exitSigns = '更多'+this.exitCityTitles[index].name + '游>';
+    //   }
+    // },
+    // exitCityChage(val){
+    //   let array = this.exitCityTitles.slice(8);
+    //   let obj = {};
+    //   obj = array.find((item)=>{
+    //      return item.name === val;
+    //   });
+    //   console.log(obj)
+    //    this.exitCityTitles.splice(obj.index,1);
+    //    this.exitCityTitles.splice(7,0,obj);
+    //    this.exitCityTitles.forEach((el,i)=>{
+    //      el.index = i;
+    //    })
+    //    this.exitCityPic = this.exitCityPics[obj.py];
+    //    this.isColor = obj.index;
+    //    if(obj.index == 0){
+    //      this.exitSigns = " ";
+    //    }
+    //    else{
+    //      this.exitSigns = '更多'+this.exitCityTitles[obj.index].name + '游>';
+    //    }
+    //    this.exitSelect = "更多";
+    // },
    
     handleClick(tab){
       var n = tab.name
       switch(n){
         case 'second1':
-          this.$nextTick(() =>{this.autoBorder(this.$refs.perHot,"per-width")});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.rightBorder.$refs.aa,"per-width")});
+          this.$nextTick(()=>{this.getFirst()})
           this.$nextTick(() =>{this.autoBorder(this.$refs.perDestination,"per-width")});
           break;
         case 'third1':
@@ -5795,7 +5852,7 @@ export default {
           this.$nextTick(() =>{this.autoBorder(this.$refs.ticketDestination,'ticket-width')});
           break;
         case 'fourth1':
-          this.$nextTick(() =>{this.autoBorder(this.$refs.exitHot,'aside-width')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.rightBorder4.$refs.aa,"per-width4")});
           this.$nextTick(() =>{this.autoBorder(this.$refs.exitDestination,'aside-width')});
           break;
         case 'fifth1':
@@ -5820,6 +5877,9 @@ export default {
     
     autoBorder (arr,id) {
       let max  = document.getElementById(id).clientWidth;
+    // console.log(this.$refs.rightBorder.$refs.aa,"this.$refs.ticketHot");
+   
+
       var len = 0;
         if(!arr){
           return
@@ -5839,31 +5899,31 @@ export default {
     //     return obj[key];
     //   }
     // },
-    terImageTab(py,index){
-      this.terCityPic = this.terCityPics[py];
-      this.isColor = index;
-      if(index == 0){
-        this.terSigns = " ";
-      }
-      else{
-        this.terSigns = '更多'+this.terCityTitles[index].name + '游>';
-      }
-    },
-    terCityChage(val){
-      let arr = this.terCityTitles.slice(8);
-      let obj = {}
-      obj = arr.find((item)=>{
-        return item.name === val;
-      })
-      this.terCityTitles.splice(obj.index,1);
-      this.terCityTitles.splice(7,0,obj);
-      this.terCityTitles.forEach((i,item)=>{
-        i.index = item;
-      })
-      this.isColor = obj.index;
-      this.terCityPic = this.terCityPics[obj.py];
-      this.terSigns = '更多'+this.terCityTitles[obj.index].name + '游>';
-    },
+    // terImageTab(py,index){
+    //   this.terCityPic = this.terCityPics[py];
+    //   this.isColor = index;
+    //   if(index == 0){
+    //     this.terSigns = " ";
+    //   }
+    //   else{
+    //     this.terSigns = '更多'+this.terCityTitles[index].name + '游>';
+    //   }
+    // },
+    // terCityChage(val){
+    //   let arr = this.terCityTitles.slice(8);
+    //   let obj = {}
+    //   obj = arr.find((item)=>{
+    //     return item.name === val;
+    //   })
+    //   this.terCityTitles.splice(obj.index,1);
+    //   this.terCityTitles.splice(7,0,obj);
+    //   this.terCityTitles.forEach((i,item)=>{
+    //     i.index = item;
+    //   })
+    //   this.isColor = obj.index;
+    //   this.terCityPic = this.terCityPics[obj.py];
+    //   this.terSigns = '更多'+this.terCityTitles[obj.index].name + '游>';
+    // },
     linerImageTab(py,index){
       this.linerCityPic = this.linerCityPics[py];
       this.isColor = index;
@@ -5912,16 +5972,16 @@ export default {
       this.localSigns = '全部'+this.localCityTitles[obj.index].name + '玩乐>';
 
     },
-    themeImageTab(py,index){
-      this.themeCityPic = this.themeCityPics[py];
-      this.isColor = index;
-      if(index == 0){
-        this.exitSigns = " ";
-      }
-      else{
-        this.exitSigns = '更多'+this.exitCityTitles[index].name + '游>';
-      }
-    },
+    // themeImageTab(py,index){
+    //   this.themeCityPic = this.themeCityPics[py];
+    //   this.isColor = index;
+    //   if(index == 0){
+    //     this.exitSigns = " ";
+    //   }
+    //   else{
+    //     this.exitSigns = '更多'+this.exitCityTitles[index].name + '游>';
+    //   }
+    // },
   
     
   aaa(){
@@ -5955,13 +6015,15 @@ export default {
 
 
 
-    setTimeout(() => this.autoBorder(), 3000);
+    // setTimeout(() => this.autoBorder(), 3000);
     // this.$nextTick(()=>{this.autoBorder()});
     // setTimeout(() => this.handleClick(), 3000)
     // this.handleClick()
     this.$nextTick(()=>{this.handleClick()});
     // this.$nextTick(()=>{this.perDestination()});
-
+    // this.$nextTick(() =>{this.autoBorder()});
+    // console.log(document.getElementById("per-width").offsetWidth,"width");
+    // console.log(this.$refs.rightBorder.$refs.aa.id.offsetWidth,"id")
 
     
   }
@@ -5970,19 +6032,23 @@ export default {
 </script>
 
 <style scoped>
+.carousel{
+  width: 100%;
+}
 .img_style {
-  display: inline-block;
+  display: block;
   max-width: 100%;
   max-height: 100%;
   height: 380px;
-  /* position: relative; */
-  /* background-size: 100%; */
 }
 .block{
   padding: 0 40px;
   height: 500px;
   display: flex;
-  
+  position: relative;
+}
+.tabs{
+  width: 100% !important;
 }
 .content {
   width: 100%;
@@ -6279,6 +6345,17 @@ export default {
 .icon_money{
   margin-bottom: 20px;
 }
+/* .main_right::after{
+  content: "";
+  display: block;
+  height: 0;
+  visibility: hidden;
+  clear: both;
+  zoom: 1;
+} */
+.el-tabs__content{
+  overflow: hidden;
+}
 .main_right{
   position: relative;
   width: 233px;
@@ -6418,6 +6495,8 @@ export default {
   height: 88px;
   transition: all 0.5s linear;
   display: block;
+  /* overflow: hidden; */
+
 
 }
 
@@ -6516,6 +6595,8 @@ export default {
 .popover{
   overflow-x: scroll
 }
+
+
 </style>
 
 
