@@ -1,4 +1,5 @@
-# hello
+# CheckTicket
+ 基于Vue的查票网站
 
 ## Project setup
 ```
