@@ -20,7 +20,7 @@
                       <!-- <div  > -->
                         <ul class="main_ul hot_ul">
                             <li class="main_li"  v-for="(hotImage,hotImageIndex) in hotImages" :key="hotImageIndex">
-                                <el-button round size="mini" :class="{active:(hotImageIndex==num1)}" @click="hotImageTab(hotImageIndex)" class="main_button" >{{hotImage.title}}</el-button>
+                                <button round size="mini"  class="city_button" :class="{active:(hotImageIndex==num1)}" @click="hotImageTab(hotImageIndex)"  >{{hotImage.title}}</button>
                             </li>
                         </ul>
                         <div class="hot_pic">
@@ -69,7 +69,7 @@
                      <span>{{slotProps.navName.name}}</span>
                    </template>
                  </travalItem>
-                 <travalItem :navs="perCityTitles.slice(1)" slot="TravalNav">
+                 <travalItem :navs="perCityTitles.slice(1)" id="des-width" ref="perDestination" slot="TravalNav">
                     <dt slot="hot-name">热门目的地</dt>
                     <template slot-scope="slotProps">
                       <span>{{slotProps.navName.name}}</span>
@@ -185,7 +185,7 @@
                      <span>{{slotProps.navName.name}}</span>
                    </template>
                  </travalItem>
-                 <travalItem :navs="exitCityTitles.slice(1)" slot="TravalNav">
+                 <travalItem :navs="exitCityTitles.slice(1)" slot="TravalNav" id="per-width5"  ref="rightBorder5">
                     <dt slot="hot-name">热门目的地</dt>
                     <template slot-scope="slotProps">
                       <span>{{slotProps.navName.name}}</span>
@@ -234,13 +234,13 @@
                 </el-main>
               </el-container> -->
               <TravalBar>
-                 <travalItem :navs="plays" slot="TravalNav" >
+                 <travalItem :navs="plays" slot="TravalNav" id="play" ref="plays">
                    <dt slot="hot-name">游山玩水</dt>
                    <template slot-scope="slotProps">
                      <span>{{slotProps.navName.name}}</span>
                    </template>
                  </travalItem>
-                 <travalItem :navs="arts" slot="TravalNav">
+                 <travalItem :navs="arts" slot="TravalNav" id="art" ref="arts">
                     <dt slot="hot-name">民俗艺术</dt>
                     <template slot-scope="slotProps">
                       <span>{{slotProps.navName.name}}</span>
@@ -400,25 +400,25 @@
                 </el-main>
               </el-container> -->
               <TravalBar>
-                 <travalItem :navs="outdoors" slot="TravalNav" >
+                 <travalItem :navs="outdoors" slot="TravalNav"  ref="outdoors" id="outdoor">
                    <dt slot="hot-name">户外</dt>
                    <template slot-scope="slotProps">
                      <span>{{slotProps.navName.name}}</span>
                    </template>
                  </travalItem>
-                 <travalItem :navs="naturals" slot="TravalNav">
+                 <travalItem :navs="naturals" slot="TravalNav" ref="naturals" id="natural">
                     <dt slot="hot-name">自然</dt>
                     <template slot-scope="slotProps">
                       <span>{{slotProps.navName.name}}</span>
                     </template>
                  </travalItem>
-                 <travalItem :navs="humanities" slot="TravalNav">
+                 <travalItem :navs="humanities" slot="TravalNav" ref="humans" id="human">
                     <dt slot="hot-name">人文</dt>
                     <template slot-scope="slotProps">
                       <span>{{slotProps.navName.name}}</span>
                     </template>
                  </travalItem>
-                 <travalItem :navs="festivals" slot="TravalNav">
+                 <travalItem :navs="festivals" slot="TravalNav" ref="festivals" id="festival">
                     <dt slot="hot-name">节庆</dt>
                     <template slot-scope="slotProps">
                       <span>{{slotProps.navName.name}}</span>
@@ -456,25 +456,25 @@
       <!-- 游玩结束 -->
       <!-- 酒店开始 -->
       <div  class="block">
-        <el-tabs v-model="activeName" >
+        <el-tabs v-model="activeName"  @tab-click="SeaHandleClick">
             <!-- 海外酒店开始 -->
             <el-tab-pane label="海外酒店" name="first">
                 <el-container>
                     <el-aside class="content_aside">
                       <div>
                         <dt class="sale_dt">促销</dt>
-                        <dd class="find_dd" v-for="(sale,saleIndex) in sales" :key="saleIndex"><a href="#" class="find_a">{{sale}}</a></dd>
+                        <dd class="find_dd" v-for="(sale,saleIndex) in sales" :key="saleIndex"><a href="#" class="oversea_find_a">{{sale}}</a></dd>
                       </div>
                       <div class="find">
                         <dt  class="sale_dt">发现酒店</dt>
-                        <dd class="find_dd" v-for="(find,findIndex) in finds" :key="findIndex+sales.length"><a class="find_a" href="#">{{find}}</a></dd> 
+                        <dd class="find_dd" v-for="(find,findIndex) in finds" :key="findIndex+sales.length"><a class="oversea_find_a" href="#">{{find}}</a></dd> 
                       </div>
                     </el-aside>
                     <el-main>
                       <div >
                         <ul class="main_ul">
                             <li class="main_li"  v-for="(image,imageIndex) in images" :key="imageIndex">
-                                <el-button round size="mini" :class="{active:(imageIndex==num)}" @click="imageTab(imageIndex)" class="main_button" >{{image.title}}</el-button>
+                                <button round size="mini" :class="{active:(imageIndex==num)}" @click="imageTab(imageIndex)" class="city_button" >{{image.title}}</button>
                             </li>
                             <a class="main_a" href="javascript:void(0);">更多海外酒店></a>
                         </ul>
@@ -547,13 +547,13 @@
             <el-tab-pane label="国内酒店" name="third">
               <el-container>
                 <el-aside class="content_aside">
-                  <div>
+                  <div id="seaPlay-width">
                     <dt class="sale_dt">热门地标周边酒店</dt>
-                    <dd class="find_dd"><a href="#" class="find_a">还没想好周末去哪玩？</a></dd>
+                    <dd class="find_dd" ref="seaPlay" ><a href="#" class="oversea_find_a">还没想好周末去哪玩？</a></dd>
                   </div>
                   <div class="find">
                     <dt  class="sale_dt">促销</dt>
-                    <dd class="find_dd" v-for="(sale,saleIndex) in domesticSales" :key="saleIndex"><a class="find_a" href="#">{{sale}}</a></dd> 
+                    <dd class="find_dd" v-for="(sale,saleIndex) in domesticSales" :key="saleIndex"><a class="oversea_find_a" href="#">{{sale}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -594,12 +594,12 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">热门主题</dt>
-                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="find_a">{{hotTheme.name}}</a></dd>
+                    <dd class="scene_dd" v-for="(hotTheme,hotThemeIndex) in hotThemes" :key="hotThemeIndex"><a href="#" class="oversea_find_a">{{hotTheme.name}}</a></dd>
                   </div>
                   <div class="scene">
                     <dt  class="sale_dt">促销</dt>
-                    <dd class="find_dd"><a class="find_a" href="#">春季赏花</a></dd> 
-                    <dd class="find_dd"><a class="find_a" href="#">万人自驾</a></dd> 
+                    <dd class="find_dd"><a class="oversea_find_a" href="#">春季赏花</a></dd> 
+                    <dd class="find_dd"><a class="oversea_find_a" href="#">万人自驾</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -639,11 +639,11 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">游山玩水</dt>
-                    <dd class="scene_dd" v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="find_a">{{play.name}}</a></dd>
+                    <dd class="scene_dd" v-for="(play,playIndex) in plays" :key="playIndex"><a href="#" class="oversea_find_a">{{play.name}}</a></dd>
                   </div>
                   <div class="homestay">
                     <dt  class="sale_dt">民俗艺术</dt>
-                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="find_a" href="#">{{art.name}}</a></dd> 
+                    <dd class="scene_dd" v-for="(art,artIndex) in arts" :key="artIndex"><a class="oversea_find_a" href="#">{{art.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -685,11 +685,11 @@
                  <el-aside class="content_aside">
                   <div>
                     <dt class="sale_dt">热门团购</dt>
-                    <dd class="scene_dd" v-for="(hotGroup,hotGroupIndex) in hotGroups" :key="hotGroupIndex"><a href="#" class="find_a">{{hotGroup.name}}</a></dd>
+                    <dd class="scene_dd" v-for="(hotGroup,hotGroupIndex) in hotGroups" :key="hotGroupIndex"><a href="#" class="oversea_find_a">{{hotGroup.name}}</a></dd>
                   </div>
                   <div class="group_select">
                     <dt  class="sale_dt">团购精选</dt>
-                    <dd class="sale_dd" v-for="(groupSelected,groupSelectedIndex) in groupSelecteds" :key="groupSelectedIndex"><a class="find_a" href="#">{{groupSelected.name}}</a></dd> 
+                    <dd class="sale_dd" v-for="(groupSelected,groupSelectedIndex) in groupSelecteds" :key="groupSelectedIndex"><a class="oversea_find_a" href="#">{{groupSelected.name}}</a></dd> 
                   </div>
                 </el-aside>
                 <el-main>
@@ -5839,13 +5839,30 @@ export default {
     //    this.exitSelect = "更多";
     // },
    
+  //  SeaHandleClick(tab){
+  //    var n = tab.name
+  //    switch(n){
+  //      case 'third':
+  //         this.$nextTick(() =>{this.autoBorder(this.$refs.seaPlay,"seaPlay-width")});
+  //         break;
+  //       case 'third1':
+  //         this.$nextTick(() =>{this.autoBorder(this.$refs.ticketHot,'ticket-width')});
+  //         this.$nextTick(() =>{this.autoBorder(this.$refs.ticketDestination,'ticket-width')});
+  //         break;
+  //       case 'fourth1':
+  //         this.$nextTick(() =>{this.autoBorder(this.$refs.rightBorder4.$refs.aa,"per-width4")});
+  //         this.$nextTick(() =>{this.autoBorder(this.$refs.rightBorder5.$refs.aa,'per-width5')});
+  //         break;
+  //    } 
+  //  },
+
     handleClick(tab){
       var n = tab.name
       switch(n){
         case 'second1':
           this.$nextTick(() =>{this.autoBorder(this.$refs.rightBorder.$refs.aa,"per-width")});
           this.$nextTick(()=>{this.getFirst()})
-          this.$nextTick(() =>{this.autoBorder(this.$refs.perDestination,"per-width")});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.perDestination.$refs.aa,"des-width")});
           break;
         case 'third1':
           this.$nextTick(() =>{this.autoBorder(this.$refs.ticketHot,'ticket-width')});
@@ -5853,11 +5870,11 @@ export default {
           break;
         case 'fourth1':
           this.$nextTick(() =>{this.autoBorder(this.$refs.rightBorder4.$refs.aa,"per-width4")});
-          this.$nextTick(() =>{this.autoBorder(this.$refs.exitDestination,'aside-width')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.rightBorder5.$refs.aa,'per-width5')});
           break;
         case 'fifth1':
-          this.$nextTick(() =>{this.autoBorder(this.$refs.terHot,'ter-width')});
-          this.$nextTick(() =>{this.autoBorder(this.$refs.terDestination,'ter-width')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.plays.$refs.aa,'play')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.arts.$refs.aa,'art')});
           break;
         case 'six1':
           this.$nextTick(() =>{this.autoBorder(this.$refs.linerFind,'liner-width')});
@@ -5868,10 +5885,10 @@ export default {
           this.$nextTick(() =>{this.autoBorder(this.$refs.domesticDestination,'local-width')});
           break;
         case 'eighth1':
-          this.$nextTick(() =>{this.autoBorder(this.$refs.themeOutdoors,'theme-width')});
-          this.$nextTick(() =>{this.autoBorder(this.$refs.themeNatural,'theme-width')});
-          this.$nextTick(() =>{this.autoBorder(this.$refs.themeHumanity,'theme-width')});
-          this.$nextTick(() =>{this.autoBorder(this.$refs.themeFestival,'theme-width')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.outdoors.$refs.aa,'outdoor')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.naturals.$refs.aa,'natural')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.humans.$refs.aa,'human')});
+          this.$nextTick(() =>{this.autoBorder(this.$refs.festivals.$refs.aa,'festival')});
        }
      },
     
@@ -6020,8 +6037,9 @@ export default {
     // setTimeout(() => this.handleClick(), 3000)
     // this.handleClick()
     this.$nextTick(()=>{this.handleClick()});
+    this.$nextTick(()=>{this.SeaHandleClick()});
     // this.$nextTick(()=>{this.perDestination()});
-    // this.$nextTick(() =>{this.autoBorder()});
+    this.$nextTick(() =>{this.autoBorder()});
     // console.log(document.getElementById("per-width").offsetWidth,"width");
     // console.log(this.$refs.rightBorder.$refs.aa.id.offsetWidth,"id")
 
@@ -6065,7 +6083,7 @@ export default {
 .hot_pic_box{
   position: relative;
   width: 225px;
-  height: 180px;
+  height: 190px;
   float: left;
   overflow: hidden;
 }
@@ -6222,6 +6240,13 @@ export default {
   padding-right: 8px;
   margin-right: 8px;
 }
+.oversea_find_a{
+  text-decoration: none !important;
+  color: gray;
+  font-size: 12px;
+  padding-right: 8px;
+  margin-right: 8px;
+}
 .find_a:hover{
   color: rgb(18, 120, 204);
 }
@@ -6279,7 +6304,7 @@ export default {
 .pic_box{
   position: relative;
   width: 220px;
-  height: 180px;
+  height: 175px;
   float: left;
   overflow: hidden;
   margin:0 10px 10px 0;
@@ -6292,7 +6317,7 @@ export default {
 
 }
 .pic_item{
-  width: 230px !important ;
+  width: 220px !important ;
   height: 180px;
   float: left;
   transition: all 0.5s;
@@ -6358,14 +6383,16 @@ export default {
 }
 .main_right{
   position: relative;
-  width: 233px;
+  width: 230px;
   height: 360px;
   background-color: white;   
   float: left;
+  overflow: hidden;
 }
 .main_right_image{
-  width: 250px;
-  height: 360px;
+  margin-top: 0px;
+  width: 230px;
+  height: 365px;
   max-width: 100%;
   max-height: 100%;
 }
